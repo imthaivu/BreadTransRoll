@@ -1,0 +1,49 @@
+@import "tailwindcss";
+@import "./page-transitions.css";
+
+/* Tailwind CSS v4 theme tokens */
+@theme inline {
+  /* Fonts (wired to next/font variables) */
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system,
+    Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo,
+    Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+
+  /* Doraemon Colors */
+  --color-background: #ffffff; /* trắng nền chính */
+  --color-foreground: #424242; /* xám đậm chữ chính */
+  --color-muted: #757575; /* xám nhạt chữ phụ */
+  --color-border: #b3e5fc; /* xanh nhạt viền/nền phụ */
+
+  --color-primary: #2aa7e2; /* xanh Doraemon */
+  --color-primary-foreground: #ffffff; /* chữ trắng trên nền xanh */
+
+  --color-secondary: #f9d71c; /* vàng chuông */
+  --color-secondary-foreground: #0f172a;
+
+  --color-accent: #e53935; /* đỏ cổ áo */
+  --color-accent-foreground: #ffffff;
+}
+
+html,
+body {
+  height: 100%;
+  overflow-x: hidden;
+}
+
+button,
+a {
+  cursor: pointer;
+}
+
+input,
+textarea,
+select {
+  border: 1px solid var(--color-border);
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans);
+}

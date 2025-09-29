@@ -1,0 +1,57 @@
+export const SHOPPING_CATEGORIES = [
+  {
+    title: "Thời trang nữ",
+    price: 180,
+    interval: 3700,
+    images: [
+      "https://magical-tulumba-581427.netlify.app/img-ui/thoitrangnu/1.jpg",
+      "https://magical-tulumba-581427.netlify.app/img-ui/thoitrangnu/2.jpg",
+      "https://magical-tulumba-581427.netlify.app/img-ui/thoitrangnu/3.jpg",
+      "https://magical-tulumba-581427.netlify.app/img-ui/thoitrangnu/4.jpg",
+      "https://magical-tulumba-581427.netlify.app/img-ui/thoitrangnu/5.jpg",
+      "https://magical-tulumba-581427.netlify.app/img-ui/thoitrangnu/6.jpg",
+      "https://magical-tulumba-581427.netlify.app/img-ui/thoitrangnu/7.jpg",
+      "https://magical-tulumba-581427.netlify.app/img-ui/thoitrangnu/8.jpg",
+    ],
+  },
+  {
+    title: "Thời trang nam",
+    price: 160,
+    interval: 3300,
+    images: [
+      "https://magical-tulumba-581427.netlify.app/img-ui/thoitrangnam/1.jpg",
+      "https://magical-tulumba-581427.netlify.app/img-ui/thoitrangnam/2.jpg",
+      "https://magical-tulumba-581427.netlify.app/img-ui/thoitrangnam/3.jpg",
+      "https://magical-tulumba-581427.netlify.app/img-ui/thoitrangnam/4.jpg",
+      "https://magical-tulumba-581427.netlify.app/img-ui/thoitrangnam/5.jpg",
+    ],
+  },
+  {
+    title: "Phụ kiện hữu ích",
+    price: 150,
+    interval: 3600,
+    images: [
+      "https://magical-tulumba-581427.netlify.app/img-ui/phukien/1.jpg",
+      "https://magical-tulumba-581427.netlify.app/img-ui/phukien/2.jpg",
+      "https://magical-tulumba-581427.netlify.app/img-ui/phukien/3.jpg",
+      "https://magical-tulumba-581427.netlify.app/img-ui/phukien/4.jpg",
+      "https://magical-tulumba-581427.netlify.app/img-ui/phukien/5.jpg",
+      "https://magical-tulumba-581427.netlify.app/img-ui/phukien/6.jpg",
+      "https://magical-tulumba-581427.netlify.app/img-ui/phukien/7.jpg",
+      "https://magical-tulumba-581427.netlify.app/img-ui/phukien/8.jpg",
+      "https://magical-tulumba-581427.netlify.app/img-ui/phukien/9.jpg",
+      "https://magical-tulumba-581427.netlify.app/img-ui/phukien/10.jpg",
+      "https://magical-tulumba-581427.netlify.app/img-ui/phukien/11.jpg",
+    ],
+  },
+  {
+    title: "Sách học tập",
+    price: 80,
+    interval: 4000,
+    images: [
+      "https://magical-tulumba-581427.netlify.app/img-ui/sachdodunghoctap/1.jpg",
+      "https://magical-tulumba-581427.netlify.app/img-ui/sachdodunghoctap/2.jpg",
+      "https://magical-tulumba-581427.netlify.app/img-ui/sachdodunghoctap/3.jpg",
+    ],
+  },
+];

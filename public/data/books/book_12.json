@@ -1,0 +1,5420 @@
+{
+  "id": 12,
+  "name": "Book 8",
+  "totalLessons": 80,
+  "totalWords": 716,
+  "lessons": [
+    {
+      "id": 1,
+      "words": [
+        {
+          "word": "Gabriel",
+          "ipa": "ˈɡeɪbriəl",
+          "mean": "Gabriel",
+          "book": 8,
+          "lesson": 1
+        },
+        {
+          "word": "chuckling",
+          "ipa": "ˈʧəklɪŋ",
+          "mean": "cười khúc khích",
+          "book": 8,
+          "lesson": 1
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "words": [
+        {
+          "word": "Gates",
+          "ipa": "geɪts",
+          "mean": "Cổng",
+          "book": 8,
+          "lesson": 2
+        },
+        {
+          "word": "programmer",
+          "ipa": "ˈproʊˌgræmər",
+          "mean": "lập trình viên",
+          "book": 8,
+          "lesson": 2
+        },
+        {
+          "word": "businessman",
+          "ipa": "ˈbɪznəsmæn",
+          "mean": "doanh nhân",
+          "book": 8,
+          "lesson": 2
+        },
+        {
+          "word": "reportedly",
+          "ipa": "rɪˈpɔːtɪdli",
+          "mean": "được báo cáo",
+          "book": 8,
+          "lesson": 2
+        },
+        {
+          "word": "Microsoft",
+          "ipa": "ˈmaɪkrəsɒft",
+          "mean": "Microsoft",
+          "book": 8,
+          "lesson": 2
+        },
+        {
+          "word": "banker",
+          "ipa": "ˈbæŋkə(r)",
+          "mean": "chủ ngân hàng",
+          "book": 8,
+          "lesson": 2
+        },
+        {
+          "word": "handedly",
+          "ipa": "ˈhændɪdli",
+          "mean": "một cách thuận tay",
+          "book": 8,
+          "lesson": 2
+        },
+        {
+          "word": "desire",
+          "ipa": "dɪˈzaɪə(r)",
+          "mean": "sự mong muốn",
+          "book": 8,
+          "lesson": 2
+        },
+        {
+          "word": "Lakeside",
+          "ipa": "ˈleɪksaɪd",
+          "mean": "Bờ hồ",
+          "book": 8,
+          "lesson": 2
+        },
+        {
+          "word": "exclusive",
+          "ipa": "ɪkˈskluːsɪv",
+          "mean": "loại trừ",
+          "book": 8,
+          "lesson": 2
+        },
+        {
+          "word": "preparatory",
+          "ipa": "prɪˈpærətri",
+          "mean": "chuẩn bị",
+          "book": 8,
+          "lesson": 2
+        },
+        {
+          "word": "tic",
+          "ipa": "tɪk",
+          "mean": "tic",
+          "book": 8,
+          "lesson": 2
+        },
+        {
+          "word": "tac",
+          "ipa": "tæk",
+          "mean": "chiến thuật",
+          "book": 8,
+          "lesson": 2
+        },
+        {
+          "word": "Micro",
+          "ipa": "ˈmaɪˌkroʊ",
+          "mean": "Vi mô",
+          "book": 8,
+          "lesson": 2
+        },
+        {
+          "word": "Instrumentation",
+          "ipa": "ˌɪnstrəmenˈteɪʃn",
+          "mean": "Thiết bị đo lường",
+          "book": 8,
+          "lesson": 2
+        },
+        {
+          "word": "Telemetry",
+          "ipa": "təˈlemətri",
+          "mean": "Đo từ xa",
+          "book": 8,
+          "lesson": 2
+        },
+        {
+          "word": "MITS",
+          "ipa": "mits*",
+          "mean": "MITS",
+          "book": 8,
+          "lesson": 2
+        },
+        {
+          "word": "innovations",
+          "ipa": "ˌɪnəˈveɪʃənz",
+          "mean": "những đổi mới",
+          "book": 8,
+          "lesson": 2
+        },
+        {
+          "word": "partnership",
+          "ipa": "ˈpɑːtnəʃɪp",
+          "mean": "quan hệ đối tác",
+          "book": 8,
+          "lesson": 2
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "words": [
+        {
+          "word": "Janice",
+          "ipa": "ˈdʒænɪs",
+          "mean": "Janice",
+          "book": 8,
+          "lesson": 3
+        },
+        {
+          "word": "inch",
+          "ipa": "ɪntʃ",
+          "mean": "inch",
+          "book": 8,
+          "lesson": 3
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "words": [
+        {
+          "word": "divisive",
+          "ipa": "dɪˈvaɪsɪv",
+          "mean": "phân chia",
+          "book": 8,
+          "lesson": 4
+        },
+        {
+          "word": "progressive",
+          "ipa": "prəˈɡresɪv",
+          "mean": "tiến bộ",
+          "book": 8,
+          "lesson": 4
+        },
+        {
+          "word": "counterpart",
+          "ipa": "ˈkaʊntəpɑːt",
+          "mean": "đối tác",
+          "book": 8,
+          "lesson": 4
+        },
+        {
+          "word": "unethical",
+          "ipa": "ʌnˈeθɪkl",
+          "mean": "phi đạo đức",
+          "book": 8,
+          "lesson": 4
+        },
+        {
+          "word": "integral",
+          "ipa": "ˈɪntɪɡrəl",
+          "mean": "tích phân",
+          "book": 8,
+          "lesson": 4
+        },
+        {
+          "word": "vowed",
+          "ipa": "vaʊd",
+          "mean": "đã thề",
+          "book": 8,
+          "lesson": 4
+        },
+        {
+          "word": "angered",
+          "ipa": "ˈæŋgərd",
+          "mean": "tức giận",
+          "book": 8,
+          "lesson": 4
+        },
+        {
+          "word": "review",
+          "ipa": "rɪˈvjuː",
+          "mean": "ôn tập",
+          "book": 8,
+          "lesson": 4
+        },
+        {
+          "word": "sympathizer",
+          "ipa": "ˈsɪmpəθaɪzə(r)",
+          "mean": "người đồng tình",
+          "book": 8,
+          "lesson": 4
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "words": [
+        {
+          "word": "compactor",
+          "ipa": "kəmˈpæktə(r)",
+          "mean": "máy đầm",
+          "book": 8,
+          "lesson": 5
+        },
+        {
+          "word": "chute",
+          "ipa": "ʃuːt",
+          "mean": "máng trượt",
+          "book": 8,
+          "lesson": 5
+        },
+        {
+          "word": "recyclables",
+          "ipa": "riˈsaɪkləbəlz",
+          "mean": "vật liệu tái chế",
+          "book": 8,
+          "lesson": 5
+        },
+        {
+          "word": "trashcan",
+          "ipa": "trashcan*",
+          "mean": "thùng rác",
+          "book": 8,
+          "lesson": 5
+        },
+        {
+          "word": "recycled",
+          "ipa": "ˌriːˈsaɪkld",
+          "mean": "tái chế",
+          "book": 8,
+          "lesson": 5
+        },
+        {
+          "word": "trimmings",
+          "ipa": "ˈtrɪmɪŋz",
+          "mean": "đồ trang trí",
+          "book": 8,
+          "lesson": 5
+        },
+        {
+          "word": "beep",
+          "ipa": "bi:p",
+          "mean": "tiếng bíp",
+          "book": 8,
+          "lesson": 5
+        },
+        {
+          "word": "reminding",
+          "ipa": "rɪˈmaɪndɪŋ",
+          "mean": "nhắc nhở",
+          "book": 8,
+          "lesson": 5
+        },
+        {
+          "word": "rented",
+          "ipa": "ˈrentɪd",
+          "mean": "thuê",
+          "book": 8,
+          "lesson": 5
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "words": [
+        {
+          "word": "Yao",
+          "ipa": "jaʊ",
+          "mean": "Nghiêu",
+          "book": 8,
+          "lesson": 6
+        },
+        {
+          "word": "Ming",
+          "ipa": "mɪŋ",
+          "mean": "Minh",
+          "book": 8,
+          "lesson": 6
+        },
+        {
+          "word": "influential",
+          "ipa": "ˌɪnfluˈenʃl",
+          "mean": "có ảnh hưởng",
+          "book": 8,
+          "lesson": 6
+        },
+        {
+          "word": "Shanghai",
+          "ipa": "ˌʃæŋˈhaɪ",
+          "mean": "Thượng Hải",
+          "book": 8,
+          "lesson": 6
+        },
+        {
+          "word": "Sharks",
+          "ipa": "ʃɑrks",
+          "mean": "Cá mập",
+          "book": 8,
+          "lesson": 6
+        },
+        {
+          "word": "CBA",
+          "ipa": "cba*",
+          "mean": "CBA",
+          "book": 8,
+          "lesson": 6
+        },
+        {
+          "word": "draft",
+          "ipa": "drɑːft",
+          "mean": "bản nháp",
+          "book": 8,
+          "lesson": 6
+        },
+        {
+          "word": "Rockets",
+          "ipa": "ˈrɑkəts",
+          "mean": "Tên lửa",
+          "book": 8,
+          "lesson": 6
+        },
+        {
+          "word": "moderate",
+          "ipa": "ˈmɒdərət",
+          "mean": "vừa phải",
+          "book": 8,
+          "lesson": 6
+        },
+        {
+          "word": "playoff",
+          "ipa": "pleɪɔf",
+          "mean": "vòng loại trực tiếp",
+          "book": 8,
+          "lesson": 6
+        },
+        {
+          "word": "statistical",
+          "ipa": "stəˈtɪstɪkl",
+          "mean": "thống kê",
+          "book": 8,
+          "lesson": 6
+        },
+        {
+          "word": "resentment",
+          "ipa": "rɪˈzentmənt",
+          "mean": "sự oán giận",
+          "book": 8,
+          "lesson": 6
+        },
+        {
+          "word": "Shaquille",
+          "ipa": "ʃəˈkil",
+          "mean": "Shaquille",
+          "book": 8,
+          "lesson": 6
+        },
+        {
+          "word": "Neal",
+          "ipa": "nil",
+          "mean": "Neal",
+          "book": 8,
+          "lesson": 6
+        },
+        {
+          "word": "Lakers",
+          "ipa": "ˈleɪkərz",
+          "mean": "Đội Lakers",
+          "book": 8,
+          "lesson": 6
+        },
+        {
+          "word": "outvoted",
+          "ipa": "ˌaʊtˈvəʊtɪd",
+          "mean": "bị bỏ phiếu ngược",
+          "book": 8,
+          "lesson": 6
+        },
+        {
+          "word": "outplay",
+          "ipa": "ˌaʊtˈpleɪ",
+          "mean": "chơi trội hơn",
+          "book": 8,
+          "lesson": 6
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "words": [
+        {
+          "word": "Guatemala",
+          "ipa": "ˌɡwɑːtəˈmɑːlə",
+          "mean": "Guatemala",
+          "book": 8,
+          "lesson": 7
+        },
+        {
+          "word": "gracias",
+          "ipa": "ˈgrɑsiəz",
+          "mean": "cảm ơn",
+          "book": 8,
+          "lesson": 7
+        },
+        {
+          "word": "fluent",
+          "ipa": "ˈfluːənt",
+          "mean": "trôi chảy",
+          "book": 8,
+          "lesson": 7
+        },
+        {
+          "word": "Jose",
+          "ipa": "ˌhoʊˈzeɪ",
+          "mean": "Jose",
+          "book": 8,
+          "lesson": 7
+        },
+        {
+          "word": "nombre",
+          "ipa": "nombre*",
+          "mean": "tên",
+          "book": 8,
+          "lesson": 7
+        },
+        {
+          "word": "progressing",
+          "ipa": "prəˈgrɛsɪŋ",
+          "mean": "đang tiến triển",
+          "book": 8,
+          "lesson": 7
+        },
+        {
+          "word": "firsthand",
+          "ipa": "ˌfɜːstˈhænd",
+          "mean": "tận mắt chứng kiến",
+          "book": 8,
+          "lesson": 7
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "words": [
+        {
+          "word": "Tabby",
+          "ipa": "ˈtæbi",
+          "mean": "Mèo vằn",
+          "book": 8,
+          "lesson": 8
+        },
+        {
+          "word": "Macaw",
+          "ipa": "məˈkɔː",
+          "mean": "Vẹt đuôi dài",
+          "book": 8,
+          "lesson": 8
+        },
+        {
+          "word": "Polly",
+          "ipa": "ˈpɑli",
+          "mean": "Polly",
+          "book": 8,
+          "lesson": 8
+        },
+        {
+          "word": "pony",
+          "ipa": "ˈpəʊni",
+          "mean": "ngựa con",
+          "book": 8,
+          "lesson": 8
+        },
+        {
+          "word": "cleverly",
+          "ipa": "ˈklevəli",
+          "mean": "một cách khéo léo",
+          "book": 8,
+          "lesson": 8
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "words": [
+        {
+          "word": "Sandra",
+          "ipa": "ˈsɑːndrə",
+          "mean": "Sandra",
+          "book": 8,
+          "lesson": 9
+        },
+        {
+          "word": "fond",
+          "ipa": "fɒnd",
+          "mean": "ngây thơ",
+          "book": 8,
+          "lesson": 9
+        },
+        {
+          "word": "flung",
+          "ipa": "flʌŋ",
+          "mean": "ném",
+          "book": 8,
+          "lesson": 9
+        },
+        {
+          "word": "scolded",
+          "ipa": "ˈskəʊldɪd",
+          "mean": "bị mắng",
+          "book": 8,
+          "lesson": 9
+        },
+        {
+          "word": "apologize",
+          "ipa": "əˈpɒlədʒaɪz",
+          "mean": "xin lỗi",
+          "book": 8,
+          "lesson": 9
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "words": [
+        {
+          "word": "adorable",
+          "ipa": "əˈdɔːrəbl",
+          "mean": "đáng yêu",
+          "book": 8,
+          "lesson": 10
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "words": [
+        {
+          "word": "arson",
+          "ipa": "ˈɑːsn",
+          "mean": "đốt phá",
+          "book": 8,
+          "lesson": 11
+        },
+        {
+          "word": "reporters",
+          "ipa": "rɪˈpɔrtərz",
+          "mean": "các phóng viên",
+          "book": 8,
+          "lesson": 11
+        },
+        {
+          "word": "rebuild",
+          "ipa": "ˌriːˈbɪld",
+          "mean": "xây dựng lại",
+          "book": 8,
+          "lesson": 11
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "words": [
+        {
+          "word": "Josh",
+          "ipa": "dʒɒʃ",
+          "mean": "Josh",
+          "book": 8,
+          "lesson": 12
+        },
+        {
+          "word": "Diana",
+          "ipa": "daɪˈænə",
+          "mean": "Diana",
+          "book": 8,
+          "lesson": 12
+        },
+        {
+          "word": "confidence",
+          "ipa": "ˈkɒnfɪdəns",
+          "mean": "sự tự tin",
+          "book": 8,
+          "lesson": 12
+        },
+        {
+          "word": "bush",
+          "ipa": "bʊʃ",
+          "mean": "bụi rậm",
+          "book": 8,
+          "lesson": 12
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "words": [
+        {
+          "word": "eras",
+          "ipa": "ˈɪrəz",
+          "mean": "các thời đại",
+          "book": 8,
+          "lesson": 13
+        },
+        {
+          "word": "involvement",
+          "ipa": "ɪnˈvɒlvmənt",
+          "mean": "sự tham gia",
+          "book": 8,
+          "lesson": 13
+        },
+        {
+          "word": "perception",
+          "ipa": "pəˈsepʃn",
+          "mean": "sự nhận thức",
+          "book": 8,
+          "lesson": 13
+        },
+        {
+          "word": "drafting",
+          "ipa": "drɑːft",
+          "mean": "soạn thảo",
+          "book": 8,
+          "lesson": 13
+        },
+        {
+          "word": "Fonda",
+          "ipa": "ˈfɑndə",
+          "mean": "Fonda",
+          "book": 8,
+          "lesson": 13
+        },
+        {
+          "word": "royalty",
+          "ipa": "ˈrɔɪəlti",
+          "mean": "tiền bản quyền",
+          "book": 8,
+          "lesson": 13
+        },
+        {
+          "word": "Oscars",
+          "ipa": "ˈɔskərz",
+          "mean": "Giải Oscar",
+          "book": 8,
+          "lesson": 13
+        },
+        {
+          "word": "Emmy",
+          "ipa": "ˈemi",
+          "mean": "Emmy",
+          "book": 8,
+          "lesson": 13
+        },
+        {
+          "word": "activist",
+          "ipa": "ˈæktɪvɪst",
+          "mean": "nhà hoạt động",
+          "book": 8,
+          "lesson": 13
+        },
+        {
+          "word": "outspoken",
+          "ipa": "aʊtˈspəʊkən",
+          "mean": "thẳng thắn",
+          "book": 8,
+          "lesson": 13
+        },
+        {
+          "word": "headlines",
+          "ipa": "ˈhɛˌdlaɪnz",
+          "mean": "tiêu đề",
+          "book": 8,
+          "lesson": 13
+        },
+        {
+          "word": "starred",
+          "ipa": "stɑːd",
+          "mean": "có sao",
+          "book": 8,
+          "lesson": 13
+        },
+        {
+          "word": "wrath",
+          "ipa": "rɒθ",
+          "mean": "cơn thịnh nộ",
+          "book": 8,
+          "lesson": 13
+        },
+        {
+          "word": "Vietnamese",
+          "ipa": "ˌviːetnəˈmiːz",
+          "mean": "Tiếng Việt",
+          "book": 8,
+          "lesson": 13
+        },
+        {
+          "word": "soiled",
+          "ipa": "sɔɪld",
+          "mean": "bẩn",
+          "book": 8,
+          "lesson": 13
+        },
+        {
+          "word": "actress",
+          "ipa": "ˈæktrəs",
+          "mean": "nữ diễn viên",
+          "book": 8,
+          "lesson": 13
+        },
+        {
+          "word": "traitor",
+          "ipa": "ˈtreɪtə(r)",
+          "mean": "kẻ phản bội",
+          "book": 8,
+          "lesson": 13
+        },
+        {
+          "word": "interacting",
+          "ipa": "ˌɪntərˈæktɪŋ",
+          "mean": "tương tác",
+          "book": 8,
+          "lesson": 13
+        },
+        {
+          "word": "enemy",
+          "ipa": "ˈenəmi",
+          "mean": "kẻ thù",
+          "book": 8,
+          "lesson": 13
+        },
+        {
+          "word": "manipulated",
+          "ipa": "məˈnɪpjuleɪtɪd",
+          "mean": "bị thao túng",
+          "book": 8,
+          "lesson": 13
+        },
+        {
+          "word": "doubts",
+          "ipa": "daʊts",
+          "mean": "nghi ngờ",
+          "book": 8,
+          "lesson": 13
+        },
+        {
+          "word": "backed",
+          "ipa": "bækt",
+          "mean": "được hỗ trợ",
+          "book": 8,
+          "lesson": 13
+        },
+        {
+          "word": "denouncing",
+          "ipa": "dɪˈnaʊnsɪŋ",
+          "mean": "tố cáo",
+          "book": 8,
+          "lesson": 13
+        },
+        {
+          "word": "cemented",
+          "ipa": "sɪˈmɛntɪd",
+          "mean": "xi măng",
+          "book": 8,
+          "lesson": 13
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "words": [
+        {
+          "word": "Desmond",
+          "ipa": "ˈdezmənd",
+          "mean": "Desmond",
+          "book": 8,
+          "lesson": 14
+        },
+        {
+          "word": "fetch",
+          "ipa": "fetʃ",
+          "mean": "tìm về",
+          "book": 8,
+          "lesson": 14
+        },
+        {
+          "word": "treaded",
+          "ipa": "treaded*",
+          "mean": "có gai",
+          "book": 8,
+          "lesson": 14
+        },
+        {
+          "word": "hordes",
+          "ipa": "hɔrdz",
+          "mean": "đám đông",
+          "book": 8,
+          "lesson": 14
+        },
+        {
+          "word": "instance",
+          "ipa": "ˈɪnstəns",
+          "mean": "ví dụ",
+          "book": 8,
+          "lesson": 14
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "words": [
+        {
+          "word": "Russell",
+          "ipa": "ˈrʌsl",
+          "mean": "Russell",
+          "book": 8,
+          "lesson": 15
+        },
+        {
+          "word": "Wilt",
+          "ipa": "wɪlt",
+          "mean": "Héo",
+          "book": 8,
+          "lesson": 15
+        },
+        {
+          "word": "Chamberlain",
+          "ipa": "ˈtʃeɪmbəlɪn",
+          "mean": "Chamberlain",
+          "book": 8,
+          "lesson": 15
+        },
+        {
+          "word": "Kareem",
+          "ipa": "kərˈim",
+          "mean": "Kareem",
+          "book": 8,
+          "lesson": 15
+        },
+        {
+          "word": "Abdul",
+          "ipa": "æbˈdul",
+          "mean": "Abdul",
+          "book": 8,
+          "lesson": 15
+        },
+        {
+          "word": "Jabbar",
+          "ipa": "ʤəˈbɑr",
+          "mean": "Jabbar",
+          "book": 8,
+          "lesson": 15
+        },
+        {
+          "word": "finals",
+          "ipa": "ˈfaɪnəlz",
+          "mean": "trận chung kết",
+          "book": 8,
+          "lesson": 15
+        },
+        {
+          "word": "superstars",
+          "ipa": "ˌsupərˈstɑrz",
+          "mean": "siêu sao",
+          "book": 8,
+          "lesson": 15
+        },
+        {
+          "word": "attributed",
+          "ipa": "əˈtrɪbjuːtɪd",
+          "mean": "được cho là",
+          "book": 8,
+          "lesson": 15
+        },
+        {
+          "word": "garnered",
+          "ipa": "ˈɡɑːnəd",
+          "mean": "thu thập được",
+          "book": 8,
+          "lesson": 15
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "words": [
+        {
+          "word": "Amisa",
+          "ipa": "amisa*",
+          "mean": "Amisa",
+          "book": 8,
+          "lesson": 16
+        },
+        {
+          "word": "tutoring",
+          "ipa": "ˈtutərɪŋ",
+          "mean": "dạy kèm",
+          "book": 8,
+          "lesson": 16
+        },
+        {
+          "word": "Nimisha",
+          "ipa": "nimisha*",
+          "mean": "Nimisha",
+          "book": 8,
+          "lesson": 16
+        },
+        {
+          "word": "clients",
+          "ipa": "klaɪənts",
+          "mean": "khách hàng",
+          "book": 8,
+          "lesson": 16
+        },
+        {
+          "word": "stepstool",
+          "ipa": "stepstool*",
+          "mean": "ghế đẩu",
+          "book": 8,
+          "lesson": 16
+        },
+        {
+          "word": "Nimesha",
+          "ipa": "nimesha*",
+          "mean": "Nimesha",
+          "book": 8,
+          "lesson": 16
+        },
+        {
+          "word": "tongs",
+          "ipa": "tɒŋz",
+          "mean": "kẹp gắp",
+          "book": 8,
+          "lesson": 16
+        },
+        {
+          "word": "client",
+          "ipa": "ˈklaɪənt",
+          "mean": "khách hàng",
+          "book": 8,
+          "lesson": 16
+        },
+        {
+          "word": "protruding",
+          "ipa": "prəˈtruːdɪŋ",
+          "mean": "nhô ra",
+          "book": 8,
+          "lesson": 16
+        }
+      ]
+    },
+    {
+      "id": 17,
+      "words": [
+        {
+          "word": "Adriana",
+          "ipa": "ˌeɪdriˈænə",
+          "mean": "Adriana",
+          "book": 8,
+          "lesson": 17
+        },
+        {
+          "word": "Hiring",
+          "ipa": "ˈhaɪərɪŋ",
+          "mean": "Tuyển dụng",
+          "book": 8,
+          "lesson": 17
+        },
+        {
+          "word": "sacrifices",
+          "ipa": "ˈsækrəˌfaɪsɪz",
+          "mean": "sự hy sinh",
+          "book": 8,
+          "lesson": 17
+        }
+      ]
+    },
+    {
+      "id": 18,
+      "words": [
+        {
+          "word": "Jeffrey",
+          "ipa": "ˈʤɛfri",
+          "mean": "Jeffrey",
+          "book": 8,
+          "lesson": 18
+        },
+        {
+          "word": "surfers",
+          "ipa": "ˈsərfərz",
+          "mean": "những người lướt sóng",
+          "book": 8,
+          "lesson": 18
+        },
+        {
+          "word": "skateboarding",
+          "ipa": "ˈskeɪtbɔːdɪŋ",
+          "mean": "trượt ván",
+          "book": 8,
+          "lesson": 18
+        },
+        {
+          "word": "rollerblading",
+          "ipa": "ˈroʊlərˌbleɪdɪŋ",
+          "mean": "trượt patin",
+          "book": 8,
+          "lesson": 18
+        },
+        {
+          "word": "Jeffery",
+          "ipa": "ˈʤɛfəri",
+          "mean": "Jeffery",
+          "book": 8,
+          "lesson": 18
+        },
+        {
+          "word": "trophies",
+          "ipa": "ˈtroʊfiz",
+          "mean": "cúp",
+          "book": 8,
+          "lesson": 18
+        },
+        {
+          "word": "beamed",
+          "ipa": "biːmd",
+          "mean": "chiếu sáng",
+          "book": 8,
+          "lesson": 18
+        },
+        {
+          "word": "exhilarating",
+          "ipa": "ɪgˈzɪlərˌeɪtɪŋ",
+          "mean": "phấn khích",
+          "book": 8,
+          "lesson": 18
+        },
+        {
+          "word": "reliever",
+          "ipa": "rɪˈliːvə(r)",
+          "mean": "người cứu trợ",
+          "book": 8,
+          "lesson": 18
+        },
+        {
+          "word": "barrel",
+          "ipa": "ˈbærəl",
+          "mean": "thùng",
+          "book": 8,
+          "lesson": 18
+        },
+        {
+          "word": "lifelong",
+          "ipa": "ˈlaɪflɒŋ",
+          "mean": "suốt đời",
+          "book": 8,
+          "lesson": 18
+        },
+        {
+          "word": "bonfires",
+          "ipa": "ˈbɑnˌfaɪərz",
+          "mean": "đống lửa trại",
+          "book": 8,
+          "lesson": 18
+        },
+        {
+          "word": "wares",
+          "ipa": "wɛrz",
+          "mean": "hàng hóa",
+          "book": 8,
+          "lesson": 18
+        }
+      ]
+    },
+    {
+      "id": 19,
+      "words": [
+        {
+          "word": "employment",
+          "ipa": "ɪmˈplɔɪmənt",
+          "mean": "thuê người làm",
+          "book": 8,
+          "lesson": 19
+        },
+        {
+          "word": "supermarkets",
+          "ipa": "ˈsupərˌmɑrkɪts",
+          "mean": "siêu thị",
+          "book": 8,
+          "lesson": 19
+        },
+        {
+          "word": "managers",
+          "ipa": "ˈmænɪʤərz",
+          "mean": "các nhà quản lý",
+          "book": 8,
+          "lesson": 19
+        },
+        {
+          "word": "mingled",
+          "ipa": "ˈmɪŋgəld",
+          "mean": "trộn lẫn",
+          "book": 8,
+          "lesson": 19
+        },
+        {
+          "word": "frequent",
+          "ipa": "ˈfriːkwənt",
+          "mean": "thường xuyên",
+          "book": 8,
+          "lesson": 19
+        }
+      ]
+    },
+    {
+      "id": 20,
+      "words": [
+        {
+          "word": "Eddie",
+          "ipa": "ˈɛdi",
+          "mean": "Eddie",
+          "book": 8,
+          "lesson": 20
+        },
+        {
+          "word": "aspired",
+          "ipa": "əˈspaɪəd",
+          "mean": "khao khát",
+          "book": 8,
+          "lesson": 20
+        },
+        {
+          "word": "suggestions",
+          "ipa": "səˈʤɛsʧənz",
+          "mean": "gợi ý",
+          "book": 8,
+          "lesson": 20
+        },
+        {
+          "word": "Jetsam",
+          "ipa": "ˈdʒetsəm",
+          "mean": "Jetsam",
+          "book": 8,
+          "lesson": 20
+        },
+        {
+          "word": "ensemble",
+          "ipa": "ɒnˈsɒmbl",
+          "mean": "quần thể",
+          "book": 8,
+          "lesson": 20
+        },
+        {
+          "word": "acoustic",
+          "ipa": "əˈkuːstɪk",
+          "mean": "âm học",
+          "book": 8,
+          "lesson": 20
+        },
+        {
+          "word": "roared",
+          "ipa": "rɔːd",
+          "mean": "gầm lên",
+          "book": 8,
+          "lesson": 20
+        },
+        {
+          "word": "applause",
+          "ipa": "əˈplɔːz",
+          "mean": "vỗ tay",
+          "book": 8,
+          "lesson": 20
+        },
+        {
+          "word": "bowed",
+          "ipa": "bəʊd",
+          "mean": "cúi đầu",
+          "book": 8,
+          "lesson": 20
+        }
+      ]
+    },
+    {
+      "id": 21,
+      "words": [
+        {
+          "word": "boast",
+          "ipa": "bəʊst",
+          "mean": "khoe khoan",
+          "book": 8,
+          "lesson": 21
+        },
+        {
+          "word": "lunchtime",
+          "ipa": "ˈlʌntʃtaɪm",
+          "mean": "giờ ăn trưa",
+          "book": 8,
+          "lesson": 21
+        },
+        {
+          "word": "lunchroom",
+          "ipa": "ˈlʌntʃruːm",
+          "mean": "nơi ăn trưa",
+          "book": 8,
+          "lesson": 21
+        },
+        {
+          "word": "cuisine",
+          "ipa": "kwɪˈziːn",
+          "mean": "ẩm thực",
+          "book": 8,
+          "lesson": 21
+        },
+        {
+          "word": "lobster",
+          "ipa": "ˈlɒbstə(r)",
+          "mean": "tôm",
+          "book": 8,
+          "lesson": 21
+        },
+        {
+          "word": "cones",
+          "ipa": "koʊnz",
+          "mean": "hình nón",
+          "book": 8,
+          "lesson": 21
+        },
+        {
+          "word": "cupcake",
+          "ipa": "ˈkʌpkeɪk",
+          "mean": "bánh nướng nhỏ",
+          "book": 8,
+          "lesson": 21
+        }
+      ]
+    },
+    {
+      "id": 22,
+      "words": [
+        {
+          "word": "assembly",
+          "ipa": "əˈsembli",
+          "mean": "cuộc họp",
+          "book": 8,
+          "lesson": 22
+        },
+        {
+          "word": "automaker",
+          "ipa": "ˈɔːtəʊmeɪkə(r)",
+          "mean": "nhà sản xuất ô tô",
+          "book": 8,
+          "lesson": 22
+        },
+        {
+          "word": "Karl",
+          "ipa": "kɑrl",
+          "mean": "Karl",
+          "book": 8,
+          "lesson": 22
+        },
+        {
+          "word": "Benz",
+          "ipa": "bɛnz",
+          "mean": "Benz",
+          "book": 8,
+          "lesson": 22
+        },
+        {
+          "word": "costly",
+          "ipa": "ˈkɒstli",
+          "mean": "tốn kém",
+          "book": 8,
+          "lesson": 22
+        },
+        {
+          "word": "inefficient",
+          "ipa": "ˌɪnɪˈfɪʃnt",
+          "mean": "không hiệu quả",
+          "book": 8,
+          "lesson": 22
+        },
+        {
+          "word": "patented",
+          "ipa": "ˈpeɪtəntɪd, ˈpætəntɪd",
+          "mean": "được cấp bằng sáng chế",
+          "book": 8,
+          "lesson": 22
+        },
+        {
+          "word": "Motorwagen",
+          "ipa": "motorwagen*",
+          "mean": "Xe máy",
+          "book": 8,
+          "lesson": 22
+        },
+        {
+          "word": "expertly",
+          "ipa": "ˈekspɜːtli",
+          "mean": "một cách chuyên nghiệp",
+          "book": 8,
+          "lesson": 22
+        },
+        {
+          "word": "crafted",
+          "ipa": "ˈkræftɪd",
+          "mean": "được chế tác",
+          "book": 8,
+          "lesson": 22
+        },
+        {
+          "word": "transformed",
+          "ipa": "trænsˈfɔːmd",
+          "mean": "đã biến đổi",
+          "book": 8,
+          "lesson": 22
+        },
+        {
+          "word": "overstated",
+          "ipa": "ˌəʊvəˈsteɪtɪd",
+          "mean": "phóng đại",
+          "book": 8,
+          "lesson": 22
+        },
+        {
+          "word": "Fords",
+          "ipa": "fɔrdz",
+          "mean": "Fords",
+          "book": 8,
+          "lesson": 22
+        },
+        {
+          "word": "spurred",
+          "ipa": "spərd",
+          "mean": "thúc đẩy",
+          "book": 8,
+          "lesson": 22
+        },
+        {
+          "word": "roadways",
+          "ipa": "ˈroʊdˌweɪz",
+          "mean": "đường bộ",
+          "book": 8,
+          "lesson": 22
+        },
+        {
+          "word": "transported",
+          "ipa": "trænˈspɔːt",
+          "mean": "được vận chuyển",
+          "book": 8,
+          "lesson": 22
+        }
+      ]
+    },
+    {
+      "id": 23,
+      "words": [
+        {
+          "word": "SUPERSTARDOM",
+          "ipa": "superstardom*",
+          "mean": "SIÊU SAO",
+          "book": 8,
+          "lesson": 23
+        },
+        {
+          "word": "Cadillac",
+          "ipa": "ˈkædəˌlæk",
+          "mean": "Cadillac",
+          "book": 8,
+          "lesson": 23
+        },
+        {
+          "word": "automobiles",
+          "ipa": "ˌɔtəmoʊˈbilz",
+          "mean": "ô tô",
+          "book": 8,
+          "lesson": 23
+        },
+        {
+          "word": "guitarists",
+          "ipa": "ˌgɪˈtɑrɪsts",
+          "mean": "nghệ sĩ guitar",
+          "book": 8,
+          "lesson": 23
+        },
+        {
+          "word": "nucleus",
+          "ipa": "ˈnjuːkliəs",
+          "mean": "hạt nhân",
+          "book": 8,
+          "lesson": 23
+        },
+        {
+          "word": "bass",
+          "ipa": "beɪs",
+          "mean": "cá vược",
+          "book": 8,
+          "lesson": 23
+        },
+        {
+          "word": "guitarist",
+          "ipa": "ɡɪˈtɑːrɪst",
+          "mean": "nghệ sĩ guitar",
+          "book": 8,
+          "lesson": 23
+        },
+        {
+          "word": "vocalist",
+          "ipa": "ˈvəʊkəlɪst",
+          "mean": "ca sĩ",
+          "book": 8,
+          "lesson": 23
+        },
+        {
+          "word": "Roth",
+          "ipa": "rɔθ",
+          "mean": "Roth",
+          "book": 8,
+          "lesson": 23
+        },
+        {
+          "word": "inseparable",
+          "ipa": "ɪnˈseprəbl",
+          "mean": "không thể tách rời",
+          "book": 8,
+          "lesson": 23
+        },
+        {
+          "word": "Genesis",
+          "ipa": "ˈdʒenəsɪs",
+          "mean": "Sáng thế ký",
+          "book": 8,
+          "lesson": 23
+        },
+        {
+          "word": "Mammoth",
+          "ipa": "ˈmæməθ",
+          "mean": "Voi ma mút",
+          "book": 8,
+          "lesson": 23
+        },
+        {
+          "word": "renamed",
+          "ipa": "ˌriːˈneɪmd",
+          "mean": "đổi tên",
+          "book": 8,
+          "lesson": 23
+        },
+        {
+          "word": "Gene",
+          "ipa": "dʒiːn",
+          "mean": "Gen",
+          "book": 8,
+          "lesson": 23
+        },
+        {
+          "word": "Simmons",
+          "ipa": "ˈsɪmənz",
+          "mean": "Simmons",
+          "book": 8,
+          "lesson": 23
+        },
+        {
+          "word": "Gazzarri",
+          "ipa": "gazzarri*",
+          "mean": "Gazzarri",
+          "book": 8,
+          "lesson": 23
+        },
+        {
+          "word": "gigs",
+          "ipa": "gɪgz",
+          "mean": "buổi biểu diễn",
+          "book": 8,
+          "lesson": 23
+        },
+        {
+          "word": "titled",
+          "ipa": "ˈtaɪtld",
+          "mean": "có tiêu đề",
+          "book": 8,
+          "lesson": 23
+        },
+        {
+          "word": "debut",
+          "ipa": "ˈdeɪbjuː",
+          "mean": "ra mắt",
+          "book": 8,
+          "lesson": 23
+        },
+        {
+          "word": "peaked",
+          "ipa": "piːkt",
+          "mean": "đạt đỉnh",
+          "book": 8,
+          "lesson": 23
+        }
+      ]
+    },
+    {
+      "id": 24,
+      "words": [
+        {
+          "word": "limelight",
+          "ipa": "ˈlaɪmlaɪt",
+          "mean": "ánh đèn sân khấu",
+          "book": 8,
+          "lesson": 24
+        },
+        {
+          "word": "paced",
+          "ipa": "peɪst",
+          "mean": "nhịp độ",
+          "book": 8,
+          "lesson": 24
+        },
+        {
+          "word": "Barry",
+          "ipa": "ˈbæri",
+          "mean": "Barry",
+          "book": 8,
+          "lesson": 24
+        },
+        {
+          "word": "Bonds",
+          "ipa": "bɑndz",
+          "mean": "Trái phiếu",
+          "book": 8,
+          "lesson": 24
+        },
+        {
+          "word": "sluggers",
+          "ipa": "sˈləgərz",
+          "mean": "những người đánh bóng mạnh",
+          "book": 8,
+          "lesson": 24
+        },
+        {
+          "word": "traded",
+          "ipa": "ˈtreɪdɪd",
+          "mean": "giao dịch",
+          "book": 8,
+          "lesson": 24
+        },
+        {
+          "word": "advancing",
+          "ipa": "ədˈvɑːnsɪŋ",
+          "mean": "tiến triển",
+          "book": 8,
+          "lesson": 24
+        },
+        {
+          "word": "tear",
+          "ipa": "teər",
+          "mean": "xé",
+          "book": 8,
+          "lesson": 24
+        },
+        {
+          "word": "unprecedented",
+          "ipa": "ʌnˈpresɪdentɪd",
+          "mean": "chưa từng có",
+          "book": 8,
+          "lesson": 24
+        },
+        {
+          "word": "astounding",
+          "ipa": "əˈstaʊndɪŋ",
+          "mean": "đáng kinh ngạc",
+          "book": 8,
+          "lesson": 24
+        },
+        {
+          "word": "shattered",
+          "ipa": "ˈʃætərd",
+          "mean": "vỡ tan",
+          "book": 8,
+          "lesson": 24
+        },
+        {
+          "word": "Aaron",
+          "ipa": "ˈeərən",
+          "mean": "A-rôn",
+          "book": 8,
+          "lesson": 24
+        },
+        {
+          "word": "purists",
+          "ipa": "ˈpjʊrɪsts",
+          "mean": "những người theo chủ nghĩa thuần túy",
+          "book": 8,
+          "lesson": 24
+        },
+        {
+          "word": "tainted",
+          "ipa": "ˈteɪntɪd",
+          "mean": "bị ô nhiễm",
+          "book": 8,
+          "lesson": 24
+        },
+        {
+          "word": "implemented",
+          "ipa": "ˈɪmplɪmentɪd",
+          "mean": "đã thực hiện",
+          "book": 8,
+          "lesson": 24
+        },
+        {
+          "word": "indicted",
+          "ipa": "ɪnˈdaɪtɪd",
+          "mean": "bị truy tố",
+          "book": 8,
+          "lesson": 24
+        },
+        {
+          "word": "perjury",
+          "ipa": "ˈpɜːdʒəri",
+          "mean": "sự khai man",
+          "book": 8,
+          "lesson": 24
+        },
+        {
+          "word": "legacy",
+          "ipa": "ˈleɡəsi",
+          "mean": "di sản",
+          "book": 8,
+          "lesson": 24
+        }
+      ]
+    },
+    {
+      "id": 25,
+      "words": [
+        {
+          "word": "precedes",
+          "ipa": "prɪˈsiːdz",
+          "mean": "đi trước",
+          "book": 8,
+          "lesson": 25
+        },
+        {
+          "word": "Greeks",
+          "ipa": "griks",
+          "mean": "Người Hy Lạp",
+          "book": 8,
+          "lesson": 25
+        },
+        {
+          "word": "Marquess",
+          "ipa": "ˈmɑːkwɪs",
+          "mean": "Hầu tước",
+          "book": 8,
+          "lesson": 25
+        },
+        {
+          "word": "Queensberry",
+          "ipa": "kˈwinzˌbɛri",
+          "mean": "Queensberry",
+          "book": 8,
+          "lesson": 25
+        },
+        {
+          "word": "knuckle",
+          "ipa": "ˈnʌkl",
+          "mean": "đốt ngón tay",
+          "book": 8,
+          "lesson": 25
+        },
+        {
+          "word": "boxers",
+          "ipa": "ˈbɑksərz",
+          "mean": "võ sĩ quyền anh",
+          "book": 8,
+          "lesson": 25
+        },
+        {
+          "word": "Tyson",
+          "ipa": "ˈtaɪsən",
+          "mean": "Tyson",
+          "book": 8,
+          "lesson": 25
+        },
+        {
+          "word": "heavyweight",
+          "ipa": "ˈheviweɪt",
+          "mean": "hạng nặng",
+          "book": 8,
+          "lesson": 25
+        },
+        {
+          "word": "knockout",
+          "ipa": "ˈnɒkaʊt",
+          "mean": "loại trực tiếp",
+          "book": 8,
+          "lesson": 25
+        },
+        {
+          "word": "knockouts",
+          "ipa": "ˈnɑˌkaʊts",
+          "mean": "loại trực tiếp",
+          "book": 8,
+          "lesson": 25
+        },
+        {
+          "word": "toll",
+          "ipa": "təʊl",
+          "mean": "phí cầu đường",
+          "book": 8,
+          "lesson": 25
+        },
+        {
+          "word": "virtually",
+          "ipa": "ˈvɜːtʃuəli",
+          "mean": "hầu như",
+          "book": 8,
+          "lesson": 25
+        },
+        {
+          "word": "Barbara",
+          "ipa": "ˈbɑːbrə",
+          "mean": "Barbara",
+          "book": 8,
+          "lesson": 25
+        },
+        {
+          "word": "Givens",
+          "ipa": "ˈgɪvənz",
+          "mean": "Givens",
+          "book": 8,
+          "lesson": 25
+        },
+        {
+          "word": "manic",
+          "ipa": "ˈmænɪk",
+          "mean": "hưng cảm",
+          "book": 8,
+          "lesson": 25
+        },
+        {
+          "word": "depressive",
+          "ipa": "dɪˈpresɪv",
+          "mean": "trầm cảm",
+          "book": 8,
+          "lesson": 25
+        },
+        {
+          "word": "torture",
+          "ipa": "ˈtɔːtʃə(r)",
+          "mean": "tra tấn",
+          "book": 8,
+          "lesson": 25
+        },
+        {
+          "word": "raping",
+          "ipa": "ˈreɪpɪŋ",
+          "mean": "cưỡng hiếp",
+          "book": 8,
+          "lesson": 25
+        },
+        {
+          "word": "comebacks",
+          "ipa": "ˈkəmˌbæks",
+          "mean": "sự trở lại",
+          "book": 8,
+          "lesson": 25
+        }
+      ]
+    },
+    {
+      "id": 26,
+      "words": [
+        {
+          "word": "haircut",
+          "ipa": "ˈhɛrˌkət",
+          "mean": "cắt tóc",
+          "book": 8,
+          "lesson": 26
+        },
+        {
+          "word": "wavy",
+          "ipa": "ˈweɪvi",
+          "mean": "gợn sóng",
+          "book": 8,
+          "lesson": 26
+        },
+        {
+          "word": "intention",
+          "ipa": "ɪnˈtenʃn",
+          "mean": "chủ đích",
+          "book": 8,
+          "lesson": 26
+        },
+        {
+          "word": "unappealing",
+          "ipa": "ˌʌnəˈpiːlɪŋ",
+          "mean": "không hấp dẫn",
+          "book": 8,
+          "lesson": 26
+        },
+        {
+          "word": "desired",
+          "ipa": "dɪˈzaɪərd",
+          "mean": "mong muốn",
+          "book": 8,
+          "lesson": 26
+        },
+        {
+          "word": "flattered",
+          "ipa": "ˈflætəd",
+          "mean": "được tâng bốc",
+          "book": 8,
+          "lesson": 26
+        },
+        {
+          "word": "giggled",
+          "ipa": "ˈɡɪɡld",
+          "mean": "cười khúc khích",
+          "book": 8,
+          "lesson": 26
+        },
+        {
+          "word": "sooner",
+          "ipa": "ˈsunər",
+          "mean": "sớm hơn",
+          "book": 8,
+          "lesson": 26
+        }
+      ]
+    },
+    {
+      "id": 27,
+      "words": [
+        {
+          "word": "Karla",
+          "ipa": "ˈkɑrlə",
+          "mean": "Karla",
+          "book": 8,
+          "lesson": 27
+        },
+        {
+          "word": "Gavin",
+          "ipa": "ˈgævɪn",
+          "mean": "Gavin",
+          "book": 8,
+          "lesson": 27
+        },
+        {
+          "word": "participant",
+          "ipa": "pɑːˈtɪsɪpənt",
+          "mean": "người tham gia",
+          "book": 8,
+          "lesson": 27
+        },
+        {
+          "word": "chaperone",
+          "ipa": "ˈʃæpərəʊn",
+          "mean": "người giám hộ",
+          "book": 8,
+          "lesson": 27
+        },
+        {
+          "word": "fingerprinted",
+          "ipa": "ˈfɪŋɡəprɪntɪd",
+          "mean": "có dấu vân tay",
+          "book": 8,
+          "lesson": 27
+        },
+        {
+          "word": "fingerprints",
+          "ipa": "ˈfɪŋɡəprɪnts",
+          "mean": "dấu vân tay",
+          "book": 8,
+          "lesson": 27
+        },
+        {
+          "word": "convictions",
+          "ipa": "kənˈvɪkʃənz",
+          "mean": "những bản án",
+          "book": 8,
+          "lesson": 27
+        },
+        {
+          "word": "fingerprinting",
+          "ipa": "ˈfɪŋɡəprɪntɪŋ",
+          "mean": "dấu vân tay",
+          "book": 8,
+          "lesson": 27
+        },
+        {
+          "word": "tuberculosis",
+          "ipa": "tjuːˌbɜːkjuˈləʊsɪs",
+          "mean": "bệnh lao",
+          "book": 8,
+          "lesson": 27
+        }
+      ]
+    },
+    {
+      "id": 28,
+      "words": [
+        {
+          "word": "Sagan",
+          "ipa": "ˈseɪgən",
+          "mean": "Sagan",
+          "book": 8,
+          "lesson": 28
+        },
+        {
+          "word": "cosmologist",
+          "ipa": "kɒzˈmɒlədʒɪst",
+          "mean": "nhà vũ trụ học",
+          "book": 8,
+          "lesson": 28
+        },
+        {
+          "word": "Cosmos",
+          "ipa": "ˈkɒzmɒs",
+          "mean": "Vũ trụ",
+          "book": 8,
+          "lesson": 28
+        },
+        {
+          "word": "enlightened",
+          "ipa": "ɪnˈlaɪtnd",
+          "mean": "giác ngộ",
+          "book": 8,
+          "lesson": 28
+        },
+        {
+          "word": "creationist",
+          "ipa": "creationist*",
+          "mean": "người theo thuyết sáng tạo",
+          "book": 8,
+          "lesson": 28
+        },
+        {
+          "word": "alien",
+          "ipa": "ˈeɪliən",
+          "mean": "người ngoài hành tinh",
+          "book": 8,
+          "lesson": 28
+        },
+        {
+          "word": "Jodie",
+          "ipa": "ˈdʒəʊdi",
+          "mean": "Jodie",
+          "book": 8,
+          "lesson": 28
+        },
+        {
+          "word": "recreated",
+          "ipa": "ˈrɛkriˌeɪtɪd",
+          "mean": "được tái tạo",
+          "book": 8,
+          "lesson": 28
+        },
+        {
+          "word": "spacecraft",
+          "ipa": "ˈspeɪskrɑːft",
+          "mean": "tàu vũ trụ",
+          "book": 8,
+          "lesson": 28
+        },
+        {
+          "word": "infinite",
+          "ipa": "ˈɪnfɪnət",
+          "mean": "vô hạn",
+          "book": 8,
+          "lesson": 28
+        },
+        {
+          "word": "complications",
+          "ipa": "ˌkɑmpləˈkeɪʃənz",
+          "mean": "biến chứng",
+          "book": 8,
+          "lesson": 28
+        },
+        {
+          "word": "pneumonia",
+          "ipa": "njuːˈməʊniə",
+          "mean": "viêm phổi",
+          "book": 8,
+          "lesson": 28
+        }
+      ]
+    },
+    {
+      "id": 29,
+      "words": [
+        {
+          "word": "rowdy",
+          "ipa": "ˈraʊdi",
+          "mean": "ồn ào",
+          "book": 8,
+          "lesson": 29
+        },
+        {
+          "word": "invading",
+          "ipa": "ɪnˈveɪdɪŋ",
+          "mean": "xâm lược",
+          "book": 8,
+          "lesson": 29
+        },
+        {
+          "word": "lifted",
+          "ipa": "ˈlɪftɪd",
+          "mean": "nâng lên",
+          "book": 8,
+          "lesson": 29
+        }
+      ]
+    },
+    {
+      "id": 30,
+      "words": [
+        {
+          "word": "pastor",
+          "ipa": "ˈpɑːstə(r)",
+          "mean": "mục sư",
+          "book": 8,
+          "lesson": 30
+        },
+        {
+          "word": "reformer",
+          "ipa": "rɪˈfɔːmə(r)",
+          "mean": "nhà cải cách",
+          "book": 8,
+          "lesson": 30
+        },
+        {
+          "word": "refusal",
+          "ipa": "rɪˈfjuːzl",
+          "mean": "sự từ chối",
+          "book": 8,
+          "lesson": 30
+        },
+        {
+          "word": "activism",
+          "ipa": "ˈæktɪvɪzəm",
+          "mean": "chủ nghĩa hoạt động",
+          "book": 8,
+          "lesson": 30
+        },
+        {
+          "word": "Baptist",
+          "ipa": "ˈbæptɪst",
+          "mean": "Báp-tít",
+          "book": 8,
+          "lesson": 30
+        },
+        {
+          "word": "Dexter",
+          "ipa": "ˈdɛkstər",
+          "mean": "Dexter",
+          "book": 8,
+          "lesson": 30
+        },
+        {
+          "word": "thy",
+          "ipa": "ðaɪ",
+          "mean": "của ngươi",
+          "book": 8,
+          "lesson": 30
+        },
+        {
+          "word": "oratory",
+          "ipa": "ˈɒrətri",
+          "mean": "hùng biện",
+          "book": 8,
+          "lesson": 30
+        },
+        {
+          "word": "judged",
+          "ipa": "ʤəʤd",
+          "mean": "bị phán xét",
+          "book": 8,
+          "lesson": 30
+        },
+        {
+          "word": "combating",
+          "ipa": "kəmˈbætɪŋ",
+          "mean": "chống lại",
+          "book": 8,
+          "lesson": 30
+        },
+        {
+          "word": "inequality",
+          "ipa": "ˌɪnɪˈkwɒləti",
+          "mean": "bất bình đẳng",
+          "book": 8,
+          "lesson": 30
+        },
+        {
+          "word": "Memphis",
+          "ipa": "ˈmemfɪs",
+          "mean": "Memphis",
+          "book": 8,
+          "lesson": 30
+        }
+      ]
+    },
+    {
+      "id": 31,
+      "words": [
+        {
+          "word": "closes",
+          "ipa": "ˈkloʊzɪz",
+          "mean": "đóng cửa",
+          "book": 8,
+          "lesson": 31
+        },
+        {
+          "word": "overjoyed",
+          "ipa": "ˌəʊvəˈdʒɔɪd",
+          "mean": "vui mừng khôn xiết",
+          "book": 8,
+          "lesson": 31
+        }
+      ]
+    },
+    {
+      "id": 32,
+      "words": [
+        {
+          "word": "Caroline",
+          "ipa": "ˈkɛrəˌlaɪn",
+          "mean": "Caroline",
+          "book": 8,
+          "lesson": 32
+        },
+        {
+          "word": "Alfred",
+          "ipa": "ˈælfrɪd",
+          "mean": "Alfred",
+          "book": 8,
+          "lesson": 32
+        },
+        {
+          "word": "Jeannie",
+          "ipa": "ˈʤini",
+          "mean": "Jeannie",
+          "book": 8,
+          "lesson": 32
+        },
+        {
+          "word": "Starlight",
+          "ipa": "ˈstɑːlaɪt",
+          "mean": "Ánh sao",
+          "book": 8,
+          "lesson": 32
+        },
+        {
+          "word": "ins",
+          "ipa": "ˈaɪˈɛˈnɛs",
+          "mean": "trong",
+          "book": 8,
+          "lesson": 32
+        },
+        {
+          "word": "Forrest",
+          "ipa": "ˈfɔrəst",
+          "mean": "Rừng",
+          "book": 8,
+          "lesson": 32
+        },
+        {
+          "word": "Gump",
+          "ipa": "gəmp",
+          "mean": "Gump",
+          "book": 8,
+          "lesson": 32
+        },
+        {
+          "word": "closing",
+          "ipa": "ˈkləʊzɪŋ",
+          "mean": "đóng cửa",
+          "book": 8,
+          "lesson": 32
+        },
+        {
+          "word": "multiplex",
+          "ipa": "ˈmʌltɪpleks",
+          "mean": "nhiều rạp chiếu phim",
+          "book": 8,
+          "lesson": 32
+        },
+        {
+          "word": "Vineland",
+          "ipa": "ˈvaɪnlənd",
+          "mean": "Vineland",
+          "book": 8,
+          "lesson": 32
+        }
+      ]
+    },
+    {
+      "id": 33,
+      "words": [
+        {
+          "word": "entertainer",
+          "ipa": "ˌentəˈteɪnə(r)",
+          "mean": "nghệ sĩ giải trí",
+          "book": 8,
+          "lesson": 33
+        },
+        {
+          "word": "Gary",
+          "ipa": "ˈɡæri",
+          "mean": "Gary",
+          "book": 8,
+          "lesson": 33
+        },
+        {
+          "word": "songwriter",
+          "ipa": "ˈsɒŋraɪtə(r)",
+          "mean": "nhạc sĩ",
+          "book": 8,
+          "lesson": 33
+        },
+        {
+          "word": "Thriller",
+          "ipa": "ˈθrɪlə(r)",
+          "mean": "Giật gân",
+          "book": 8,
+          "lesson": 33
+        },
+        {
+          "word": "ventures",
+          "ipa": "ˈvɛnʧərz",
+          "mean": "các dự án",
+          "book": 8,
+          "lesson": 33
+        },
+        {
+          "word": "improper",
+          "ipa": "ɪmˈprɒpə(r)",
+          "mean": "không đúng cách",
+          "book": 8,
+          "lesson": 33
+        },
+        {
+          "word": "accusations",
+          "ipa": "ˌækjəˈzeɪʃənz",
+          "mean": "những lời buộc tội",
+          "book": 8,
+          "lesson": 33
+        },
+        {
+          "word": "haunt",
+          "ipa": "hɔːnt",
+          "mean": "ám ảnh",
+          "book": 8,
+          "lesson": 33
+        },
+        {
+          "word": "indelible",
+          "ipa": "ɪnˈdeləbl",
+          "mean": "không thể xóa nhòa",
+          "book": 8,
+          "lesson": 33
+        },
+        {
+          "word": "rumored",
+          "ipa": "ˈrumərd",
+          "mean": "tin đồn",
+          "book": 8,
+          "lesson": 33
+        },
+        {
+          "word": "altered",
+          "ipa": "ˈɔːltəd",
+          "mean": "đã thay đổi",
+          "book": 8,
+          "lesson": 33
+        },
+        {
+          "word": "wrongful",
+          "ipa": "ˈrɒŋfl",
+          "mean": "sai trái",
+          "book": 8,
+          "lesson": 33
+        },
+        {
+          "word": "lawsuit",
+          "ipa": "ˈlɔːsuːt",
+          "mean": "vụ kiện",
+          "book": 8,
+          "lesson": 33
+        },
+        {
+          "word": "subsequently",
+          "ipa": "ˈsʌbsɪkwəntli",
+          "mean": "sau đó",
+          "book": 8,
+          "lesson": 33
+        }
+      ]
+    },
+    {
+      "id": 34,
+      "words": [
+        {
+          "word": "unanimous",
+          "ipa": "juˈnænɪməs",
+          "mean": "nhất trí",
+          "book": 8,
+          "lesson": 34
+        },
+        {
+          "word": "unanimously",
+          "ipa": "juˈnænɪməsli",
+          "mean": "nhất trí",
+          "book": 8,
+          "lesson": 34
+        },
+        {
+          "word": "garner",
+          "ipa": "ˈɡɑːnə(r)",
+          "mean": "thu thập",
+          "book": 8,
+          "lesson": 34
+        },
+        {
+          "word": "electoral",
+          "ipa": "ɪˈlektərəl",
+          "mean": "bầu cử",
+          "book": 8,
+          "lesson": 34
+        },
+        {
+          "word": "Continental",
+          "ipa": "ˌkɒntɪˈnentl",
+          "mean": "Lục địa",
+          "book": 8,
+          "lesson": 34
+        },
+        {
+          "word": "epic",
+          "ipa": "ˈepɪk",
+          "mean": "sử thi",
+          "book": 8,
+          "lesson": 34
+        },
+        {
+          "word": "Delaware",
+          "ipa": "ˈdeləweə(r)",
+          "mean": "Delaware",
+          "book": 8,
+          "lesson": 34
+        },
+        {
+          "word": "warfare",
+          "ipa": "ˈwɔːfeə(r)",
+          "mean": "chiến tranh",
+          "book": 8,
+          "lesson": 34
+        },
+        {
+          "word": "disorganized",
+          "ipa": "disˈoːɡənaizd",
+          "mean": "không có tổ chức",
+          "book": 8,
+          "lesson": 34
+        },
+        {
+          "word": "Forge",
+          "ipa": "fɔːdʒ",
+          "mean": "Rèn",
+          "book": 8,
+          "lesson": 34
+        },
+        {
+          "word": "demoralized",
+          "ipa": "dɪˈmɒrəlaɪzd",
+          "mean": "mất tinh thần",
+          "book": 8,
+          "lesson": 34
+        },
+        {
+          "word": "beaten",
+          "ipa": "bi:tn",
+          "mean": "bị đánh đập",
+          "book": 8,
+          "lesson": 34
+        },
+        {
+          "word": "preparedness",
+          "ipa": "prɪˈpeərɪdnəs",
+          "mean": "sự chuẩn bị",
+          "book": 8,
+          "lesson": 34
+        }
+      ]
+    },
+    {
+      "id": 35,
+      "words": [
+        {
+          "word": "Katherine",
+          "ipa": "ˈkæθrɪn",
+          "mean": "Katherine",
+          "book": 8,
+          "lesson": 35
+        },
+        {
+          "word": "updates",
+          "ipa": "ˈʌpdeɪts",
+          "mean": "cập nhật",
+          "book": 8,
+          "lesson": 35
+        },
+        {
+          "word": "keyboard",
+          "ipa": "ˈkiːbɔːd",
+          "mean": "bàn phím",
+          "book": 8,
+          "lesson": 35
+        },
+        {
+          "word": "button",
+          "ipa": "ˈbʌtn",
+          "mean": "cái nút",
+          "book": 8,
+          "lesson": 35
+        },
+        {
+          "word": "zones",
+          "ipa": "zoʊnz",
+          "mean": "các vùng",
+          "book": 8,
+          "lesson": 35
+        },
+        {
+          "word": "comparing",
+          "ipa": "kəmˈpeərɪŋ",
+          "mean": "so sánh",
+          "book": 8,
+          "lesson": 35
+        },
+        {
+          "word": "cuter",
+          "ipa": "ˈkjutər",
+          "mean": "dễ thương hơn",
+          "book": 8,
+          "lesson": 35
+        }
+      ]
+    },
+    {
+      "id": 36,
+      "words": [
+        {
+          "word": "longed",
+          "ipa": "lɔŋd",
+          "mean": "mong mỏi",
+          "book": 8,
+          "lesson": 36
+        },
+        {
+          "word": "fulfill",
+          "ipa": "fʊlˈfɪl",
+          "mean": "thực hiện",
+          "book": 8,
+          "lesson": 36
+        },
+        {
+          "word": "foreigner",
+          "ipa": "ˈfɒrənə(r)",
+          "mean": "người nước ngoài",
+          "book": 8,
+          "lesson": 36
+        }
+      ]
+    },
+    {
+      "id": 37,
+      "words": [
+        {
+          "word": "Allan",
+          "ipa": "ˈælən",
+          "mean": "Allan",
+          "book": 8,
+          "lesson": 37
+        },
+        {
+          "word": "Spielberg",
+          "ipa": "ˈspilbərg",
+          "mean": "Spielberg",
+          "book": 8,
+          "lesson": 37
+        },
+        {
+          "word": "blockbusters",
+          "ipa": "ˈblɑkˌbəstərz",
+          "mean": "phim bom tấn",
+          "book": 8,
+          "lesson": 37
+        },
+        {
+          "word": "Terrestrial",
+          "ipa": "təˈrestriəl",
+          "mean": "Trên cạn",
+          "book": 8,
+          "lesson": 37
+        },
+        {
+          "word": "Jurassic",
+          "ipa": "dʒʊˈræsɪk",
+          "mean": "kỷ Jura",
+          "book": 8,
+          "lesson": 37
+        },
+        {
+          "word": "Encounters",
+          "ipa": "ɪnˈkaʊntəz",
+          "mean": "Những cuộc gặp gỡ",
+          "book": 8,
+          "lesson": 37
+        },
+        {
+          "word": "Schindler",
+          "ipa": "ˈʃɪndlər",
+          "mean": "Schindler",
+          "book": 8,
+          "lesson": 37
+        },
+        {
+          "word": "Ryan",
+          "ipa": "ˈraɪən",
+          "mean": "Ryan",
+          "book": 8,
+          "lesson": 37
+        },
+        {
+          "word": "Cincinnati",
+          "ipa": "ˌsɪnsɪˈnæti",
+          "mean": "Cincinnati",
+          "book": 8,
+          "lesson": 37
+        },
+        {
+          "word": "filmmaking",
+          "ipa": "ˈfɪlˌmeɪkɪŋ",
+          "mean": "làm phim",
+          "book": 8,
+          "lesson": 37
+        },
+        {
+          "word": "teen",
+          "ipa": "tiːn",
+          "mean": "thiếu niên",
+          "book": 8,
+          "lesson": 37
+        },
+        {
+          "word": "badge",
+          "ipa": "bædʒ",
+          "mean": "huy hiệu",
+          "book": 8,
+          "lesson": 37
+        },
+        {
+          "word": "Scouts",
+          "ipa": "skaʊts",
+          "mean": "Hướng đạo sinh",
+          "book": 8,
+          "lesson": 37
+        },
+        {
+          "word": "USC",
+          "ipa": "usc*",
+          "mean": "Đại học Nam California",
+          "book": 8,
+          "lesson": 37
+        },
+        {
+          "word": "scripts",
+          "ipa": "skrɪpts",
+          "mean": "kịch bản",
+          "book": 8,
+          "lesson": 37
+        },
+        {
+          "word": "Marcus",
+          "ipa": "ˈmɑrkəs",
+          "mean": "Marcus",
+          "book": 8,
+          "lesson": 37
+        },
+        {
+          "word": "Welby",
+          "ipa": "ˈwɛlbi",
+          "mean": "Welby",
+          "book": 8,
+          "lesson": 37
+        },
+        {
+          "word": "Columbo",
+          "ipa": "ˌkoʊˈləmboʊ",
+          "mean": "Columbus",
+          "book": 8,
+          "lesson": 37
+        },
+        {
+          "word": "breakthrough",
+          "ipa": "ˈbreɪkθruː",
+          "mean": "đột phá",
+          "book": 8,
+          "lesson": 37
+        },
+        {
+          "word": "Jaws",
+          "ipa": "dʒɔːz",
+          "mean": "Hàm",
+          "book": 8,
+          "lesson": 37
+        },
+        {
+          "word": "grossing",
+          "ipa": "ˈgroʊsɪŋ",
+          "mean": "tổng doanh thu",
+          "book": 8,
+          "lesson": 37
+        },
+        {
+          "word": "blockbuster",
+          "ipa": "ˈblɒkbʌstə(r)",
+          "mean": "phim bom tấn",
+          "book": 8,
+          "lesson": 37
+        },
+        {
+          "word": "lore",
+          "ipa": "lɔː(r)",
+          "mean": "truyền thuyết",
+          "book": 8,
+          "lesson": 37
+        },
+        {
+          "word": "producer",
+          "ipa": "prəˈdjuːsə(r)",
+          "mean": "nhà sản xuất",
+          "book": 8,
+          "lesson": 37
+        },
+        {
+          "word": "Forbes",
+          "ipa": "fɔːbz",
+          "mean": "Forbes",
+          "book": 8,
+          "lesson": 37
+        }
+      ]
+    },
+    {
+      "id": 38,
+      "words": [
+        {
+          "word": "Muhammad",
+          "ipa": "məˈhæmɪd",
+          "mean": "Muhammad",
+          "book": 8,
+          "lesson": 38
+        },
+        {
+          "word": "Ali",
+          "ipa": "ˈɑli",
+          "mean": "Ali",
+          "book": 8,
+          "lesson": 38
+        },
+        {
+          "word": "Louisville",
+          "ipa": "ˈluːivɪl",
+          "mean": "Louisville",
+          "book": 8,
+          "lesson": 38
+        },
+        {
+          "word": "Cassius",
+          "ipa": "cassius*",
+          "mean": "Cassius",
+          "book": 8,
+          "lesson": 38
+        },
+        {
+          "word": "Marcellus",
+          "ipa": "mɑrˈsɛləs",
+          "mean": "Marcellus",
+          "book": 8,
+          "lesson": 38
+        },
+        {
+          "word": "Clay",
+          "ipa": "kleɪ",
+          "mean": "Đất sét",
+          "book": 8,
+          "lesson": 38
+        },
+        {
+          "word": "adopting",
+          "ipa": "əˈdɒptɪŋ",
+          "mean": "nhận nuôi",
+          "book": 8,
+          "lesson": 38
+        },
+        {
+          "word": "defied",
+          "ipa": "dɪˈfaɪd",
+          "mean": "thách thức",
+          "book": 8,
+          "lesson": 38
+        },
+        {
+          "word": "elicited",
+          "ipa": "iˈlɪsɪtɪd",
+          "mean": "được gợi ra",
+          "book": 8,
+          "lesson": 38
+        },
+        {
+          "word": "jailed",
+          "ipa": "ʤeɪld",
+          "mean": "bị bỏ tù",
+          "book": 8,
+          "lesson": 38
+        },
+        {
+          "word": "profession",
+          "ipa": "prəˈfeʃn",
+          "mean": "nghề nghiệp",
+          "book": 8,
+          "lesson": 38
+        },
+        {
+          "word": "classification",
+          "ipa": "ˌklæsɪfɪˈkeɪʃn",
+          "mean": "phân loại",
+          "book": 8,
+          "lesson": 38
+        },
+        {
+          "word": "enlist",
+          "ipa": "ɪnˈlɪst",
+          "mean": "nhập ngũ",
+          "book": 8,
+          "lesson": 38
+        },
+        {
+          "word": "ablest",
+          "ipa": "ˈeɪbəlst",
+          "mean": "có khả năng nhất",
+          "book": 8,
+          "lesson": 38
+        },
+        {
+          "word": "overturning",
+          "ipa": "ˌəʊvəˈtɜːnɪŋ",
+          "mean": "lật đổ",
+          "book": 8,
+          "lesson": 38
+        },
+        {
+          "word": "conviction",
+          "ipa": "kənˈvɪkʃn",
+          "mean": "sự kết án",
+          "book": 8,
+          "lesson": 38
+        },
+        {
+          "word": "evasion",
+          "ipa": "ɪˈveɪʒn",
+          "mean": "trốn tránh",
+          "book": 8,
+          "lesson": 38
+        },
+        {
+          "word": "stance",
+          "ipa": "stæns",
+          "mean": "lập trường",
+          "book": 8,
+          "lesson": 38
+        },
+        {
+          "word": "disliked",
+          "ipa": "dɪsˈlaɪkt",
+          "mean": "không thích",
+          "book": 8,
+          "lesson": 38
+        },
+        {
+          "word": "Sportsman",
+          "ipa": "ˈspɔːtsmən",
+          "mean": "Vận động viên",
+          "book": 8,
+          "lesson": 38
+        },
+        {
+          "word": "Illustrated",
+          "ipa": "ˈɪləˌstreɪtɪd",
+          "mean": "Minh họa",
+          "book": 8,
+          "lesson": 38
+        },
+        {
+          "word": "BBC",
+          "ipa": "ˌbiː biː ˈsiː",
+          "mean": "BBC",
+          "book": 8,
+          "lesson": 38
+        }
+      ]
+    },
+    {
+      "id": 39,
+      "words": [
+        {
+          "word": "nightly",
+          "ipa": "ˈnaɪtli",
+          "mean": "hàng đêm",
+          "book": 8,
+          "lesson": 39
+        },
+        {
+          "word": "wagging",
+          "ipa": "ˈwæɡɪŋ",
+          "mean": "vẫy đuôi",
+          "book": 8,
+          "lesson": 39
+        },
+        {
+          "word": "salivating",
+          "ipa": "ˈsælɪveɪtɪŋ",
+          "mean": "chảy nước miếng",
+          "book": 8,
+          "lesson": 39
+        }
+      ]
+    },
+    {
+      "id": 40,
+      "words": [
+        {
+          "word": "evolutionary",
+          "ipa": "ˌiːvəˈluːʃənri",
+          "mean": "tiến hóa",
+          "book": 8,
+          "lesson": 40
+        },
+        {
+          "word": "atheists",
+          "ipa": "ˈeɪθiəsts",
+          "mean": "những người vô thần",
+          "book": 8,
+          "lesson": 40
+        },
+        {
+          "word": "smacks",
+          "ipa": "smæks",
+          "mean": "tát",
+          "book": 8,
+          "lesson": 40
+        },
+        {
+          "word": "creationism",
+          "ipa": "kriˈeɪʃənɪzəm",
+          "mean": "thuyết sáng tạo",
+          "book": 8,
+          "lesson": 40
+        },
+        {
+          "word": "adapted",
+          "ipa": "əˈdæptɪd",
+          "mean": "đã được điều chỉnh",
+          "book": 8,
+          "lesson": 40
+        },
+        {
+          "word": "ancestor",
+          "ipa": "ˈænsestə(r)",
+          "mean": "tổ tiên",
+          "book": 8,
+          "lesson": 40
+        },
+        {
+          "word": "suspicion",
+          "ipa": "səˈspɪʃn",
+          "mean": "sự nghi ngờ",
+          "book": 8,
+          "lesson": 40
+        },
+        {
+          "word": "HMS",
+          "ipa": "ˌeɪtʃ em ˈes",
+          "mean": "HMS",
+          "book": 8,
+          "lesson": 40
+        },
+        {
+          "word": "vessel",
+          "ipa": "ˈvesl",
+          "mean": "tàu",
+          "book": 8,
+          "lesson": 40
+        },
+        {
+          "word": "isolated",
+          "ipa": "ˈaɪsəleɪtɪd",
+          "mean": "bị cô lập",
+          "book": 8,
+          "lesson": 40
+        },
+        {
+          "word": "insight",
+          "ipa": "ˈɪnsaɪt",
+          "mean": "cái nhìn thấu suốt",
+          "book": 8,
+          "lesson": 40
+        },
+        {
+          "word": "similarities",
+          "ipa": "ˌsɪməˈlɛrətiz",
+          "mean": "điểm tương đồng",
+          "book": 8,
+          "lesson": 40
+        },
+        {
+          "word": "slight",
+          "ipa": "slaɪt",
+          "mean": "nhẹ",
+          "book": 8,
+          "lesson": 40
+        },
+        {
+          "word": "caricature",
+          "ipa": "ˈkærɪkətʃʊə(r)",
+          "mean": "biếm họa",
+          "book": 8,
+          "lesson": 40
+        },
+        {
+          "word": "depicting",
+          "ipa": "dɪˈpɪktɪŋ",
+          "mean": "miêu tả",
+          "book": 8,
+          "lesson": 40
+        },
+        {
+          "word": "ape",
+          "ipa": "eip",
+          "mean": "con vượn",
+          "book": 8,
+          "lesson": 40
+        },
+        {
+          "word": "believers",
+          "ipa": "bɪˈlivərz",
+          "mean": "những người tin tưởng",
+          "book": 8,
+          "lesson": 40
+        },
+        {
+          "word": "Darwinism",
+          "ipa": "ˈdɑːwɪnɪzəm",
+          "mean": "Chủ nghĩa Darwin",
+          "book": 8,
+          "lesson": 40
+        },
+        {
+          "word": "rooted",
+          "ipa": "ˈruːtɪd",
+          "mean": "đã bén rễ",
+          "book": 8,
+          "lesson": 40
+        },
+        {
+          "word": "dogma",
+          "ipa": "ˈdɒɡmə",
+          "mean": "giáo điều",
+          "book": 8,
+          "lesson": 40
+        }
+      ]
+    },
+    {
+      "id": 41,
+      "words": [
+        {
+          "word": "dermatologist",
+          "ipa": "ˌdɜːməˈtɒlədʒɪst",
+          "mean": "bác sĩ da liễu",
+          "book": 8,
+          "lesson": 41
+        },
+        {
+          "word": "prescribe",
+          "ipa": "prɪˈskraɪb",
+          "mean": "kê đơn",
+          "book": 8,
+          "lesson": 41
+        },
+        {
+          "word": "referral",
+          "ipa": "rɪˈfɜːrəl",
+          "mean": "giới thiệu",
+          "book": 8,
+          "lesson": 41
+        },
+        {
+          "word": "allergy",
+          "ipa": "ˈælədʒi",
+          "mean": "dị ứng",
+          "book": 8,
+          "lesson": 41
+        },
+        {
+          "word": "allergic",
+          "ipa": "əˈlɜːdʒɪk",
+          "mean": "dị ứng",
+          "book": 8,
+          "lesson": 41
+        },
+        {
+          "word": "waistline",
+          "ipa": "ˈweɪstlaɪn",
+          "mean": "vòng eo",
+          "book": 8,
+          "lesson": 41
+        }
+      ]
+    },
+    {
+      "id": 42,
+      "words": [
+        {
+          "word": "respectful",
+          "ipa": "rɪˈspektfl",
+          "mean": "tôn trọng",
+          "book": 8,
+          "lesson": 42
+        },
+        {
+          "word": "bothering",
+          "ipa": "ˈbɒðərɪŋ",
+          "mean": "làm phiền",
+          "book": 8,
+          "lesson": 42
+        },
+        {
+          "word": "hurting",
+          "ipa": "ˈhɜːtɪŋ",
+          "mean": "đau đớn",
+          "book": 8,
+          "lesson": 42
+        }
+      ]
+    },
+    {
+      "id": 43,
+      "words": [
+        {
+          "word": "representative",
+          "ipa": "ˌreprɪˈzentətɪv",
+          "mean": "tiêu biểu",
+          "book": 8,
+          "lesson": 43
+        },
+        {
+          "word": "converter",
+          "ipa": "kənˈvɜːtə(r)",
+          "mean": "bộ chuyển đổi",
+          "book": 8,
+          "lesson": 43
+        },
+        {
+          "word": "digital",
+          "ipa": "ˈdɪdʒɪtl",
+          "mean": "điện tử",
+          "book": 8,
+          "lesson": 43
+        }
+      ]
+    },
+    {
+      "id": 44,
+      "words": [
+        {
+          "word": "Tony",
+          "ipa": "ˈtəʊni",
+          "mean": "Tony",
+          "book": 8,
+          "lesson": 44
+        },
+        {
+          "word": "assignment",
+          "ipa": "əˈsaɪnmənt",
+          "mean": "phân công",
+          "book": 8,
+          "lesson": 44
+        },
+        {
+          "word": "complimented",
+          "ipa": "ˈkɑmpləˌmɛntɪd",
+          "mean": "được khen ngợi",
+          "book": 8,
+          "lesson": 44
+        },
+        {
+          "word": "acknowledged",
+          "ipa": "əkˈnɒlɪdʒd",
+          "mean": "đã được công nhận",
+          "book": 8,
+          "lesson": 44
+        },
+        {
+          "word": "terrified",
+          "ipa": "ˈterɪfaɪd",
+          "mean": "kinh hãi",
+          "book": 8,
+          "lesson": 44
+        },
+        {
+          "word": "spaceships",
+          "ipa": "ˈspeɪsˌʃɪps",
+          "mean": "tàu vũ trụ",
+          "book": 8,
+          "lesson": 44
+        },
+        {
+          "word": "galaxies",
+          "ipa": "ˈgæləksiz",
+          "mean": "các thiên hà",
+          "book": 8,
+          "lesson": 44
+        },
+        {
+          "word": "grief",
+          "ipa": "ɡriːf",
+          "mean": "đau buồn",
+          "book": 8,
+          "lesson": 44
+        }
+      ]
+    },
+    {
+      "id": 45,
+      "words": [
+        {
+          "word": "Luella",
+          "ipa": "ˌluˈɛlə",
+          "mean": "Luella",
+          "book": 8,
+          "lesson": 45
+        },
+        {
+          "word": "stakes",
+          "ipa": "steɪks",
+          "mean": "cổ phần",
+          "book": 8,
+          "lesson": 45
+        },
+        {
+          "word": "sessions",
+          "ipa": "ˈsɛʃənz",
+          "mean": "các phiên họp",
+          "book": 8,
+          "lesson": 45
+        },
+        {
+          "word": "quizzes",
+          "ipa": "kˈwɪzɪz",
+          "mean": "các câu đố",
+          "book": 8,
+          "lesson": 45
+        },
+        {
+          "word": "cumulative",
+          "ipa": "ˈkjuːmjələtɪv",
+          "mean": "tích lũy",
+          "book": 8,
+          "lesson": 45
+        },
+        {
+          "word": "buckle",
+          "ipa": "bʌkl",
+          "mean": "khóa thắt lưng",
+          "book": 8,
+          "lesson": 45
+        },
+        {
+          "word": "breezed",
+          "ipa": "brizd",
+          "mean": "lướt nhẹ",
+          "book": 8,
+          "lesson": 45
+        }
+      ]
+    },
+    {
+      "id": 46,
+      "words": [
+        {
+          "word": "crammed",
+          "ipa": "kræmd",
+          "mean": "nhồi nhét",
+          "book": 8,
+          "lesson": 46
+        }
+      ]
+    },
+    {
+      "id": 47,
+      "words": [
+        {
+          "word": "Legos",
+          "ipa": "legos*",
+          "mean": "Lego",
+          "book": 8,
+          "lesson": 47
+        },
+        {
+          "word": "absent",
+          "ipa": "ˈæbsənt",
+          "mean": "vắng mặt",
+          "book": 8,
+          "lesson": 47
+        },
+        {
+          "word": "mindedly",
+          "ipa": "ˈmaɪndɪdli",
+          "mean": "có ý thức",
+          "book": 8,
+          "lesson": 47
+        },
+        {
+          "word": "Tada",
+          "ipa": "ˈtɑdə",
+          "mean": "Tada",
+          "book": 8,
+          "lesson": 47
+        },
+        {
+          "word": "Lego",
+          "ipa": "ˈleɡ.əʊ",
+          "mean": "Lego",
+          "book": 8,
+          "lesson": 47
+        },
+        {
+          "word": "sock",
+          "ipa": "sɒk",
+          "mean": "tất",
+          "book": 8,
+          "lesson": 47
+        },
+        {
+          "word": "negligent",
+          "ipa": "ˈneɡlɪdʒənt",
+          "mean": "không lo",
+          "book": 8,
+          "lesson": 47
+        },
+        {
+          "word": "triage",
+          "ipa": "ˈtriːɑːʒ",
+          "mean": "phân loại",
+          "book": 8,
+          "lesson": 47
+        },
+        {
+          "word": "nostril",
+          "ipa": "ˈnɒstrəl",
+          "mean": "lỗ mũi",
+          "book": 8,
+          "lesson": 47
+        }
+      ]
+    },
+    {
+      "id": 48,
+      "words": [
+        {
+          "word": "Luis",
+          "ipa": "luis",
+          "mean": "Luis",
+          "book": 8,
+          "lesson": 48
+        },
+        {
+          "word": "Shepard",
+          "ipa": "ˈʃɛpərd",
+          "mean": "Người chăn cừu",
+          "book": 8,
+          "lesson": 48
+        },
+        {
+          "word": "Hampton",
+          "ipa": "ˈhæmptən",
+          "mean": "Hampton",
+          "book": 8,
+          "lesson": 48
+        },
+        {
+          "word": "navigate",
+          "ipa": "ˈnævɪɡeɪt",
+          "mean": "điều hướng",
+          "book": 8,
+          "lesson": 48
+        },
+        {
+          "word": "vest",
+          "ipa": "vest",
+          "mean": "áo vest",
+          "book": 8,
+          "lesson": 48
+        },
+        {
+          "word": "petting",
+          "ipa": "ˈpetɪŋ",
+          "mean": "vuốt ve",
+          "book": 8,
+          "lesson": 48
+        },
+        {
+          "word": "therapy",
+          "ipa": "ˈθerəpi",
+          "mean": "liệu pháp",
+          "book": 8,
+          "lesson": 48
+        }
+      ]
+    },
+    {
+      "id": 49,
+      "words": [
+        {
+          "word": "Adrian",
+          "ipa": "ˈeɪdriən",
+          "mean": "Adrian",
+          "book": 8,
+          "lesson": 49
+        },
+        {
+          "word": "vinyl",
+          "ipa": "ˈvaɪnl",
+          "mean": "đĩa nhựa",
+          "book": 8,
+          "lesson": 49
+        },
+        {
+          "word": "grandpa",
+          "ipa": "ˈɡræmˌpaː",
+          "mean": "ông nội",
+          "book": 8,
+          "lesson": 49
+        },
+        {
+          "word": "sellers",
+          "ipa": "ˈsɛlərz",
+          "mean": "người bán",
+          "book": 8,
+          "lesson": 49
+        },
+        {
+          "word": "emailed",
+          "ipa": "iˈmeɪld",
+          "mean": "đã gửi email",
+          "book": 8,
+          "lesson": 49
+        },
+        {
+          "word": "Starbucks",
+          "ipa": "ˈstɑrˌbəks",
+          "mean": "Starbucks",
+          "book": 8,
+          "lesson": 49
+        },
+        {
+          "word": "autographed",
+          "ipa": "ˈɔtəˌgræft",
+          "mean": "có chữ ký",
+          "book": 8,
+          "lesson": 49
+        }
+      ]
+    },
+    {
+      "id": 50,
+      "words": [
+        {
+          "word": "pastimes",
+          "ipa": "ˈpæˌstaɪmz",
+          "mean": "trò tiêu khiển",
+          "book": 8,
+          "lesson": 50
+        },
+        {
+          "word": "Sheila",
+          "ipa": "ˈʃiːlə",
+          "mean": "Sheila",
+          "book": 8,
+          "lesson": 50
+        },
+        {
+          "word": "hemmed",
+          "ipa": "hɛmd",
+          "mean": "viền",
+          "book": 8,
+          "lesson": 50
+        },
+        {
+          "word": "hawed",
+          "ipa": "hɔːd",
+          "mean": "đã hawed",
+          "book": 8,
+          "lesson": 50
+        },
+        {
+          "word": "agreeing",
+          "ipa": "əˈɡriːɪŋ",
+          "mean": "đồng ý",
+          "book": 8,
+          "lesson": 50
+        },
+        {
+          "word": "upcoming",
+          "ipa": "ˈʌpkʌmɪŋ",
+          "mean": "sắp tới",
+          "book": 8,
+          "lesson": 50
+        },
+        {
+          "word": "clue",
+          "ipa": "kluː",
+          "mean": "manh mối",
+          "book": 8,
+          "lesson": 50
+        },
+        {
+          "word": "companion",
+          "ipa": "kəmˈpænjən",
+          "mean": "bạn đồng hành",
+          "book": 8,
+          "lesson": 50
+        }
+      ]
+    },
+    {
+      "id": 51,
+      "words": [
+        {
+          "word": "leaning",
+          "ipa": "ˈliːnɪŋ",
+          "mean": "nghiêng người",
+          "book": 8,
+          "lesson": 51
+        },
+        {
+          "word": "unpleasant",
+          "ipa": "ʌnˈpleznt",
+          "mean": "khó chịu",
+          "book": 8,
+          "lesson": 51
+        },
+        {
+          "word": "scanned",
+          "ipa": "skænd",
+          "mean": "đã quét",
+          "book": 8,
+          "lesson": 51
+        },
+        {
+          "word": "soliciting",
+          "ipa": "səˈlɪsɪtɪŋ",
+          "mean": "chào mời",
+          "book": 8,
+          "lesson": 51
+        }
+      ]
+    },
+    {
+      "id": 52,
+      "words": [
+        {
+          "word": "Bryant",
+          "ipa": "braɪənt",
+          "mean": "Bryant",
+          "book": 8,
+          "lesson": 52
+        },
+        {
+          "word": "Celtics",
+          "ipa": "ˈsɛltɪks",
+          "mean": "Celtics",
+          "book": 8,
+          "lesson": 52
+        },
+        {
+          "word": "conference",
+          "ipa": "ˈkɒnfərəns",
+          "mean": "hội nghị",
+          "book": 8,
+          "lesson": 52
+        },
+        {
+          "word": "franchise",
+          "ipa": "ˈfræntʃaɪz",
+          "mean": "nhượng quyền thương mại",
+          "book": 8,
+          "lesson": 52
+        },
+        {
+          "word": "premier",
+          "ipa": "ˈpremiə(r)",
+          "mean": "thủ tướng",
+          "book": 8,
+          "lesson": 52
+        },
+        {
+          "word": "Mikan",
+          "ipa": "mikan*",
+          "mean": "Mikan",
+          "book": 8,
+          "lesson": 52
+        },
+        {
+          "word": "establishing",
+          "ipa": "ɪˈstæblɪʃɪŋ",
+          "mean": "thành lập",
+          "book": 8,
+          "lesson": 52
+        },
+        {
+          "word": "statistics",
+          "ipa": "stəˈtɪs·tɪks",
+          "mean": "thống kê",
+          "book": 8,
+          "lesson": 52
+        },
+        {
+          "word": "selected",
+          "ipa": "sɪˈlektɪd",
+          "mean": "đã chọn",
+          "book": 8,
+          "lesson": 52
+        },
+        {
+          "word": "Beijing",
+          "ipa": "ˌbeɪˈʒɪŋ",
+          "mean": "Bắc Kinh",
+          "book": 8,
+          "lesson": 52
+        },
+        {
+          "word": "scored",
+          "ipa": "skɔːr",
+          "mean": "ghi bàn",
+          "book": 8,
+          "lesson": 52
+        },
+        {
+          "word": "Laker",
+          "ipa": "ˈleɪkər",
+          "mean": "Laker",
+          "book": 8,
+          "lesson": 52
+        },
+        {
+          "word": "selections",
+          "ipa": "səˈlɛkʃənz",
+          "mean": "lựa chọn",
+          "book": 8,
+          "lesson": 52
+        }
+      ]
+    },
+    {
+      "id": 53,
+      "words": [
+        {
+          "word": "Phillies",
+          "ipa": "ˈfɪliz",
+          "mean": "Phillies",
+          "book": 8,
+          "lesson": 53
+        },
+        {
+          "word": "Ballpark",
+          "ipa": "ˈbɔːlpɑːk",
+          "mean": "Sân bóng chày",
+          "book": 8,
+          "lesson": 53
+        },
+        {
+          "word": "inning",
+          "ipa": "ˈɪnɪŋ",
+          "mean": "hiệp đấu",
+          "book": 8,
+          "lesson": 53
+        },
+        {
+          "word": "Beckett",
+          "ipa": "ˈbɛkɪt",
+          "mean": "Beckett",
+          "book": 8,
+          "lesson": 53
+        },
+        {
+          "word": "pitching",
+          "ipa": "ˈpɪʧɪŋ",
+          "mean": "ném bóng",
+          "book": 8,
+          "lesson": 53
+        },
+        {
+          "word": "hitter",
+          "ipa": "ˈhɪtə(r)",
+          "mean": "người đánh bóng",
+          "book": 8,
+          "lesson": 53
+        },
+        {
+          "word": "thrilled",
+          "ipa": "θrɪld",
+          "mean": "phấn khích",
+          "book": 8,
+          "lesson": 53
+        },
+        {
+          "word": "highlights",
+          "ipa": "ˈhaɪlaɪts",
+          "mean": "điểm nổi bật",
+          "book": 8,
+          "lesson": 53
+        },
+        {
+          "word": "ESPN",
+          "ipa": "espn*",
+          "mean": "ESPN",
+          "book": 8,
+          "lesson": 53
+        }
+      ]
+    },
+    {
+      "id": 54,
+      "words": [
+        {
+          "word": "Valery",
+          "ipa": "ˈvæləri",
+          "mean": "Valery",
+          "book": 8,
+          "lesson": 54
+        },
+        {
+          "word": "ridden",
+          "ipa": "ˈrɪdn",
+          "mean": "cưỡi",
+          "book": 8,
+          "lesson": 54
+        },
+        {
+          "word": "belongings",
+          "ipa": "bɪˈlɒŋɪŋz",
+          "mean": "đồ đạc",
+          "book": 8,
+          "lesson": 54
+        },
+        {
+          "word": "halt",
+          "ipa": "hɔːlt",
+          "mean": "dừng lại",
+          "book": 8,
+          "lesson": 54
+        },
+        {
+          "word": "slot",
+          "ipa": "slɒt",
+          "mean": "chỗ",
+          "book": 8,
+          "lesson": 54
+        },
+        {
+          "word": "proceeded",
+          "ipa": "prəˈsiːdɪd",
+          "mean": "tiến hành",
+          "book": 8,
+          "lesson": 54
+        },
+        {
+          "word": "scariest",
+          "ipa": "ˈskɛriəst",
+          "mean": "đáng sợ nhất",
+          "book": 8,
+          "lesson": 54
+        },
+        {
+          "word": "destination",
+          "ipa": "ˌdestɪˈneɪʃn",
+          "mean": "điểm đến",
+          "book": 8,
+          "lesson": 54
+        }
+      ]
+    },
+    {
+      "id": 55,
+      "words": [
+        {
+          "word": "Mandela",
+          "ipa": "ˌmænˈdɛlə",
+          "mean": "Mandela",
+          "book": 8,
+          "lesson": 55
+        },
+        {
+          "word": "Apartheid",
+          "ipa": "əˈpɑːtaɪt",
+          "mean": "Chế độ phân biệt chủng tộc",
+          "book": 8,
+          "lesson": 55
+        },
+        {
+          "word": "profound",
+          "ipa": "prəˈfaʊnd",
+          "mean": "sâu",
+          "book": 8,
+          "lesson": 55
+        },
+        {
+          "word": "mainstream",
+          "ipa": "ˈmeɪnstriːm",
+          "mean": "dòng chính",
+          "book": 8,
+          "lesson": 55
+        },
+        {
+          "word": "turmoil",
+          "ipa": "ˈtɜːmɔɪl",
+          "mean": "sự hỗn loạn",
+          "book": 8,
+          "lesson": 55
+        },
+        {
+          "word": "classifications",
+          "ipa": "ˌklæsəfəˈkeɪʃənz",
+          "mean": "phân loại",
+          "book": 8,
+          "lesson": 55
+        },
+        {
+          "word": "favored",
+          "ipa": "ˈfeɪvərd",
+          "mean": "được ưa chuộng",
+          "book": 8,
+          "lesson": 55
+        },
+        {
+          "word": "treason",
+          "ipa": "ˈtriːzn",
+          "mean": "sự phản quốc",
+          "book": 8,
+          "lesson": 55
+        },
+        {
+          "word": "uprising",
+          "ipa": "ˈʌpraɪzɪŋ",
+          "mean": "cuộc nổi dậy",
+          "book": 8,
+          "lesson": 55
+        },
+        {
+          "word": "embargos",
+          "ipa": "embargos*",
+          "mean": "lệnh cấm vận",
+          "book": 8,
+          "lesson": 55
+        },
+        {
+          "word": "regime",
+          "ipa": "reɪˈʒiːm",
+          "mean": "chế độ",
+          "book": 8,
+          "lesson": 55
+        }
+      ]
+    },
+    {
+      "id": 56,
+      "words": [
+        {
+          "word": "Hannah",
+          "ipa": "ˈhænə",
+          "mean": "Hannah",
+          "book": 8,
+          "lesson": 56
+        },
+        {
+          "word": "patch",
+          "ipa": "pætʃ",
+          "mean": "miếng vá",
+          "book": 8,
+          "lesson": 56
+        },
+        {
+          "word": "drying",
+          "ipa": "draɪ",
+          "mean": "sấy khô",
+          "book": 8,
+          "lesson": 56
+        },
+        {
+          "word": "shortage",
+          "ipa": "ˈʃɔːtɪdʒ",
+          "mean": "thiếu",
+          "book": 8,
+          "lesson": 56
+        },
+        {
+          "word": "herbs",
+          "ipa": "ərbz",
+          "mean": "thảo mộc",
+          "book": 8,
+          "lesson": 56
+        },
+        {
+          "word": "bust",
+          "ipa": "bʌst",
+          "mean": "bật ra",
+          "book": 8,
+          "lesson": 56
+        },
+        {
+          "word": "alright",
+          "ipa": "ɔːlˈraɪt",
+          "mean": "được rồi",
+          "book": 8,
+          "lesson": 56
+        },
+        {
+          "word": "nursery",
+          "ipa": "ˈnɜːsəri",
+          "mean": "vườn ươm",
+          "book": 8,
+          "lesson": 56
+        },
+        {
+          "word": "seedling",
+          "ipa": "ˈsiːdlɪŋ",
+          "mean": "cây giống",
+          "book": 8,
+          "lesson": 56
+        },
+        {
+          "word": "flowering",
+          "ipa": "ˈflaʊərɪŋ",
+          "mean": "ra hoa",
+          "book": 8,
+          "lesson": 56
+        }
+      ]
+    },
+    {
+      "id": 57,
+      "words": [
+        {
+          "word": "Maureen",
+          "ipa": "mɔˈrin",
+          "mean": "Maureen",
+          "book": 8,
+          "lesson": 57
+        },
+        {
+          "word": "caregiver",
+          "ipa": "ˈkeəɡɪvə(r)",
+          "mean": "người chăm sóc",
+          "book": 8,
+          "lesson": 57
+        },
+        {
+          "word": "handled",
+          "ipa": "ˈhændld",
+          "mean": "đã xử lý",
+          "book": 8,
+          "lesson": 57
+        },
+        {
+          "word": "dads",
+          "ipa": "dædz",
+          "mean": "các ông bố",
+          "book": 8,
+          "lesson": 57
+        }
+      ]
+    },
+    {
+      "id": 58,
+      "words": [
+        {
+          "word": "Walt",
+          "ipa": "wɔlt",
+          "mean": "Walt",
+          "book": 8,
+          "lesson": 58
+        },
+        {
+          "word": "pioneered",
+          "ipa": "ˌpaɪəˈnɪrd",
+          "mean": "tiên phong",
+          "book": 8,
+          "lesson": 58
+        },
+        {
+          "word": "anthropomorphic",
+          "ipa": "ˌænθrəpəˈmɔːfɪk",
+          "mean": "nhân hình",
+          "book": 8,
+          "lesson": 58
+        },
+        {
+          "word": "nominated",
+          "ipa": "ˈnɒmɪneɪtɪd",
+          "mean": "được đề cử",
+          "book": 8,
+          "lesson": 58
+        },
+        {
+          "word": "Minnie",
+          "ipa": "ˈmɪni",
+          "mean": "Minnie",
+          "book": 8,
+          "lesson": 58
+        },
+        {
+          "word": "Daisy",
+          "ipa": "ˈdeɪzi",
+          "mean": "Cúc",
+          "book": 8,
+          "lesson": 58
+        },
+        {
+          "word": "Framed",
+          "ipa": "freɪmd",
+          "mean": "Đóng khung",
+          "book": 8,
+          "lesson": 58
+        },
+        {
+          "word": "Warner",
+          "ipa": "ˈwɔrnər",
+          "mean": "Warner",
+          "book": 8,
+          "lesson": 58
+        }
+      ]
+    },
+    {
+      "id": 59,
+      "words": [
+        {
+          "word": "excitedly",
+          "ipa": "ɪkˈsaɪtɪdli",
+          "mean": "phấn khích",
+          "book": 8,
+          "lesson": 59
+        },
+        {
+          "word": "clueless",
+          "ipa": "ˈkluːləs",
+          "mean": "không biết gì cả",
+          "book": 8,
+          "lesson": 59
+        },
+        {
+          "word": "guidance",
+          "ipa": "ˈɡaɪdns",
+          "mean": "hướng dẫn",
+          "book": 8,
+          "lesson": 59
+        }
+      ]
+    },
+    {
+      "id": 60,
+      "words": [
+        {
+          "word": "Chancellor",
+          "ipa": "ˈtʃɑːnsələ(r)",
+          "mean": "Thủ tướng",
+          "book": 8,
+          "lesson": 60
+        },
+        {
+          "word": "Adolf",
+          "ipa": "ˈeɪdɑlf",
+          "mean": "Adolf",
+          "book": 8,
+          "lesson": 60
+        },
+        {
+          "word": "Hitler",
+          "ipa": "ˈhɪtlər",
+          "mean": "Hitler",
+          "book": 8,
+          "lesson": 60
+        },
+        {
+          "word": "showcase",
+          "ipa": "ˈʃoʊˌkeɪs",
+          "mean": "trưng bày",
+          "book": 8,
+          "lesson": 60
+        },
+        {
+          "word": "Aryan",
+          "ipa": "eəriən",
+          "mean": "Người Aryan",
+          "book": 8,
+          "lesson": 60
+        },
+        {
+          "word": "Jesse",
+          "ipa": "ˈʤɛsi",
+          "mean": "Jesse",
+          "book": 8,
+          "lesson": 60
+        },
+        {
+          "word": "Owens",
+          "ipa": "oʊənz",
+          "mean": "Owens",
+          "book": 8,
+          "lesson": 60
+        },
+        {
+          "word": "proving",
+          "ipa": "ˈpruːvɪŋ",
+          "mean": "chứng minh",
+          "book": 8,
+          "lesson": 60
+        },
+        {
+          "word": "rhetoric",
+          "ipa": "ˈretərɪk",
+          "mean": "hùng biện",
+          "book": 8,
+          "lesson": 60
+        },
+        {
+          "word": "untrue",
+          "ipa": "ʌnˈtruː",
+          "mean": "không đúng sự thật",
+          "book": 8,
+          "lesson": 60
+        },
+        {
+          "word": "befriended",
+          "ipa": "bɪˈfrendɪd",
+          "mean": "kết bạn",
+          "book": 8,
+          "lesson": 60
+        },
+        {
+          "word": "Luz",
+          "ipa": "ləz",
+          "mean": "Ánh sáng",
+          "book": 8,
+          "lesson": 60
+        },
+        {
+          "word": "Owen",
+          "ipa": "ˈəʊən",
+          "mean": "Owen",
+          "book": 8,
+          "lesson": 60
+        }
+      ]
+    },
+    {
+      "id": 61,
+      "words": [
+        {
+          "word": "snowy",
+          "ipa": "ˈsnəʊi",
+          "mean": "tuyết rơi",
+          "book": 8,
+          "lesson": 61
+        },
+        {
+          "word": "Gonzalo",
+          "ipa": "gɑnˈzɑloʊ",
+          "mean": "Gonzalo",
+          "book": 8,
+          "lesson": 61
+        },
+        {
+          "word": "cleats",
+          "ipa": "klits",
+          "mean": "giày đinh",
+          "book": 8,
+          "lesson": 61
+        },
+        {
+          "word": "Leo",
+          "ipa": "ˈliːəʊ",
+          "mean": "Sư Tử",
+          "book": 8,
+          "lesson": 61
+        },
+        {
+          "word": "backpacks",
+          "ipa": "ˈbækˌpæks",
+          "mean": "ba lô",
+          "book": 8,
+          "lesson": 61
+        },
+        {
+          "word": "miscommunication",
+          "ipa": "ˌmɪskəˌmjuːnɪˈkeɪʃn",
+          "mean": "sự hiểu lầm",
+          "book": 8,
+          "lesson": 61
+        },
+        {
+          "word": "oblong",
+          "ipa": "ˈɒblɒŋ",
+          "mean": "hình thuôn dài",
+          "book": 8,
+          "lesson": 61
+        },
+        {
+          "word": "compromised",
+          "ipa": "ˈkɑmprəˌmaɪzd",
+          "mean": "bị thỏa hiệp",
+          "book": 8,
+          "lesson": 61
+        }
+      ]
+    },
+    {
+      "id": 62,
+      "words": [
+        {
+          "word": "detractors",
+          "ipa": "dɪˈtræktərz",
+          "mean": "những người phản đối",
+          "book": 8,
+          "lesson": 62
+        },
+        {
+          "word": "inaccurately",
+          "ipa": "ɪnˈækjərətli",
+          "mean": "không chính xác",
+          "book": 8,
+          "lesson": 62
+        },
+        {
+          "word": "healthcare",
+          "ipa": "ˈhelθ keə(r)",
+          "mean": "chăm sóc sức khỏe",
+          "book": 8,
+          "lesson": 62
+        },
+        {
+          "word": "affordability",
+          "ipa": "əˌfɔːdəˈbɪləti",
+          "mean": "khả năng chi trả",
+          "book": 8,
+          "lesson": 62
+        },
+        {
+          "word": "uninsured",
+          "ipa": "ˌʌnɪnˈʃʊəd",
+          "mean": "không có bảo hiểm",
+          "book": 8,
+          "lesson": 62
+        },
+        {
+          "word": "senator",
+          "ipa": "ˈsenətə(r)",
+          "mean": "thượng nghị sĩ",
+          "book": 8,
+          "lesson": 62
+        },
+        {
+          "word": "conservatives",
+          "ipa": "kənˈsərvətɪvz",
+          "mean": "những người bảo thủ",
+          "book": 8,
+          "lesson": 62
+        },
+        {
+          "word": "Iraq",
+          "ipa": "ɪˈrɑːk",
+          "mean": "Iraq",
+          "book": 8,
+          "lesson": 62
+        },
+        {
+          "word": "Osama",
+          "ipa": "oʊˈsɑmə",
+          "mean": "Osama",
+          "book": 8,
+          "lesson": 62
+        },
+        {
+          "word": "Laden",
+          "ipa": "ˈleɪdn",
+          "mean": "Laden",
+          "book": 8,
+          "lesson": 62
+        },
+        {
+          "word": "reelected",
+          "ipa": "riɪˈlɛktɪd",
+          "mean": "được bầu lại",
+          "book": 8,
+          "lesson": 62
+        }
+      ]
+    },
+    {
+      "id": 63,
+      "words": [
+        {
+          "word": "Audrey",
+          "ipa": "ˈɔdri",
+          "mean": "Audrey",
+          "book": 8,
+          "lesson": 63
+        },
+        {
+          "word": "disappointment",
+          "ipa": "ˌdɪsəˈpɔɪntmənt",
+          "mean": "sự thất vọng",
+          "book": 8,
+          "lesson": 63
+        },
+        {
+          "word": "seamstress",
+          "ipa": "ˈsiːmstrəs",
+          "mean": "thợ may",
+          "book": 8,
+          "lesson": 63
+        },
+        {
+          "word": "hobo",
+          "ipa": "ˈhəʊbəʊ",
+          "mean": "đi lang thang",
+          "book": 8,
+          "lesson": 63
+        },
+        {
+          "word": "pirate",
+          "ipa": "ˈpaɪrət",
+          "mean": "cướp biển",
+          "book": 8,
+          "lesson": 63
+        },
+        {
+          "word": "lame",
+          "ipa": "leɪm",
+          "mean": "què",
+          "book": 8,
+          "lesson": 63
+        },
+        {
+          "word": "fools",
+          "ipa": "fulz",
+          "mean": "những kẻ ngốc",
+          "book": 8,
+          "lesson": 63
+        },
+        {
+          "word": "strikingly",
+          "ipa": "ˈstraɪkɪŋli",
+          "mean": "đáng kinh ngạc",
+          "book": 8,
+          "lesson": 63
+        },
+        {
+          "word": "fairy",
+          "ipa": "ˈfeəri",
+          "mean": "tiên",
+          "book": 8,
+          "lesson": 63
+        },
+        {
+          "word": "glowing",
+          "ipa": "ˈɡləʊɪŋ",
+          "mean": "phát sáng",
+          "book": 8,
+          "lesson": 63
+        },
+        {
+          "word": "tapped",
+          "ipa": "tæpt",
+          "mean": "đã khai thác",
+          "book": 8,
+          "lesson": 63
+        }
+      ]
+    },
+    {
+      "id": 64,
+      "words": [
+        {
+          "word": "Abel",
+          "ipa": "ˈeɪbəl",
+          "mean": "Abel",
+          "book": 8,
+          "lesson": 64
+        },
+        {
+          "word": "gasped",
+          "ipa": "ɡɑːspt",
+          "mean": "thở hổn hển",
+          "book": 8,
+          "lesson": 64
+        },
+        {
+          "word": "Mel",
+          "ipa": "mel",
+          "mean": "Mel",
+          "book": 8,
+          "lesson": 64
+        },
+        {
+          "word": "humorously",
+          "ipa": "ˈhjuːmərəsli",
+          "mean": "một cách hài hước",
+          "book": 8,
+          "lesson": 64
+        },
+        {
+          "word": "amused",
+          "ipa": "əmˈjuzd",
+          "mean": "thích thú",
+          "book": 8,
+          "lesson": 64
+        },
+        {
+          "word": "growling",
+          "ipa": "ˈɡraʊlɪŋ",
+          "mean": "gầm gừ",
+          "book": 8,
+          "lesson": 64
+        },
+        {
+          "word": "quips",
+          "ipa": "kwɪps",
+          "mean": "những câu nói đùa",
+          "book": 8,
+          "lesson": 64
+        },
+        {
+          "word": "jokingly",
+          "ipa": "ˈdʒəʊkɪŋli",
+          "mean": "đùa thôi",
+          "book": 8,
+          "lesson": 64
+        },
+        {
+          "word": "sarcastically",
+          "ipa": "sɑːˈkæstɪkli",
+          "mean": "một cách mỉa mai",
+          "book": 8,
+          "lesson": 64
+        },
+        {
+          "word": "pepperoni",
+          "ipa": "ˌpepəˈrəʊni",
+          "mean": "xúc xích Ý",
+          "book": 8,
+          "lesson": 64
+        },
+        {
+          "word": "inquired",
+          "ipa": "ˌɪnkˈwaɪərd",
+          "mean": "đã hỏi",
+          "book": 8,
+          "lesson": 64
+        },
+        {
+          "word": "furrowed",
+          "ipa": "ˈfʌrəʊd",
+          "mean": "có rãnh",
+          "book": 8,
+          "lesson": 64
+        },
+        {
+          "word": "brows",
+          "ipa": "braʊz",
+          "mean": "lông mày",
+          "book": 8,
+          "lesson": 64
+        },
+        {
+          "word": "episode",
+          "ipa": "ˈepɪsəʊd",
+          "mean": "tập phim",
+          "book": 8,
+          "lesson": 64
+        },
+        {
+          "word": "Simpsons",
+          "ipa": "ˈsɪmpsənz",
+          "mean": "Gia đình Simpson",
+          "book": 8,
+          "lesson": 64
+        },
+        {
+          "word": "plopped",
+          "ipa": "plɑpt",
+          "mean": "bị rơi xuống",
+          "book": 8,
+          "lesson": 64
+        },
+        {
+          "word": "starve",
+          "ipa": "stɑːv",
+          "mean": "chết đói",
+          "book": 8,
+          "lesson": 64
+        }
+      ]
+    },
+    {
+      "id": 65,
+      "words": [
+        {
+          "word": "Dolly",
+          "ipa": "ˈdɒli",
+          "mean": "Búp bê",
+          "book": 8,
+          "lesson": 65
+        },
+        {
+          "word": "delight",
+          "ipa": "dɪˈlaɪt",
+          "mean": "sự thích thú",
+          "book": 8,
+          "lesson": 65
+        },
+        {
+          "word": "stagehand",
+          "ipa": "ˈsteɪdʒhænd",
+          "mean": "nhân viên sân khấu",
+          "book": 8,
+          "lesson": 65
+        },
+        {
+          "word": "props",
+          "ipa": "prɒps",
+          "mean": "đạo cụ",
+          "book": 8,
+          "lesson": 65
+        },
+        {
+          "word": "coordination",
+          "ipa": "koʊˌɔrdəˈneɪʃən",
+          "mean": "sự phối hợp",
+          "book": 8,
+          "lesson": 65
+        },
+        {
+          "word": "lingo",
+          "ipa": "ˈlɪŋɡəʊ",
+          "mean": "ngôn ngữ lóng",
+          "book": 8,
+          "lesson": 65
+        }
+      ]
+    },
+    {
+      "id": 66,
+      "words": [
+        {
+          "word": "Arnold",
+          "ipa": "ˈɑːnəld",
+          "mean": "Arnold",
+          "book": 8,
+          "lesson": 66
+        },
+        {
+          "word": "Palmer",
+          "ipa": "ˈpɑmər",
+          "mean": "Palmer",
+          "book": 8,
+          "lesson": 66
+        },
+        {
+          "word": "Nicklaus",
+          "ipa": "ˈnɪkləs",
+          "mean": "Nicklaus",
+          "book": 8,
+          "lesson": 66
+        },
+        {
+          "word": "Thailand",
+          "ipa": "ˈtaɪlænd",
+          "mean": "Thái Lan",
+          "book": 8,
+          "lesson": 66
+        },
+        {
+          "word": "promising",
+          "ipa": "ˈprɒmɪsɪŋ",
+          "mean": "hứa hẹn",
+          "book": 8,
+          "lesson": 66
+        },
+        {
+          "word": "acquiring",
+          "ipa": "əˈkwaɪərɪŋ",
+          "mean": "thu thập",
+          "book": 8,
+          "lesson": 66
+        },
+        {
+          "word": "accomplish",
+          "ipa": "əˈkʌmplɪʃ",
+          "mean": "hoàn thành",
+          "book": 8,
+          "lesson": 66
+        },
+        {
+          "word": "Stanford",
+          "ipa": "ˈstænfərd",
+          "mean": "Stanford",
+          "book": 8,
+          "lesson": 66
+        },
+        {
+          "word": "PGA",
+          "ipa": "pga*",
+          "mean": "PGA",
+          "book": 8,
+          "lesson": 66
+        },
+        {
+          "word": "presumed",
+          "ipa": "prɪˈzjuːmd",
+          "mean": "được cho là",
+          "book": 8,
+          "lesson": 66
+        },
+        {
+          "word": "womanizer",
+          "ipa": "ˈwʊmənaɪzə(r)",
+          "mean": "kẻ lăng nhăng",
+          "book": 8,
+          "lesson": 66
+        },
+        {
+          "word": "wrongdoing",
+          "ipa": "ˈrɒŋduːɪŋ",
+          "mean": "hành vi sai trái",
+          "book": 8,
+          "lesson": 66
+        },
+        {
+          "word": "confessed",
+          "ipa": "kənˈfest",
+          "mean": "đã thú nhận",
+          "book": 8,
+          "lesson": 66
+        },
+        {
+          "word": "indiscretions",
+          "ipa": "ˌɪndɪˈskrɛʃənz",
+          "mean": "sự thiếu thận trọng",
+          "book": 8,
+          "lesson": 66
+        },
+        {
+          "word": "momentum",
+          "ipa": "məˈmentəm",
+          "mean": "động lượng",
+          "book": 8,
+          "lesson": 66
+        },
+        {
+          "word": "sponsors",
+          "ipa": "ˈspɑnsərz",
+          "mean": "nhà tài trợ",
+          "book": 8,
+          "lesson": 66
+        },
+        {
+          "word": "proficiency",
+          "ipa": "prəˈfɪʃnsi",
+          "mean": "trình độ thành thạo",
+          "book": 8,
+          "lesson": 66
+        }
+      ]
+    },
+    {
+      "id": 67,
+      "words": [
+        {
+          "word": "Slauson",
+          "ipa": "sˈlaʊzən",
+          "mean": "Slauson",
+          "book": 8,
+          "lesson": 67
+        },
+        {
+          "word": "yipped",
+          "ipa": "yipped*",
+          "mean": "kêu lên",
+          "book": 8,
+          "lesson": 67
+        },
+        {
+          "word": "exited",
+          "ipa": "ˈɛgzətɪd",
+          "mean": "đã thoát",
+          "book": 8,
+          "lesson": 67
+        },
+        {
+          "word": "Chihuahua",
+          "ipa": "tʃɪˈwɑːwə",
+          "mean": "Chihuahua",
+          "book": 8,
+          "lesson": 67
+        },
+        {
+          "word": "Taco",
+          "ipa": "ˈtækəʊ",
+          "mean": "Bánh taco",
+          "book": 8,
+          "lesson": 67
+        },
+        {
+          "word": "Chihuahuas",
+          "ipa": "chihuahuas*",
+          "mean": "Chihuahuas",
+          "book": 8,
+          "lesson": 67
+        },
+        {
+          "word": "balding",
+          "ipa": "ˈbɔːldɪŋ",
+          "mean": "hói đầu",
+          "book": 8,
+          "lesson": 67
+        },
+        {
+          "word": "exclaimed",
+          "ipa": "ɪkˈskleɪmd",
+          "mean": "kêu lên",
+          "book": 8,
+          "lesson": 67
+        },
+        {
+          "word": "browse",
+          "ipa": "brauz",
+          "mean": "duyệt",
+          "book": 8,
+          "lesson": 67
+        },
+        {
+          "word": "fishes",
+          "ipa": "ˈfɪʃɪz",
+          "mean": "cá",
+          "book": 8,
+          "lesson": 67
+        },
+        {
+          "word": "slimy",
+          "ipa": "ˈslaɪmi",
+          "mean": "nhớt",
+          "book": 8,
+          "lesson": 67
+        },
+        {
+          "word": "eternity",
+          "ipa": "ɪˈtɜːnəti",
+          "mean": "sự vĩnh hằng",
+          "book": 8,
+          "lesson": 67
+        },
+        {
+          "word": "paused",
+          "ipa": "pɔːzd",
+          "mean": "tạm dừng",
+          "book": 8,
+          "lesson": 67
+        }
+      ]
+    },
+    {
+      "id": 68,
+      "words": [
+        {
+          "word": "sinking",
+          "ipa": "ˈsɪŋkɪŋ",
+          "mean": "chìm",
+          "book": 8,
+          "lesson": 68
+        },
+        {
+          "word": "maiden",
+          "ipa": "ˈmeɪdn",
+          "mean": "thiếu nữ",
+          "book": 8,
+          "lesson": 68
+        },
+        {
+          "word": "iceberg",
+          "ipa": "ˈaɪsbɜːɡ",
+          "mean": "tảng băng trôi",
+          "book": 8,
+          "lesson": 68
+        },
+        {
+          "word": "Southampton",
+          "ipa": "saʊˈθæmptən",
+          "mean": "Southampton",
+          "book": 8,
+          "lesson": 68
+        },
+        {
+          "word": "unsinkable",
+          "ipa": "ʌnˈsɪŋ.kə.bəl",
+          "mean": "không thể chìm",
+          "book": 8,
+          "lesson": 68
+        },
+        {
+          "word": "technological",
+          "ipa": "ˌteknəˈlɒdʒɪkl",
+          "mean": "công nghệ",
+          "book": 8,
+          "lesson": 68
+        },
+        {
+          "word": "watertight",
+          "ipa": "ˈwɔːtətaɪt",
+          "mean": "không thấm nước",
+          "book": 8,
+          "lesson": 68
+        },
+        {
+          "word": "compartments",
+          "ipa": "kəmˈpɑrtmənts",
+          "mean": "các ngăn",
+          "book": 8,
+          "lesson": 68
+        },
+        {
+          "word": "lifeboats",
+          "ipa": "ˈlaɪfˌboʊts",
+          "mean": "xuồng cứu sinh",
+          "book": 8,
+          "lesson": 68
+        },
+        {
+          "word": "capacity",
+          "ipa": "kəˈpæsəti",
+          "mean": "dung tích",
+          "book": 8,
+          "lesson": 68
+        },
+        {
+          "word": "protocol",
+          "ipa": "ˈprəʊtəkɒl",
+          "mean": "giao thức",
+          "book": 8,
+          "lesson": 68
+        },
+        {
+          "word": "loading",
+          "ipa": "ˈləʊdɪŋ",
+          "mean": "đang tải",
+          "book": 8,
+          "lesson": 68
+        },
+        {
+          "word": "documented",
+          "ipa": "ˈdɑkjəˌmɛnəd",
+          "mean": "được ghi chép lại",
+          "book": 8,
+          "lesson": 68
+        }
+      ]
+    },
+    {
+      "id": 69,
+      "words": [
+        {
+          "word": "banging",
+          "ipa": "ˈbæŋɪŋ",
+          "mean": "đập",
+          "book": 8,
+          "lesson": 69
+        },
+        {
+          "word": "troubled",
+          "ipa": "ˈtrʌbld",
+          "mean": "gặp rắc rối",
+          "book": 8,
+          "lesson": 69
+        },
+        {
+          "word": "cope",
+          "ipa": "kəʊp",
+          "mean": "đối phó",
+          "book": 8,
+          "lesson": 69
+        },
+        {
+          "word": "Rudy",
+          "ipa": "ˈrudi",
+          "mean": "Rudy",
+          "book": 8,
+          "lesson": 69
+        },
+        {
+          "word": "jammed",
+          "ipa": "dʒæmd",
+          "mean": "bị kẹt",
+          "book": 8,
+          "lesson": 69
+        },
+        {
+          "word": "chirped",
+          "ipa": "chirped*",
+          "mean": "kêu chíp chíp",
+          "book": 8,
+          "lesson": 69
+        },
+        {
+          "word": "Coke",
+          "ipa": "kəʊk",
+          "mean": "Coca-Cola",
+          "book": 8,
+          "lesson": 69
+        },
+        {
+          "word": "exaggeration",
+          "ipa": "ɪɡˌzædʒəˈreɪʃn",
+          "mean": "sự phóng đại",
+          "book": 8,
+          "lesson": 69
+        },
+        {
+          "word": "bunch",
+          "ipa": "bʌntʃ",
+          "mean": "bó",
+          "book": 8,
+          "lesson": 69
+        },
+        {
+          "word": "novices",
+          "ipa": "ˈnɑvəsɪz",
+          "mean": "người mới bắt đầu",
+          "book": 8,
+          "lesson": 69
+        },
+        {
+          "word": "bounce",
+          "ipa": "baʊns",
+          "mean": "tung lên",
+          "book": 8,
+          "lesson": 69
+        }
+      ]
+    },
+    {
+      "id": 70,
+      "words": [
+        {
+          "word": "flinch",
+          "ipa": "flɪntʃ",
+          "mean": "giật mình",
+          "book": 8,
+          "lesson": 70
+        },
+        {
+          "word": "unexpected",
+          "ipa": "ˌʌnɪkˈspektɪd",
+          "mean": "không ngờ tới",
+          "book": 8,
+          "lesson": 70
+        },
+        {
+          "word": "aggravated",
+          "ipa": "ˈæɡrəveɪtɪd",
+          "mean": "trầm trọng hơn",
+          "book": 8,
+          "lesson": 70
+        },
+        {
+          "word": "raspy",
+          "ipa": "ˈrɑːspi",
+          "mean": "khàn khàn",
+          "book": 8,
+          "lesson": 70
+        },
+        {
+          "word": "timid",
+          "ipa": "ˈtɪmɪd",
+          "mean": "nhút nhát",
+          "book": 8,
+          "lesson": 70
+        },
+        {
+          "word": "accompanying",
+          "ipa": "əˈkʌmpəniɪŋ",
+          "mean": "đi kèm",
+          "book": 8,
+          "lesson": 70
+        }
+      ]
+    },
+    {
+      "id": 71,
+      "words": [
+        {
+          "word": "Strolling",
+          "ipa": "ˈstrəʊlɪŋ",
+          "mean": "Đi dạo",
+          "book": 8,
+          "lesson": 71
+        },
+        {
+          "word": "startling",
+          "ipa": "ˈstɑːtlɪŋ",
+          "mean": "giật mình",
+          "book": 8,
+          "lesson": 71
+        },
+        {
+          "word": "remark",
+          "ipa": "rɪˈmɑːk",
+          "mean": "nhận xét",
+          "book": 8,
+          "lesson": 71
+        },
+        {
+          "word": "gulping",
+          "ipa": "ˈɡʌlpɪŋ",
+          "mean": "nuốt nước bọt",
+          "book": 8,
+          "lesson": 71
+        },
+        {
+          "word": "reasoning",
+          "ipa": "ˈriːzənɪŋ",
+          "mean": "lý luận",
+          "book": 8,
+          "lesson": 71
+        },
+        {
+          "word": "buts",
+          "ipa": "bəts",
+          "mean": "nhưng",
+          "book": 8,
+          "lesson": 71
+        },
+        {
+          "word": "snapped",
+          "ipa": "snæpt",
+          "mean": "gãy",
+          "book": 8,
+          "lesson": 71
+        },
+        {
+          "word": "reluctantly",
+          "ipa": "rɪˈlʌktəntli",
+          "mean": "miễn cưỡng",
+          "book": 8,
+          "lesson": 71
+        }
+      ]
+    },
+    {
+      "id": 72,
+      "words": [
+        {
+          "word": "Oprah",
+          "ipa": "ˈoʊprə",
+          "mean": "Oprah",
+          "book": 8,
+          "lesson": 72
+        },
+        {
+          "word": "Winfrey",
+          "ipa": "ˈwɪnfri",
+          "mean": "Winfrey",
+          "book": 8,
+          "lesson": 72
+        },
+        {
+          "word": "daytime",
+          "ipa": "ˈdeɪtaɪm",
+          "mean": "ban ngày",
+          "book": 8,
+          "lesson": 72
+        },
+        {
+          "word": "tackle",
+          "ipa": "ˈtækl",
+          "mean": "giải quyết",
+          "book": 8,
+          "lesson": 72
+        },
+        {
+          "word": "memorized",
+          "ipa": "ˈmeməraɪzd",
+          "mean": "đã ghi nhớ",
+          "book": 8,
+          "lesson": 72
+        },
+        {
+          "word": "passages",
+          "ipa": "ˈpæsɪʤɪz",
+          "mean": "các đoạn văn",
+          "book": 8,
+          "lesson": 72
+        },
+        {
+          "word": "unwed",
+          "ipa": "ˌʌnˈwed",
+          "mean": "chưa kết hôn",
+          "book": 8,
+          "lesson": 72
+        },
+        {
+          "word": "cocaine",
+          "ipa": "kəʊˈkeɪn",
+          "mean": "cocaine",
+          "book": 8,
+          "lesson": 72
+        },
+        {
+          "word": "contest",
+          "ipa": "ˈkɒntest",
+          "mean": "cuộc thi",
+          "book": 8,
+          "lesson": 72
+        },
+        {
+          "word": "newscaster",
+          "ipa": "ˈnjuːzkɑːstə(r)",
+          "mean": "người dẫn chương trình tin tức",
+          "book": 8,
+          "lesson": 72
+        },
+        {
+          "word": "interviewed",
+          "ipa": "ˈɪntərvˌjud",
+          "mean": "được phỏng vấn",
+          "book": 8,
+          "lesson": 72
+        },
+        {
+          "word": "Harpo",
+          "ipa": "ˈhɑrpoʊ",
+          "mean": "Harpo",
+          "book": 8,
+          "lesson": 72
+        },
+        {
+          "word": "generosity",
+          "ipa": "ˌdʒenəˈrɒsəti",
+          "mean": "lòng hào phóng",
+          "book": 8,
+          "lesson": 72
+        }
+      ]
+    },
+    {
+      "id": 73,
+      "words": [
+        {
+          "word": "Josie",
+          "ipa": "ˈʤoʊzi",
+          "mean": "Josie",
+          "book": 8,
+          "lesson": 73
+        },
+        {
+          "word": "Chavez",
+          "ipa": "ˈʧæˌvɛz",
+          "mean": "Chavez",
+          "book": 8,
+          "lesson": 73
+        },
+        {
+          "word": "Ravine",
+          "ipa": "rəˈviːn",
+          "mean": "Hẻm núi",
+          "book": 8,
+          "lesson": 73
+        },
+        {
+          "word": "breezy",
+          "ipa": "ˈbriːzi",
+          "mean": "gió nhẹ",
+          "book": 8,
+          "lesson": 73
+        }
+      ]
+    },
+    {
+      "id": 74,
+      "words": [
+        {
+          "word": "Emily",
+          "ipa": "ˈeməli",
+          "mean": "Emily",
+          "book": 8,
+          "lesson": 74
+        },
+        {
+          "word": "ELAC",
+          "ipa": "elac*",
+          "mean": "ELAC",
+          "book": 8,
+          "lesson": 74
+        },
+        {
+          "word": "Cal",
+          "ipa": "kæl",
+          "mean": "Cal",
+          "book": 8,
+          "lesson": 74
+        },
+        {
+          "word": "grueling",
+          "ipa": "ˈgruɪlɪŋ",
+          "mean": "mệt mỏi",
+          "book": 8,
+          "lesson": 74
+        },
+        {
+          "word": "sociology",
+          "ipa": "ˌsəʊsiˈɒlədʒi",
+          "mean": "xã hội học",
+          "book": 8,
+          "lesson": 74
+        },
+        {
+          "word": "span",
+          "ipa": "spæn",
+          "mean": "nhịp",
+          "book": 8,
+          "lesson": 74
+        }
+      ]
+    },
+    {
+      "id": 75,
+      "words": [
+        {
+          "word": "regretted",
+          "ipa": "rɪˈɡretɪd",
+          "mean": "hối tiếc",
+          "book": 8,
+          "lesson": 75
+        },
+        {
+          "word": "counselor",
+          "ipa": "ˈkaʊnsələr",
+          "mean": "cố vấn",
+          "book": 8,
+          "lesson": 75
+        }
+      ]
+    },
+    {
+      "id": 76,
+      "words": [
+        {
+          "word": "Shane",
+          "ipa": "ʃeɪn",
+          "mean": "Shane",
+          "book": 8,
+          "lesson": 76
+        }
+      ]
+    },
+    {
+      "id": 77,
+      "words": [
+        {
+          "word": "barred",
+          "ipa": "bɑːd",
+          "mean": "bị cấm",
+          "book": 8,
+          "lesson": 77
+        },
+        {
+          "word": "Cairo",
+          "ipa": "ˈkaɪroʊ",
+          "mean": "Cairo",
+          "book": 8,
+          "lesson": 77
+        },
+        {
+          "word": "Georgia",
+          "ipa": "ˈʤɔrʤə",
+          "mean": "Georgia",
+          "book": 8,
+          "lesson": 77
+        },
+        {
+          "word": "universally",
+          "ipa": "ˌjuːnɪˈvɜːsəli",
+          "mean": "phổ biến",
+          "book": 8,
+          "lesson": 77
+        },
+        {
+          "word": "posthumously",
+          "ipa": "ˈpɑsʧʊməsli",
+          "mean": "sau khi chết",
+          "book": 8,
+          "lesson": 77
+        }
+      ]
+    },
+    {
+      "id": 78,
+      "words": [
+        {
+          "word": "smacked",
+          "ipa": "smækt",
+          "mean": "bị tát",
+          "book": 8,
+          "lesson": 78
+        },
+        {
+          "word": "deleted",
+          "ipa": "dɪˈliːtɪd",
+          "mean": "đã xóa",
+          "book": 8,
+          "lesson": 78
+        },
+        {
+          "word": "delivery",
+          "ipa": "dɪˈlɪvəri",
+          "mean": "vận chuyển",
+          "book": 8,
+          "lesson": 78
+        },
+        {
+          "word": "slapped",
+          "ipa": "slæpt",
+          "mean": "tát",
+          "book": 8,
+          "lesson": 78
+        }
+      ]
+    },
+    {
+      "id": 79,
+      "words": [
+        {
+          "word": "rite",
+          "ipa": "raɪt",
+          "mean": "nghi lễ",
+          "book": 8,
+          "lesson": 79
+        },
+        {
+          "word": "wondrous",
+          "ipa": "ˈwʌndrəs",
+          "mean": "kỳ diệu",
+          "book": 8,
+          "lesson": 79
+        },
+        {
+          "word": "pestering",
+          "ipa": "ˈpestərɪŋ",
+          "mean": "làm phiền",
+          "book": 8,
+          "lesson": 79
+        },
+        {
+          "word": "standard",
+          "ipa": "ˈstændəd",
+          "mean": "tiêu chuẩn",
+          "book": 8,
+          "lesson": 79
+        },
+        {
+          "word": "transmission",
+          "ipa": "trænzˈmɪʃn",
+          "mean": "quá trình lây truyền",
+          "book": 8,
+          "lesson": 79
+        },
+        {
+          "word": "clutch",
+          "ipa": "klʌtʃ",
+          "mean": "ly hợp",
+          "book": 8,
+          "lesson": 79
+        },
+        {
+          "word": "shifter",
+          "ipa": "ˈʃɪftə(r)",
+          "mean": "người chuyển số",
+          "book": 8,
+          "lesson": 79
+        }
+      ]
+    },
+    {
+      "id": 80,
+      "words": [
+        {
+          "word": "delayed",
+          "ipa": "dɪˈleɪd",
+          "mean": "bị trì hoãn",
+          "book": 8,
+          "lesson": 80
+        },
+        {
+          "word": "develops",
+          "ipa": "dɪˈveləps",
+          "mean": "phát triển",
+          "book": 8,
+          "lesson": 80
+        },
+        {
+          "word": "sentences",
+          "ipa": "ˈsɛntənsɪz",
+          "mean": "câu",
+          "book": 8,
+          "lesson": 80
+        },
+        {
+          "word": "IEP",
+          "ipa": "iep*",
+          "mean": "Chương trình Giáo dục Cá nhân (IEP)",
+          "book": 8,
+          "lesson": 80
+        },
+        {
+          "word": "occupational",
+          "ipa": "ˌɒkjuˈpeɪʃənl",
+          "mean": "nghề nghiệp",
+          "book": 8,
+          "lesson": 80
+        },
+        {
+          "word": "therapist",
+          "ipa": "ˈθerəpɪst",
+          "mean": "nhà trị liệu",
+          "book": 8,
+          "lesson": 80
+        },
+        {
+          "word": "sufficiency",
+          "ipa": "səˈfɪʃnsi",
+          "mean": "đủ",
+          "book": 8,
+          "lesson": 80
+        }
+      ]
+    }
+  ]
+}

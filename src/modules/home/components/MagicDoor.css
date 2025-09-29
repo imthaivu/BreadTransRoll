@@ -1,0 +1,401 @@
+/* Magic Door Animation Styles */
+.door-container {
+  position: relative;
+  width: 400px;
+  height: 600px;
+  padding: 20px;
+  background-color: #f8c8dc;
+  border: 5px solid #d67ba8;
+  border-radius: 12px;
+  box-sizing: border-box;
+  overflow: hidden;
+  margin: 0 auto;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  z-index: 10;
+}
+
+.door-top {
+  width: 400px;
+  height: 25px;
+  background-color: #d67ba8;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+  margin: 0 auto;
+}
+
+.door {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  right: 20px;
+  bottom: 20px;
+  background-color: #f4a6c6;
+  border: 4px solid #d67ba8;
+  border-radius: 8px;
+  transform-origin: right center;
+  transition: transform 1s ease-in-out;
+  cursor: pointer;
+  z-index: 2;
+  transform: perspective(800px) rotateY(0deg) scaleX(0.96);
+}
+
+/* Mở cửa */
+.door.open {
+  z-index: 5;
+  right: 25px;
+  transform: perspective(800px) rotateY(-85deg) scaleX(0.96);
+}
+
+/* Đóng cửa */
+.door:not(.open) {
+  transform: rotateY(0deg);
+}
+
+.door-handle {
+  position: absolute;
+  top: 50%;
+  left: 15px;
+  width: 25px;
+  height: 25px;
+  background-color: #cfcfcf;
+  border-radius: 50%;
+  border: 2px solid #5f5f5f;
+  transform: translateY(-50%);
+}
+
+/* Hiệu ứng sáng chói */
+.shine-effect {
+  position: absolute;
+  inset: 0;
+  background: white;
+  opacity: 0;
+  pointer-events: none;
+  animation: shineFlash 3s ease-out forwards;
+  z-index: 3;
+}
+
+@keyframes shineFlash {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* Hiệu ứng viền lấp lánh */
+.shine-border {
+  animation: glowBorder 2s ease-out forwards;
+}
+
+@keyframes glowBorder {
+  0% {
+    box-shadow: 0 0 20px white, 0 0 15px white, 0 0 30px white;
+  }
+  30% {
+    box-shadow: 0 0 20px white, 0 0 25px white, 0 0 50px white;
+  }
+  60% {
+    box-shadow: 0 0 20px white, 0 0 18px white, 0 0 35px white;
+  }
+  100% {
+    box-shadow: none;
+  }
+}
+
+.login-form {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  right: 20px;
+  bottom: 20px;
+  background-image: url("https://magical-tulumba-581427.netlify.app/img-ui/login.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  padding: 20px;
+  box-sizing: border-box;
+  border: 4px solid #c86ca2;
+  border-radius: 8px;
+  z-index: 1;
+}
+
+.arch {
+  width: 400px;
+  height: 35px;
+  background: #d67ba8;
+  border-top-left-radius: 30px;
+  border-top-right-radius: 30px;
+  position: relative;
+  margin: 0 auto;
+}
+
+.arch-inner {
+  position: absolute;
+  bottom: 0;
+  left: 30px;
+  right: 30px;
+  height: 10px;
+  background: #f0f0f0;
+  border-top-left-radius: 30px;
+  border-top-right-radius: 30px;
+}
+
+/* Cute Animations for Door Content */
+@keyframes wiggle {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(5deg);
+  }
+  75% {
+    transform: rotate(-5deg);
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes rainbow {
+  0% {
+    color: #ff0000;
+  }
+  16% {
+    color: #ff8000;
+  }
+  33% {
+    color: #ffff00;
+  }
+  50% {
+    color: #00ff00;
+  }
+  66% {
+    color: #0080ff;
+  }
+  83% {
+    color: #8000ff;
+  }
+  100% {
+    color: #ff0000;
+  }
+}
+
+@keyframes sparkle {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.2);
+  }
+}
+
+.door-content-wiggle {
+  animation: wiggle 2s ease-in-out infinite;
+}
+
+.door-content-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.door-content-rainbow {
+  animation: rainbow 3s linear infinite;
+}
+
+.door-content-sparkle {
+  animation: sparkle 1.5s ease-in-out infinite;
+}
+
+/* Fun hover effects */
+.door-content-button:hover {
+  animation: wiggle 0.5s ease-in-out;
+}
+
+/* Fade in animation for adventure button */
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Additional animations for header */
+@keyframes wiggle {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(-5deg);
+  }
+  75% {
+    transform: rotate(5deg);
+  }
+}
+
+.animate-wiggle {
+  animation: wiggle 1s ease-in-out infinite;
+}
+
+.animate-fade-in {
+  animation: fadeIn 2s ease-in-out;
+}
+
+/* Enhanced Door Styling */
+.door {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  right: 15px;
+  bottom: 15px;
+  background: linear-gradient(135deg, #f4a6c6 0%, #e8a3c4 50%, #d67ba8 100%);
+  border: 4px solid #d67ba8;
+  border-radius: 8px;
+  transform-origin: right center;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  z-index: 2;
+  transform: perspective(800px) rotateY(0deg) scaleX(0.96);
+  box-shadow: 0 8px 25px rgba(214, 123, 168, 0.3);
+  will-change: transform, box-shadow;
+}
+
+.door-handle {
+  position: absolute;
+  top: 50%;
+  left: 15px;
+  width: 25px;
+  height: 25px;
+  background: linear-gradient(135deg, #cfcfcf 0%, #b8b8b8 100%);
+  border-radius: 50%;
+  border: 2px solid #5f5f5f;
+  transform: translateY(-50%);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Floating particles effect */
+@keyframes floatParticle {
+  0% {
+    transform: translateY(0px) rotate(0deg);
+    opacity: 0.7;
+  }
+  50% {
+    transform: translateY(-20px) rotate(180deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0px) rotate(360deg);
+    opacity: 0.7;
+  }
+}
+
+.floating-particle {
+  animation: floatParticle 3s ease-in-out infinite;
+}
+
+/* Pulsing glow effect for door */
+@keyframes pulseGlow {
+  0%,
+  100% {
+    box-shadow: 0 8px 25px rgba(214, 123, 168, 0.3);
+  }
+  50% {
+    box-shadow: 0 8px 25px rgba(214, 123, 168, 0.6),
+      0 0 20px rgba(255, 255, 255, 0.3);
+  }
+}
+
+.door-pulse {
+  animation: pulseGlow 2s ease-in-out infinite;
+}
+
+/* Enhanced shine effect */
+@keyframes enhancedShine {
+  0% {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+  50% {
+    opacity: 1;
+    transform: translateX(0%);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+}
+
+.enhanced-shine {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.4),
+    transparent
+  );
+  animation: enhancedShine 2s ease-in-out;
+  pointer-events: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .door-container {
+    width: 320px;
+    height: 480px;
+    padding: 15px;
+  }
+
+  .door-top {
+    width: 320px;
+    height: 20px;
+  }
+
+  .arch {
+    width: 320px;
+    height: 30px;
+  }
+
+  .door {
+    top: 15px;
+    left: 15px;
+    right: 15px;
+    bottom: 15px;
+  }
+
+  .login-form {
+    top: 15px;
+    left: 15px;
+    right: 15px;
+    bottom: 15px;
+  }
+
+  .door.open {
+    right: 20px;
+  }
+}

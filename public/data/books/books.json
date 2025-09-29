@@ -1,0 +1,74 @@
+[
+  {
+    "id": 1,
+    "name": "Book 1.Departures",
+    "totalLessons": 80,
+    "totalWords": 1300
+  },
+  {
+    "id": 2,
+    "name": "Book 2.Connections",
+    "totalLessons": 80,
+    "totalWords": 1593
+  },
+  {
+    "id": 3,
+    "name": "Book 3.Destinations",
+    "totalLessons": 80,
+    "totalWords": 2167
+  },
+  {
+    "id": 4,
+    "name": "Book 4.Directions",
+    "totalLessons": 60,
+    "totalWords": 2700
+  },
+  {
+    "id": 5,
+    "name": "Book 1",
+    "totalLessons": 80,
+    "totalWords": 2381
+  },
+  {
+    "id": 6,
+    "name": "Book 2",
+    "totalLessons": 80,
+    "totalWords": 1373
+  },
+  {
+    "id": 7,
+    "name": "Book 3",
+    "totalLessons": 80,
+    "totalWords": 1537
+  },
+  {
+    "id": 8,
+    "name": "Book 4",
+    "totalLessons": 80,
+    "totalWords": 2510
+  },
+  {
+    "id": 9,
+    "name": "Book 5",
+    "totalLessons": 80,
+    "totalWords": 1142
+  },
+  {
+    "id": 10,
+    "name": "Book 6",
+    "totalLessons": 80,
+    "totalWords": 700
+  },
+  {
+    "id": 11,
+    "name": "Book 7",
+    "totalLessons": 79,
+    "totalWords": 545
+  },
+  {
+    "id": 12,
+    "name": "Book 8",
+    "totalLessons": 80,
+    "totalWords": 716
+  }
+]
