@@ -32,6 +32,21 @@ const nextConfig = {
         port: "",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "*.googleusercontent.com", // <— Cho phép tất cả subdomain
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "firebasestorage.googleapis.com",
+        pathname: "/v0/**",
+      },
+      {
+        protocol: "https",
+        hostname: "*.netlify.app",
+        pathname: "/**",
+      },
     ],
   },
 };
