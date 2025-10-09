@@ -6,7 +6,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { Toaster } from "react-hot-toast";
 import "../styles/globals.css";
 
-import { Footer, Header } from "@/components/layout";
+import { Footer, Header, ContactPopup } from "@/components/layout";
 import "@/styles/swiper-custom.css";
 import "swiper/css";
 import "swiper/css/effect-coverflow";
@@ -50,6 +50,7 @@ export default function RootLayout({
                 {children}
               </main>
               <Footer />
+              <ContactPopup />
               <Toaster position="bottom-left" />
             </AuthProvider>
           </NextAuthProvider>
