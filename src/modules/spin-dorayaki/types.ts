@@ -8,7 +8,7 @@ export enum SpinTicketStatus {
 export enum SpinTicketSource {
   SPEAKING = "speaking",
   FLASHCARD = "flashcard",
-}
+} 
 
 export interface SpinTicket {
   id: string;
