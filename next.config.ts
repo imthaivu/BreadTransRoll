@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
+    unoptimized: true, // 🔧 tắt image optimization để tránh lỗi Payment required
     remotePatterns: [
       {
         protocol: "https",
