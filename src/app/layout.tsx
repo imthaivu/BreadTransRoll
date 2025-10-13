@@ -24,22 +24,31 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "BreadTrans",
-  description: "Hệ thống quản lý học sinh, phụ huynh, giáo viên",
+  title: "BreadTransRoll",
+  description: "English Learning Platform",
   icons: {
     icon: "/assets/images/icon.png",
+  },
+  other: {
+    google: "notranslate",
+    translate: "no",
   },
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
-    <html lang="en">
+    <html lang="vi-VN" className="notranslate no-translate" translate="no">
+      <head>
+        <meta name="google" content="notranslate" />
+        <meta name="translate" content="no" />
+        <meta httpEquiv="Content-Language" content="vi-VN" />
+      </head>
       <body
-        className={`relative ${geistSans.variable} ${geistMono.variable} antialiased bg-slate-50 text-slate-900`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-slate-50 text-slate-900 notranslate`}
       >
         <ReactQueryProvider>
           <NextAuthProvider>
