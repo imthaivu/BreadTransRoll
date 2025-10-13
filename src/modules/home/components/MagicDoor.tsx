@@ -274,13 +274,11 @@ export default function MagicDoor({
                         animate={{ opacity: [0.7, 1, 0.7] }}
                         transition={{ duration: 2, repeat: Infinity }}
                       >
-                        <div className="mb-1 text-black">Bước vào thế giới</div>
-                        <div className="mb-1 text-black">
-                          tiếng Anh thần kỳ!
+                        <div className="mb-5 text-[#1E40AF] text-xl md:text-xl">
+                          Mở “Cánh cửa thần kỳ”
                         </div>
-                        <div className="text-xs mt-2 opacity-90 text-black">
-                          <div className="mb-1">1000+ bài nghe</div>
-                          <div className="mb-1">Thi đua vui vẻ</div>
+                        <div className=" text-[#1E3A8A] text-xl md:text-xl">
+                          Mở “Tương lai của bạn”
                         </div>
                       </motion.div>
                     </div>

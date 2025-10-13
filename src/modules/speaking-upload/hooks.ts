@@ -138,7 +138,7 @@ export function useSpeakingUpload() {
 
       setShowSpinPopup(true);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       setShowSpinPopup(false);
     }
   };

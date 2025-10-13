@@ -288,19 +288,19 @@ export function useFlashcard() {
                   );
 
                   if (existingTicket) {
-                    console.log(
-                      "Already has spin ticket for today:",
-                      existingTicket
-                    );
+                    // console.log(
+                    //   "Already has spin ticket for today:",
+                    //   existingTicket
+                    // );
                     // Don't show popup if already has ticket
                   } else {
                     // Kiểm tra khung giờ trước khi tạo vé
                     const timeCheck = checkTimeSlotCreateSpinTicket();
                     if (!timeCheck.allowed) {
-                      console.log(
-                        "Cannot create ticket due to time restrictions:",
-                        timeCheck.message
-                      );
+                      // console.log(
+                      //   "Cannot create ticket due to time restrictions:",
+                      //   timeCheck.message
+                      // );
                       // Không hiển thị popup khi không trong khung giờ
                       return;
                     }
@@ -314,16 +314,16 @@ export function useFlashcard() {
                     });
 
                     if (newTicket) {
-                      console.log("Created new spin ticket:", newTicket);
+                      // console.log("Created new spin ticket:", newTicket);
                       setCompletedQuizLesson({
                         bookId: selectedBook,
                         lessonId,
                       });
                       setShowSpinPopup(true);
                     } else {
-                      console.log(
-                        "Cannot create ticket due to time restrictions"
-                      );
+                      // console.log(
+                      //   "Cannot create ticket due to time restrictions"
+                      // );
                     }
                   }
                 } catch (error) {
