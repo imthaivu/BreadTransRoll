@@ -294,7 +294,7 @@ export default function MagicDoor({
         )}
       </AnimatePresence>
 
-      {/* Fun Message - Only show after teacher audio */}
+      {/* Fun Message -  Only show after  teacher audio */}
       <AnimatePresence>
         {showDoraemonMessage && (
           <motion.div
