@@ -24,7 +24,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "BreadTransRoll",
+  title: "BreadTrans English",
   description: "English Learning Platform",
   icons: {
     icon: "/assets/images/icon.png",
