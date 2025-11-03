@@ -234,7 +234,7 @@ export const createCurrencyTransaction = async (
 
         if (currentBalance < transactionData.amount) {
           throw new Error(
-            `Không thể trừ ${transactionData.amount} bánh rán. Số dư hiện tại chỉ có ${currentBalance} bánh rán.`
+            `Không thể trừ ${transactionData.amount} bánh mì. Số dư hiện tại chỉ có ${currentBalance} bánh mì.`
           );
         }
       }

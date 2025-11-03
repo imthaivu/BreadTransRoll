@@ -129,7 +129,7 @@ export function PrizeModal({ prize, onClose }: PrizeModalProps) {
           </motion.span>
           <Image
             src="/assets/images/banh-ran-1.png"
-            alt="Bánh rán"
+            alt="Bánh mì"
             width={120}
             height={120}
             className="drop-shadow-xl"

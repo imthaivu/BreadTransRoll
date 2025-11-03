@@ -33,7 +33,7 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
   },
   {
     id: "currency",
-    label: "Quản lý Bánh Rán",
+    label: "Quản lý Bánh mì",
     href: "/admin/currency",
   },
 ];

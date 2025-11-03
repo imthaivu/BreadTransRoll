@@ -143,7 +143,7 @@ export default function AdminStudents() {
         currentBalance < transactionData.amount
       ) {
         toast.error(
-          `Không thể trừ ${transactionData.amount} bánh rán. Số dư hiện tại chỉ có ${currentBalance} bánh rán.`
+          `Không thể trừ ${transactionData.amount} bánh mì. Số dư hiện tại chỉ có ${currentBalance} bánh mì.`
         );
         return;
       }
@@ -230,7 +230,7 @@ export default function AdminStudents() {
     },
     {
       key: "totalBanhRan",
-      title: "Bánh rán",
+      title: "Bánh mì",
       render: (_, student) => (
         <div className="flex items-center">
           <span className="text-sm md:text-base font-medium text-orange-600">
@@ -353,8 +353,8 @@ export default function AdminStudents() {
         required: "Vui lòng chọn loại",
       },
       options: [
-        { value: "add", label: "Cộng bánh rán" },
-        { value: "subtract", label: "Trừ bánh rán" },
+        { value: "add", label: "Cộng bánh mì" },
+        { value: "subtract", label: "Trừ bánh mì" },
       ],
     },
     {
@@ -539,7 +539,7 @@ export default function AdminStudents() {
                   {activeStudent.address || "(chưa có)"}
                 </div>
                 <div className="text-gray-700">
-                  <span className="font-medium">Bánh rán:</span>{" "}
+                  <span className="font-medium">Bánh mì:</span>{" "}
                   {activeStudent.totalBanhRan || 0}
                 </div>
                 <div className="text-gray-700">
@@ -613,7 +613,7 @@ export default function AdminStudents() {
             setIsCreateTxModalOpen(false);
             setSelectedStudent(null);
           }}
-          title="Tạo giao dịch bánh rán"
+          title="Tạo giao dịch bánh mì"
           subtitle={`Học sinh: ${
             selectedStudent.displayName || selectedStudent.email
           } — Số dư: ${selectedStudent.totalBanhRan || 0} 🥟`}

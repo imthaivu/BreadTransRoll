@@ -21,7 +21,7 @@ export function useSpin({ onSuccess, onError }: UseSpinOptions = {}) {
   } = useMutation({
     mutationFn: async (ticketId: string) => {
       if (!studentId) {
-        throw new Error("Bạn cần đăng nhập để quay bánh rán");
+        throw new Error("Bạn cần đăng nhập để quay bánh mì");
       }
 
       // Tạo device fingerprint

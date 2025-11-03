@@ -69,7 +69,7 @@ function CurrencyRequestModal({
       open={isOpen}
       onClose={onClose}
       maxWidth="md"
-      title={`Yêu cầu ${type === "add" ? "cộng" : "trừ"} bánh rán cho ${
+      title={`Yêu cầu ${type === "add" ? "cộng" : "trừ"} bánh mì cho ${
         member.name
       }`}
     >
@@ -187,7 +187,7 @@ export function MembersList({
                   variant="ghost"
                   size="sm"
                   onClick={() => setRequestModal({ member, type: "add" })}
-                  title="Cộng bánh rán"
+                  title="Cộng bánh mì"
                 >
                   <FiPlusCircle className="h-5 w-5 text-green-500" />
                   <span className="ml-1">Cộng</span>
@@ -196,7 +196,7 @@ export function MembersList({
                   variant="ghost"
                   size="sm"
                   onClick={() => setRequestModal({ member, type: "subtract" })}
-                  title="Trừ bánh rán"
+                  title="Trừ bánh mì"
                 >
                   <FiMinusCircle className="h-5 w-5 text-red-500" />
                   <span className="ml-1">Trừ</span>

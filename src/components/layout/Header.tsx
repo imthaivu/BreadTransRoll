@@ -166,7 +166,7 @@ export default function Header() {
                 src={
                   "https://magical-tulumba-581427.netlify.app/img-ui/dorayaki.png"
                 }
-                alt="Bánh rán"
+                alt="Bánh mì"
                 width={24}
                 height={24}
                 className="inline-block ml-1"
@@ -442,7 +442,7 @@ function UserActions({
             src={
               "https://magical-tulumba-581427.netlify.app/img-ui/dorayaki.png"
             }
-            alt="Bánh rán"
+            alt="Bánh mì"
             width={24}
             height={24}
             className="inline-block ml-1"
@@ -584,7 +584,7 @@ function UserActions({
 //                     {/* Role */}
 //                     <span>- {translateRole(role as string)}</span>
 
-//                     {/* Total bánh rán */}
+//                     {/* Total bánh mì */}
 //                     {role == "student" && (
 //                       <div className="flex items-center bg-blue-100 text-white text-sm md:text-base font-bold px-3 py-0.5 rounded-full h-10">
 //                         <span className="mr-1 text-gray-600">Có</span>
@@ -595,7 +595,7 @@ function UserActions({
 //                           src={
 //                             "https://magical-tulumba-581427.netlify.app/img-ui/dorayaki.png"
 //                           }
-//                           alt="Bánh rán"
+//                           alt="Bánh mì"
 //                           width={24}
 //                           height={24}
 //                           className="inline-block ml-1"

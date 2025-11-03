@@ -154,11 +154,11 @@ export const useCreateCurrencyTransaction = () => {
         newTransaction
       );
 
-      toast.success("Thêm bánh rán thành công!");
+      toast.success("Thêm bánh mì thành công!");
     },
     onError: (error) => {
       console.error("Error creating currency transaction:", error);
-      toast.error(error.message || "Thêm bánh rán thất bại!");
+      toast.error(error.message || "Thêm bánh mì thất bại!");
     },
   });
 };
@@ -181,11 +181,11 @@ export const useDeleteCurrencyTransaction = () => {
       // Invalidate students list to update totalBanhRan
       queryClient.invalidateQueries({ queryKey: studentKeys.lists() });
 
-      toast.success("Xóa bánh rán thành công!");
+      toast.success("Xóa bánh mì thành công!");
     },
     onError: (error) => {
       console.error("Error deleting currency transaction:", error);
-      toast.error("Xóa bánh rán thất bại!");
+      toast.error("Xóa bánh mì thất bại!");
     },
   });
 };

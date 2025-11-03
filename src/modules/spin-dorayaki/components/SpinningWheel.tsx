@@ -80,7 +80,7 @@ function checkTimeSlotCreateSpinTicket(): {
 
   return {
     allowed: false,
-    message: `Bạn có thể nhận vé quay vòng quay bánh rán khi nộp bài trong khung giờ 8-10h sáng và 20-22h tối.`,
+    message: `Bạn có thể nhận vé quay vòng quay bánh mì khi nộp bài trong khung giờ 8-10h sáng và 20-22h tối.`,
   };
 }
 
@@ -440,7 +440,7 @@ export function SpinningWheel() {
     <>
     <div className="text-center pt-4 mb-4 sm:pt-8 sm:mb-8">
               <h1 className="text-xl md:text-2xl lg:text-4xl font-bold text-gray-800 mb-2 sm:mb-4">
-                Vòng Quay Bánh Rán
+                Vòng Quay Bánh mì
               </h1>
             </div>
       {/* Time Slot Notification */}
@@ -500,7 +500,7 @@ export function SpinningWheel() {
               </button>
             </div>
             <h1 className="text-2xl font-bold text-blue-800 [text-shadow:1px_1px_2px_#fff] sm:text-3xl">
-              Vòng Quay Bánh Rán
+              Vòng Quay Bánh mì
             </h1>
           </div>
 
@@ -601,7 +601,7 @@ export function SpinningWheel() {
                 Chưa có vé quay nào
               </h3>
               <p className="text-gray-500">
-                Hoàn thành quiz với độ chính xác cao để nhận vé quay bánh rán!
+                Hoàn thành quiz với độ chính xác cao để nhận vé quay bánh mì!
               </p>
             </div>
           ) : (

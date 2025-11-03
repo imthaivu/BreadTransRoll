@@ -48,7 +48,7 @@ export default function FeatureLayout({ children }: FeatureLayoutProps) {
       else if (segment === "users") label = "Người dùng";
       else if (segment === "grammar") label = "Ngữ pháp";
       else if (segment === "speaking-upload") label = "Nộp bài nói";
-      else if (segment === "spin-dorayaki") label = "Vòng xoay bánh rán";
+      else if (segment === "spin-dorayaki") label = "Vòng quay bánh mì";
       else {
         // For dynamic segments (like classId, lessonId), try to make them more readable
         if (segment.length > 10) {

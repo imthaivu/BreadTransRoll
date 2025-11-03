@@ -180,7 +180,7 @@ export default function AdminCurrency() {
         const currentBalance = selectedStudent?.totalBanhRan || 0;
         if (currentBalance < transactionData.amount) {
           toast.error(
-            `Không thể trừ ${transactionData.amount} bánh rán. Số dư hiện tại chỉ có ${currentBalance} bánh rán.`
+            `Không thể trừ ${transactionData.amount} bánh mì. Số dư hiện tại chỉ có ${currentBalance} bánh mì.`
           );
           return;
         }
@@ -296,7 +296,7 @@ export default function AdminCurrency() {
       title: "Số lượng",
       render: (_, transaction) => (
         <span className="text-sm md:text-base font-medium text-gray-900">
-          {transaction.amount} bánh rán
+          {transaction.amount} bánh mì
         </span>
       ),
     },
@@ -364,8 +364,8 @@ export default function AdminCurrency() {
         required: "Vui lòng chọn loại",
       },
       options: [
-        { value: "add", label: "Cộng bánh rán" },
-        { value: "subtract", label: "Trừ bánh rán" },
+        { value: "add", label: "Cộng bánh mì" },
+        { value: "subtract", label: "Trừ bánh mì" },
       ],
     },
     {
@@ -402,7 +402,7 @@ export default function AdminCurrency() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold mb-6">Quản lý Bánh Rán</h1>
+      <h1 className="text-2xl font-bold mb-6">Quản lý Bánh mì</h1>
 
       {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -431,7 +431,7 @@ export default function AdminCurrency() {
               : "text-muted hover:text-foreground"
           }`}
         >
-          Giao dịch bánh rán
+          Giao dịch bánh mì
         </button>
         <button
           onClick={() => setActiveTab("requests")}
@@ -608,7 +608,7 @@ export default function AdminCurrency() {
                     {selectedStudent.displayName || selectedStudent.email}
                   </h3>
                   <p className="text-orange-600 text-sm md:text-base">
-                    Tổng bánh rán hiện tại
+                    Tổng bánh mì hiện tại
                   </p>
                 </div>
                 <div className="text-right">
@@ -649,7 +649,7 @@ export default function AdminCurrency() {
             columns={columns}
             data={filteredTransactions}
             loading={isLoading}
-            emptyMessage="Không có giao dịch bánh rán nào"
+            emptyMessage="Không có giao dịch bánh mì nào"
             showCheckbox={false}
           />
 
@@ -657,8 +657,8 @@ export default function AdminCurrency() {
           <AdminModal
             isOpen={isCreateModalOpen}
             onClose={closeCreateModal}
-            title="Thêm bánh rán"
-            subtitle="Nhập thông tin để thêm/trừ bánh rán cho học sinh"
+            title="Thêm bánh mì"
+            subtitle="Nhập thông tin để thêm/trừ bánh mì cho học sinh"
             size="lg"
           >
             <div className="space-y-4">
@@ -687,7 +687,7 @@ export default function AdminCurrency() {
                 <div className="bg-orange-50 border border-orange-200 rounded-lg p-3">
                   <div className="flex items-center justify-between">
                     <span className="text-sm md:text-base font-medium text-orange-800">
-                      Tổng bánh rán hiện tại:
+                      Tổng bánh mì hiện tại:
                     </span>
                     <span className="text-lg font-bold text-orange-600">
                       {selectedStudent.totalBanhRan || 0} 🥟

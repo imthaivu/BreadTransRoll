@@ -330,7 +330,7 @@ export default function FlashcardPage() {
               </h3>
               <p className="text-gray-600 mb-4">
                 Bạn đã hoàn thành quiz với độ chính xác cao. Hãy thử vận may của
-                bạn tại vòng quay bánh rán!
+                bạn tại vòng quay bánh mì!
               </p>
               {completedQuizLesson && (
                 <p className="text-sm text-gray-500 mb-4">
@@ -353,7 +353,7 @@ export default function FlashcardPage() {
                 }}
                 className="w-full bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-white font-bold py-3 px-6 rounded-full"
               >
-                🎯 Đi quay bánh rán ngay!
+                🎯 Đi quay bánh mì ngay!
               </Button>
 
               <Button
@@ -367,7 +367,7 @@ export default function FlashcardPage() {
 
             <div className="mt-6 p-4 bg-blue-50 rounded-lg">
               <p className="text-sm text-blue-700">
-                💡 <strong>Lưu ý:</strong> Bạn có thể quay bánh rán bất cứ lúc
+                💡 <strong>Lưu ý:</strong> Bạn có thể quay bánh mì bất cứ lúc
                 nào từ menu chính
               </p>
             </div>

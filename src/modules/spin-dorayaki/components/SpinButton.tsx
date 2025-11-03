@@ -40,7 +40,7 @@ export function SpinButton({
             <span>QUAY NGAY!</span>
             <Image
               src="/assets/images/banh-ran-1.png"
-              alt="Bánh rán"
+              alt="Bánh mì"
               width={24}
               height={24}
               className="animate-bounce"
