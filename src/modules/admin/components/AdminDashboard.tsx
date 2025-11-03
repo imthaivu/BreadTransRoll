@@ -92,6 +92,12 @@ export default function AdminDashboard() {
         <h1 className="text-3xl font-bold text-gray-900">Dashboard Admin</h1>
         
       </div>
+      <ActivityLineChart
+          speakingData={statsData?.speakingSubmissionsLast7Days ?? []}
+          userData={statsData?.newUsersLast7Days ?? []}
+          listeningData={statsData?.listeningProgressLast7Days ?? []}
+          quizData={statsData?.quizResultsLast7Days ?? []}
+        />
 
       {/* Stats - Mobile: merge 4 cards into one, Desktop: original grid */}
       {/* Mobile merged card */}
@@ -178,19 +184,15 @@ export default function AdminDashboard() {
       </div>
 
       {/* Charts */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
-        <VisitorLineChart
-          data={statsData?.visitorStats?.dailyData ?? []}
-          range={visitorRange}
-          onRangeChange={setVisitorRange}
-        />
-        <ActivityLineChart
-          speakingData={statsData?.speakingSubmissionsLast7Days ?? []}
-          userData={statsData?.newUsersLast7Days ?? []}
-          listeningData={statsData?.listeningProgressLast7Days ?? []}
-          quizData={statsData?.quizResultsLast7Days ?? []}
-        />
-      </div>
+        {Array.isArray(statsData?.visitorStats?.dailyData) &&
+          statsData!.visitorStats!.dailyData.length >= 2 && (
+            <VisitorLineChart
+              data={statsData!.visitorStats!.dailyData}
+              range={visitorRange}
+              onRangeChange={setVisitorRange}
+            />
+          )}
+        
     </div>
   );
 }
