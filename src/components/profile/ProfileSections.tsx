@@ -6,11 +6,12 @@ import { useAuth } from "@/lib/auth/context";
 import { getDb, getStorageBucket } from "@/lib/firebase/client";
 import { doc, updateDoc } from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import { Trash2, Upload, User } from "lucide-react";
+import { User, Edit3 } from "lucide-react";
 import Image from "next/image";
 import { useRef, useState } from "react";
 import toast from "react-hot-toast";
 
+// ...existing code...
 export function AvatarCard() {
   const { session, profile } = useAuth();
   const [avatarUploading, setAvatarUploading] = useState(false);
@@ -46,28 +47,48 @@ export function AvatarCard() {
       </CardHeader>
       <CardContent>
         <div className="flex items-center flex-wrap gap-6">
-          {profile?.avatarUrl ? (
-            <Image
-              src={profile.avatarUrl}
-              alt="Avatar"
-              width={96}
-              height={96}
-              className="w-24 h-24 rounded-full object-cover"
-            />
-          ) : (
-            <div className="w-24 h-24 rounded-full bg-slate-200 flex items-center justify-center">
-              <User size={48} className="text-slate-500" />
-            </div>
-          )}
-          <div className="flex items-center gap-3 flex-wrap">
-            <Button
-              variant="secondary"
-              disabled={avatarUploading}
+          <div className="relative">
+            {profile?.avatarUrl ? (
+              <Image
+                src={profile.avatarUrl}
+                alt="Avatar"
+                width={96}
+                height={96}
+                className="w-24 h-24 rounded-full object-cover"
+              />
+            ) : (
+              <div className="w-24 h-24 rounded-full bg-slate-200 flex items-center justify-center">
+                <User size={48} className="text-slate-500" />
+              </div>
+            )}
+
+            {/* small edit icon bottom-right of avatar */}
+            <button
+              type="button"
               onClick={() => fileInputRef.current?.click()}
+              disabled={avatarUploading}
+              title="Đổi ảnh đại diện"
+              className="absolute -bottom-1 -right-1 w-8 h-8 rounded-full bg-white shadow flex items-center justify-center hover:bg-gray-100 transition-colors"
             >
-              <Upload size={16} className="mr-2" />
-              Thay đổi
-            </Button>
+              <Edit3 size={16} />
+            </button>
+          </div>
+
+          <div className="flex flex-col gap-1">
+            <div className="text-base font-medium text-slate-800">
+              {(profile as { displayName?: string; email?: string })?.displayName ??
+                (profile as { displayName?: string; email?: string })?.email ??
+                "Người dùng"}
+            </div>
+
+            {/* streak message */}
+            {profile?.streakCount && profile.streakCount > 0 && (
+              <div className="text-sm text-gray-600">
+                Đã liên tục học tiếng Anh trong {profile.streakCount} ngày
+              </div>
+            )}
+
+            {/* keep file input hidden */}
             <input
               type="file"
               accept="image/*"
@@ -82,6 +103,7 @@ export function AvatarCard() {
   );
 }
 
+// ...existing code...
 export function PersonalInfoCard() {
   const { session, profile } = useAuth();
   const [displayName, setDisplayName] = useState(profile?.displayName ?? "");

@@ -42,9 +42,9 @@ export default function ProfilePage() {
                     onClick={() => {
                       signOutApp();
                     }}
-                    className="w-full justify-center mt-2 max-w-[200px]"
+                    className="mx-auto mt-4 flex items-center"
                   >
-                    <FiLogOut /> <span className="ml-2">Đăng xuất</span>
+                    <FiLogOut className="mr-2" /> Đăng xuất
                   </Button>
                 )}
               </div>
