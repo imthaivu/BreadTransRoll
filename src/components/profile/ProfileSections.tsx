@@ -10,7 +10,7 @@ import { User, Edit3 } from "lucide-react";
 import Image from "next/image";
 import { useRef, useState } from "react";
 import toast from "react-hot-toast";
-
+import { Flame } from "lucide-react";
 // ...existing code...
 export function AvatarCard() {
   const { session, profile } = useAuth();
@@ -42,11 +42,9 @@ export function AvatarCard() {
 
   return (
     <Card>
-      <CardHeader>
-        <CardTitle>Ảnh đại diện</CardTitle>
-      </CardHeader>
       <CardContent>
-        <div className="flex items-center flex-wrap gap-6">
+        <div className="flex flex-col items-center text-center gap-3">
+          {/* Avatar */}
           <div className="relative">
             {profile?.avatarUrl ? (
               <Image
@@ -62,7 +60,7 @@ export function AvatarCard() {
               </div>
             )}
 
-            {/* small edit icon bottom-right of avatar */}
+            {/* small edit icon bottom-right */}
             <button
               type="button"
               onClick={() => fileInputRef.current?.click()}
@@ -74,29 +72,36 @@ export function AvatarCard() {
             </button>
           </div>
 
-          <div className="flex flex-col gap-1">
-            <div className="text-base font-medium text-slate-800">
-              {(profile as { displayName?: string; email?: string })?.displayName ??
-                (profile as { displayName?: string; email?: string })?.email ??
-                "Người dùng"}
-            </div>
-
-            {/* streak message */}
-            {profile?.streakCount && profile.streakCount > 0 && (
-              <div className="text-sm text-gray-600">
-                Đã liên tục học tiếng Anh trong {profile.streakCount} ngày
-              </div>
-            )}
-
-            {/* keep file input hidden */}
-            <input
-              type="file"
-              accept="image/*"
-              className="sr-only"
-              ref={fileInputRef}
-              onChange={(e) => handleAvatarChange(e.target.files?.[0] ?? null)}
-            />
+          {/* Tên người dùng */}
+          <div className="text-3xl font-medium text-slate-800">
+            {(profile as { displayName?: string; email?: string })
+              ?.displayName ??
+              (profile as { displayName?: string; email?: string })?.email ??
+              "Người dùng"}
           </div>
+
+          {/* Streak */}
+          {profile?.streakCount && profile.streakCount > 0 && (
+            <div className="flex items-center gap-1 text-sm text-gray-600">
+              <Flame className="text-orange-500 w-4 h-4" />
+              <span>
+                Đã liên tục học tiếng Anh trong{" "}
+                <span className="font-medium text-slate-800">
+                  {profile.streakCount}
+                </span>{" "}
+                ngày
+              </span>
+            </div>
+          )}
+
+          {/* Hidden file input */}
+          <input
+            type="file"
+            accept="image/*"
+            className="sr-only"
+            ref={fileInputRef}
+            onChange={(e) => handleAvatarChange(e.target.files?.[0] ?? null)}
+          />
         </div>
       </CardContent>
     </Card>

@@ -21,13 +21,7 @@ export default function ProfilePage() {
       <PageMotion showLoading={false}>
         <div className="bg-white">
           <StaggerContainer>
-            <StaggerItem>
-              <div className="text-center mb-8">
-                <h1 className="text-4xl font-bold text-gray-800 mb-4">
-                  Hồ sơ của bạn
-                </h1>
-              </div>
-            </StaggerItem>
+            
 
             <StaggerItem>
               <div className="max-w-4xl mx-auto space-y-6">
