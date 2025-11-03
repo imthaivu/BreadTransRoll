@@ -229,11 +229,12 @@ export default function FlashcardPage() {
         <Modal
           open={showLearningModal}
           onClose={handleCloseLearningModal}
-          title={`Đang học: Sách ${
-            books.find((b) => b.id.toString() === selectedBook)?.name || ""
-          } - ${selectedLessons.length} Lessons`}
+          title={`Kết quả `}
           overlayClassName="bg-black/60"
         >
+          <h5 className="text-lg font-semibold">{`Sách ${
+            books.find((b) => b.id.toString() === selectedBook)?.name || ""
+          } - ${selectedLessons.length} Lessons (${selectedLessons.join(", ")})`}</h5>
           <div className="overflow-x-hidden max-w-screen min-h-[80vh]">
             {/* Learning Interface */}
             {isPlaying && deck.length > 0 && currentIndex < deck.length && (

@@ -32,7 +32,7 @@ export const CompletionScreen = ({
         <div className="flex justify-center gap-4 mb-4">
           <div className="text-center">
             <div className="text-2xl font-bold text-green-600">{score}</div>
-            <div className="text-sm md:text-base text-gray-600">Điểm</div>
+            <div className="text-sm md:text-base text-gray-600">Từ đúng</div>
           </div>
           <div className="text-center">
             <div className="text-2xl font-bold text-blue-600">{accuracy}%</div>
@@ -45,7 +45,7 @@ export const CompletionScreen = ({
         {/* Wrong Words */}
         {wrongWords.length > 0 && (
           <div className="mt-2 sm:mt-4 p-2 sm:p-4 bg-primary rounded-lg">
-            <h4 className="font-semibold text-black mb-2">Cần ôn các từ:</h4>
+            <h4 className="font-semibold text-black mb-2">{`Cần ôn ${wrongWords.length} từ:`}</h4>
             <div className="text-sm md:text-base text-black">
               {wrongWords.map((word, index) => (
                 <div key={index} className="mb-1">
