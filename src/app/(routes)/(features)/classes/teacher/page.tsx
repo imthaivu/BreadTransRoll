@@ -9,8 +9,8 @@ export default function TeacherClassesPage() {
     <RequireAuth>
       <RequireRole roles={[UserRole.TEACHER]}>
         <main>
-          <div className="text-center pt-4 mb-4 sm:pt-8 sm:mb-8">
-            <h1 className="text-xl md:text-2xl lg:text-4xl font-bold text-gray-800 mb-2 sm:mb-4">
+          <div className="text-center pt-4 sm:pt-8">
+            <h1 className="text-xl md:text-2xl lg:text-4xl font-bold text-gray-800">
               Lớp học của tôi
             </h1>
           </div>
