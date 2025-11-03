@@ -14,9 +14,10 @@ export default function ShoppingPage() {
       <div className="bg-white">
         <StaggerContainer>
           <StaggerItem>
-            <div className="text-center mb-8">
-              <h1 className="text-4xl font-bold text-gray-800 mb-4">
-                Nobita đi Shopping
+           
+            <div className="text-center pt-4 mb-4 sm:pt-8 sm:mb-8">
+              <h1 className="text-xl md:text-2xl lg:text-4xl font-bold text-gray-800 mb-2 sm:mb-4">
+               Nobita đi Shopping
               </h1>
             </div>
           </StaggerItem>

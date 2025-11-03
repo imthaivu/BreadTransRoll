@@ -59,13 +59,10 @@ export default function SpeakingUploadPage() {
       <RequireRole roles={[UserRole.STUDENT]}>
         <div className="bg-white min-h-screen flex justify-center items-start">
           <div className="w-full max-w-2xl space-y-4 flex flex-col items-center">
-            <div className="text-center">
-              <h1 className="text-3xl font-bold text-gray-800">
-                Nộp bài tập nói
+            <div className="text-center pt-4 mb-4 sm:pt-8 sm:mb-8">
+              <h1 className="text-xl md:text-2xl lg:text-4xl font-bold text-gray-800 mb-2 sm:mb-4">
+                Nộp bài nói
               </h1>
-              <p className="mt-2 text-gray-600">
-                Chọn sách, bài học và ghi âm bài nói của bạn.
-              </p>
             </div>
 
             <SubmissionControls

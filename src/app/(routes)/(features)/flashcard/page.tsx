@@ -160,6 +160,7 @@ export default function FlashcardPage() {
     <div className="bg-white min-h-[calc(100vh-140px)] overflow-x-hidden">
       <StaggerContainer>
         <StaggerItem>
+
           <div className="text-center pt-4 mb-4 sm:pt-8 sm:mb-8">
             <h1 className="text-xl md:text-2xl lg:text-4xl font-bold text-gray-800 mb-2 sm:mb-4">
               Flashcard - Học từ vựng hiệu quả

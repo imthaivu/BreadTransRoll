@@ -41,6 +41,11 @@ export default function StreamlinePage() {
         <StaggerContainer>
           <StaggerItem>
             <div>
+              <div className="text-center pt-4 mb-4 sm:pt-8 sm:mb-8">
+              <h1 className="text-xl md:text-2xl lg:text-4xl font-bold text-gray-800 mb-2 sm:mb-4">
+                Sách Streamline English
+              </h1>
+            </div>
               <BookSelector
                 selectedBook={selectedBook}
                 onBookSelect={handleBookSelect}

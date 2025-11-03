@@ -18,11 +18,7 @@ export default function BookSelector({
 }: BookSelectorProps) {
   return (
     <div className={`${className}`}>
-      <div className="text-center">
-        <h2 className="text-2xl font-bold text-gray-800">
-          Chọn sách Streamline
-        </h2>
-      </div>
+      
 
       <div className="flex justify-center gap-4 mt-1">
         {STREAMLINE_BOOKS.map((book) => (

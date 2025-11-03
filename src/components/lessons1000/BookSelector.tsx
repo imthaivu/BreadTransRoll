@@ -18,11 +18,7 @@ export default function BookSelector({
 }: BookSelectorProps) {
   return (
     <div className={`${className}`}>
-      <div className="text-center mb-6">
-        <h2 className="text-2xl font-bold text-gray-800 mb-2">
-          Chọn sách 1000 Bài luyện đọc/nghe
-        </h2>
-      </div>
+      
 
       <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-2">
         {LESSONS_1000_BOOKS.map((book) => (

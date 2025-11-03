@@ -438,6 +438,11 @@ export function SpinningWheel() {
 
   return (
     <>
+    <div className="text-center pt-4 mb-4 sm:pt-8 sm:mb-8">
+              <h1 className="text-xl md:text-2xl lg:text-4xl font-bold text-gray-800 mb-2 sm:mb-4">
+                Vòng Quay Bánh Rán
+              </h1>
+            </div>
       {/* Time Slot Notification */}
       {!timeCheck.allowed && (
         <div className="w-full max-w-4xl mx-auto px-4 py-4">
