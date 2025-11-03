@@ -19,14 +19,15 @@ export default function TeacherClassesPage() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            Sách giáo khoa
-            <Image
-              src="/assets/images/ebook.png"
-              alt="Ebook"
-              width={24}
-              height={24}
-              className="inline-block ml-1"
-            />
+            {/* căn giữa */}
+            <div className="flex justify-center items-center">
+              <Image
+                src="/assets/images/ebook.png"
+                alt="Ebook"
+                height={48}
+                className="inline-block ml-1"
+              />
+            </div>
           </a>
           <TeacherClassesList />
         </main>
