@@ -21,12 +21,10 @@ export default function AboutSection() {
           className="bg-gray-50 rounded-xl p-2 md:p-6 border border-gray-200 shadow-md mb-8"
         >
           <div className="text-center mb-6">
-            <h3 className="text-2xl md:text-3xl font-bold text-gray-800 mb-2">
+            <h3 className="text-2xl md:text-3xl font-bold text-gray-800">
               Khóa Học
             </h3>
-            <p className="text-gray-600">
-              15 buổi/tháng - Học vui, hiệu quả cao
-            </p>
+            
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -55,9 +53,9 @@ export default function AboutSection() {
 
             <div className="flex-col flex items-center justify-center w-full text-center h-full bg-primary rounded-lg p-6 shadow-sm">
               <h4 className="text-4xl text-primary-foreground mb-1">
-                Học phí chỉ <b>50k</b>/ngày
+                Học phí hơn <b>50k</b>/ngày
               </h4>
-              <p className="text-xl text-primary-foreground">1.5 triệu/tháng</p>
+              <p className="text-xl text-primary-foreground">1.6 triệu/tháng</p>
             </div>
           </div>
         </motion.div>

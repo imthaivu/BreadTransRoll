@@ -100,7 +100,7 @@ export default function Timeline() {
         >
           <h3 className="text-4xl font-black text-blue-900 mb-4">Lộ Trình</h3>
           <p className="text-lg text-blue-900 max-w-2xl mx-auto">
-            Hành trình học tiếng Anh từ cơ bản đến thành thạo với Doraemon
+            Hành trình học tiếng Anh với BreadTrans (Bảo bối "Bánh mì chuyển ngữ")
           </p>
         </motion.div>
 
