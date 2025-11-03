@@ -24,7 +24,7 @@ export default function TeacherClassesPage() {
               <Image
                 src="/assets/images/ebook.png"
                 alt="Ebook"
-                className="inline-block ml- h-12"
+                className="inline-block ml- h-20"
               />
             </div>
           </a>
