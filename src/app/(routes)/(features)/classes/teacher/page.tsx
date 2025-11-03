@@ -13,6 +13,7 @@ export default function TeacherClassesPage() {
               <h1 className="text-xl md:text-2xl lg:text-4xl font-bold text-gray-800 mb-2 sm:mb-4">
                 Lớp học của tôi
               </h1>
+              <a href="https://imthaivu.github.io/sgkTiengAnh/" target="_blank" rel="noopener noreferrer">Sách giáo khoa</a>
             </div>
 
           <TeacherClassesList />
