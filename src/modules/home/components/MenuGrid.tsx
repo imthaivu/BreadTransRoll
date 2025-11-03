@@ -37,7 +37,7 @@ export default function MenuGrid() {
           className="bg-white rounded-2xl border-2 border-gray-200 shadow-lg hover:bg-gray-50 transition-all duration-300 cursor-pointer flex flex-col items-center text-center pb-2"
           onClick={() => handleMenuClick(item.path)}
         >
-          <div className="relative w-full aspect-3/2 mb-2 rounded-xl overflow-hidden">
+          <div className="relative w-full aspect-16/9 mb-2 rounded-xl overflow-hidden">
             <Image
               src={item.image}
               alt={item.alt}

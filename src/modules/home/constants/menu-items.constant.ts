@@ -3,7 +3,7 @@ export const menuItems = [
     id: "streamline",
     title: "Streamline",
     path: "/streamline",
-    description: "Học nghe nói tiếng Anh",
+    description: "Học tiếng anh toàn diện",
     image: "https://magical-tulumba-581427.netlify.app/img-ui/streamline.png",
     alt: "Streamline",
     category: "Học tập",
@@ -11,9 +11,9 @@ export const menuItems = [
   },
   {
     id: "lessons1000",
-    title: "1000 Bài luyện",
+    title: "1000 Bài luyện Đọc/Nghe",
     path: "/lessons1000",
-    description: "Luyện tập toàn diện",
+    description: "Đọc/Nghe tiếng Anh mỗi ngày",
     image: "https://magical-tulumba-581427.netlify.app/img-ui/home-nobita.png",
     alt: "1000 Bài luyện",
     category: "Học tập",
@@ -23,7 +23,7 @@ export const menuItems = [
     id: "video",
     title: "Nộp bài nói",
     path: "/speaking-upload",
-    description: "Quay video nói tiếng Anh",
+    description: "Ghi âm và sửa bài nói của bạn",
     image:
       "https://magical-tulumba-581427.netlify.app/img-ui/nobita-submit.png",
     alt: "Nộp bài nói",
@@ -32,7 +32,7 @@ export const menuItems = [
   },
   {
     id: "flashcard",
-    title: "Flashcard",
+    title: "Flashcard / Quiz",
     path: "/flashcard",
     description: "Học từ vựng hiệu quả",
     image: "/assets/images/flash-card.png",

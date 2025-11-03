@@ -31,7 +31,7 @@ export default function BookSelector({
             onClick={() => onBookSelect(book)}
           >
             {/* Book cover */}
-            <div className="relative overflow-hidden w-full h-20 rounded-lg shadow-md group-hover:shadow-lg transition-shadow">
+            <div className="relative overflow-hidden aspect-1/1 rounded-lg shadow-md group-hover:shadow-lg transition-shadow">
               <Image
                 src={book.imageUrl}
                 alt={book.name}
