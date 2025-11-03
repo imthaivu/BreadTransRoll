@@ -35,12 +35,7 @@ export default function TopicSelector({
 
   return (
     <div className={`${className}`}>
-      <div className="text-center mb-4">
-        <h3 className="text-lg font-bold text-gray-800 mb-1">
-          Chọn chủ đề ngữ pháp
-        </h3>
-      </div>
-
+      
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
         {topics.map((topic, index) => (
           <motion.div
