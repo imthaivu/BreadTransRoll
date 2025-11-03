@@ -2,12 +2,17 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { useRef } from "react";
 import { FiPhone } from "react-icons/fi";
 
 export default function ContactPopup() {
+  const pathname = usePathname();
   const zaloRef = useRef<HTMLButtonElement>(null);
   const phoneRef = useRef<HTMLButtonElement>(null);
+
+  // Only show on homepage
+  if (pathname !== "/") return null;
 
   const openZaloChat = () => {
     window.open("https://zalo.me/0377180010", "_blank");
