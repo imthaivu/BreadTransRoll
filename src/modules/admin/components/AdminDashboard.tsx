@@ -90,13 +90,41 @@ export default function AdminDashboard() {
       {/* Header */}
       <div>
         <h1 className="text-3xl font-bold text-gray-900">Dashboard Admin</h1>
-        <p className="text-gray-600 mt-2">
-          Quản lý toàn bộ hệ thống, người dùng và nội dung
-        </p>
+        
       </div>
 
-      {/* Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {/* Stats - Mobile: merge 4 cards into one, Desktop: original grid */}
+      {/* Mobile merged card */}
+      <div className="block md:hidden">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.2 }}
+          className="bg-white rounded-lg shadow-sm border border-gray-200 p-4"
+        >
+          <h4 className="text-base font-semibold text-gray-800 mb-3">
+            Tổng quan
+          </h4>
+          <div className="divide-y divide-gray-100">
+            {stats.map((stat) => (
+              <div key={stat.title} className="py-3 flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className={`p-2 rounded-lg bg-${stat.color}-100 text-${stat.color}-600`}>
+                    {stat.icon}
+                  </div>
+                  <p className="text-sm font-medium text-gray-600 max-w-[180px]">
+                    {stat.title}
+                  </p>
+                </div>
+                <p className="text-xl font-bold text-gray-900">{stat.value}</p>
+              </div>
+            ))}
+          </div>
+        </motion.div>
+      </div>
+
+      {/* Desktop / Tablet grid */}
+      <div className="hidden md:grid grid-cols-2 lg:grid-cols-3 gap-6">
         {stats.map((stat, index) => (
           <motion.div
             key={stat.title}

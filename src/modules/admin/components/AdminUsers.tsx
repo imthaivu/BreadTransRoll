@@ -279,9 +279,7 @@ export default function AdminUsers() {
           <h1 className="text-3xl font-bold text-gray-900">
             Quản lý người dùng
           </h1>
-          <p className="text-gray-600 mt-2">
-            Quản lý tài khoản người dùng trong hệ thống
-          </p>
+          
         </div>
       </motion.div>
 

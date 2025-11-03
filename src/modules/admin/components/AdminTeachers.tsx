@@ -271,9 +271,7 @@ export default function AdminTeachers() {
           <h1 className="text-3xl font-bold text-gray-900">
             Quản lý giáo viên
           </h1>
-          <p className="text-gray-600 mt-2">
-            Quản lý tài khoản giáo viên trong hệ thống
-          </p>
+          
         </div>
       </motion.div>
 

@@ -38,7 +38,7 @@ export default function ActivityLineChart({
   }));
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 h-[400px] flex flex-col">
+    <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 h-[420px] md:h-[400px] flex flex-col">
       <h3 className="text-lg font-semibold text-gray-800 mb-4">
         Hoạt động 7 ngày qua
       </h3>
@@ -47,25 +47,35 @@ export default function ActivityLineChart({
           data={mergedData}
           margin={{
             top: 5,
-            right: 20,
+            right: 16,
             left: -10,
-            bottom: 5,
+            bottom: 40,
           }}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="date" />
-          <YAxis allowDecimals={false} />
+          <XAxis
+            dataKey="date"
+            tick={{ fontSize: 11 }}
+            minTickGap={10}
+            interval="preserveStartEnd"
+          />
+          <YAxis allowDecimals={false} tick={{ fontSize: 11 }} />
           <Tooltip />
-          <Legend />
+          <Legend
+            verticalAlign="bottom"
+            align="center"
+            iconSize={10}
+            wrapperStyle={{ fontSize: 12 }}
+          />
           <Line
             type="monotone"
             dataKey="Bài nộp Speaking"
             stroke="#8884d8"
             activeDot={{ r: 8 }}
           />
-          <Line type="monotone" dataKey="Người dùng mới" stroke="#82ca9d" />
-          <Line type="monotone" dataKey="Lượt nghe" stroke="#ffc658" />
-          <Line type="monotone" dataKey="Kết quả Quiz" stroke="#ff8042" />
+          <Line type="monotone" dataKey="Người dùng mới" stroke="#82ca9d" strokeWidth={2} />
+          <Line type="monotone" dataKey="Lượt nghe" stroke="#ffc658" strokeWidth={2} />
+          <Line type="monotone" dataKey="Kết quả Quiz" stroke="#ff8042" strokeWidth={2} />
         </LineChart>
       </ResponsiveContainer>
     </div>

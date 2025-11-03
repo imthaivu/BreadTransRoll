@@ -427,9 +427,7 @@ export default function AdminStudents() {
       >
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Quản lý học sinh</h1>
-          <p className="text-gray-600 mt-2">
-            Quản lý thông tin học sinh trong hệ thống
-          </p>
+          
         </div>
       </motion.div>
 

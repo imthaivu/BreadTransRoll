@@ -30,7 +30,6 @@ export default function VisitorLineChart({
 }: VisitorLineChartProps) {
   return (
     <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
-      <div className="flex justify-between items-center mb-4">
         <h3 className="text-lg font-semibold">
           Lượt truy cập của khách và người dùng vãng lai
         </h3>
@@ -50,7 +49,6 @@ export default function VisitorLineChart({
             Tháng này
           </Button>
         </div>
-      </div>
       {data && data.length > 0 ? (
         <ResponsiveContainer width="100%" height={300}>
           <LineChart data={data}>
