@@ -45,7 +45,7 @@ export default function BannerSwiper() {
           {bannerSlides.map((slide) => (
             <SwiperSlide key={slide.id}>
               <div
-                className={`relative w-full h-full ${slide.bgColor} overflow-hidden`}
+                className={`relative w-full h-full md:p-5 ${slide.bgColor} overflow-hidden`}
               >
                 <div className="absolute inset-0 "></div>
                 <div className="relative max-w-6xl mx-auto px-4 h-full flex md:items-center py-4 md:py-8">
@@ -88,7 +88,7 @@ export default function BannerSwiper() {
 
                     {/* Image */}
                     <div className="flex-1 order-1 md:order-2 h-full flex flex-col justify-center sm:max-w-1/2 min-h-[100px]">
-                      <div className="relative h-full aspect-4/2 sm:aspect-4/2 max-w-full md:aspect-3/2 mx-auto rounded-xl overflow-hidden">
+                      <div className="relative h-full aspect-16/9 mx-auto rounded-xl overflow-hidden">
                         <Image
                           src={slide.image}
                           alt={slide.title}
