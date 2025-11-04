@@ -437,8 +437,9 @@ export function SpinningWheel() {
 
   return (
     <>
-      <div className="flex w-full flex-col items-center justify-content-between md:flex-row gap-2">
-        <div className="bg-white rounded-2xl border border-blue-200 shadow-lg p-6">
+      <div className="flex w-full flex-col items-center justify-center md:flex-row gap-2">
+        <div className="flex flex-col items-center gap-4">
+          <div className="bg-white rounded-2xl border border-blue-200 shadow-lg p-6">
             <div className="flex items-center gap-3 mb-6">
               <Ticket className="w-6 h-6 text-blue-600" />
               <h2 className="text-2xl font-bold text-blue-800">
@@ -581,6 +582,7 @@ export function SpinningWheel() {
             </div>
           </div>
           
+        </div>
         </div>
 
         <audio
