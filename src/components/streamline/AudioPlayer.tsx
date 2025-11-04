@@ -234,7 +234,7 @@ export default function AudioPlayer({
 
       {audioFiles.length > 0 ? (
         <>
-          <div className="mb-4">
+          <div>
             <input
               type="range"
               min="0"
@@ -260,7 +260,7 @@ export default function AudioPlayer({
 
             <Button
               onClick={handlePlayPause}
-              className="w-12 h-10 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 text-white shadow-lg hover:scale-105 transform transition-transform duration-300"
+              className="w-12 h-10 rounded-full bg-primary text-white shadow-lg hover:scale-105 transform transition-transform duration-300"
             >
               {isPlaying ? (
                 <Pause className="w-6 h-6 fill-white" />
@@ -279,9 +279,6 @@ export default function AudioPlayer({
           </div>
 
           <div className="flex justify-center items-center gap-6 mb-8 px-2">
-            <span className="text-sm md:text-base font-semibold text-gray-600">
-              Tốc độ:
-            </span>
             <div className="flex items-center gap-2">
               {AUDIO_PLAYER_CONFIG.speeds.map((speed) => (
                 <Button
@@ -292,13 +289,20 @@ export default function AudioPlayer({
                   }}
                   variant={playbackRate === speed ? "primary" : "secondary"}
                   size="sm"
-                  className={`w-8 h-6 rounded-lg text-sm md:text-base font-bold ${
+                  className={`w-10 h-7 rounded-lg text-sm md:text-base font-bold flex items-center justify-center gap-1 ${
                     playbackRate === speed
                       ? "bg-blue-600 text-white"
                       : "bg-gray-100 text-gray-700"
                   }`}
                 >
-                  {speed}x
+                  <span>
+                    {
+                      AUDIO_PLAYER_CONFIG.speedIcons[
+                        speed as keyof typeof AUDIO_PLAYER_CONFIG.speedIcons
+                      ]
+                    }
+                  </span>
+                  <span>{speed}x</span>
                 </Button>
               ))}
             </div>

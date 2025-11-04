@@ -31,11 +31,11 @@ export default function FeatureLayout({ children }: FeatureLayoutProps) {
       if (segment === "classes") label = "Lớp học";
       else if (segment === "dashboard") label = "Dashboard";
       else if (segment === "profile") label = "Hồ sơ";
-      else if (segment === "flashcard") label = "Flashcard";
+      else if (segment === "flashcard") label = "Flashcard / Quiz";
       else if (segment === "leaderboard") label = "Bảng xếp hạng";
-      else if (segment === "lessons1000") label = "1000 Bài học đọc/nghe";
+      else if (segment === "lessons1000") label = "1000 Bài luyện";
       else if (segment === "shopping") label = "Mua sắm";
-      else if (segment === "streamline") label = "Streamline";
+      else if (segment === "streamline") label = "Streamline English";
       else if (segment === "video") label = "Video";
       else if (segment === "student") label = "Học sinh";
       else if (segment === "teacher") label = "Giáo viên";
@@ -43,7 +43,7 @@ export default function FeatureLayout({ children }: FeatureLayoutProps) {
       else if (segment === "lessons") label = "Bài học";
       else if (segment === "scripts") label = "Scripts";
       else if (segment === "new") label = "Tạo mới";
-      else if (segment === "upload") label = "Nộp bài";
+      else if (segment === "upload") label = "Nộp bài nói";
       else if (segment === "analytics") label = "Phân tích";
       else if (segment === "users") label = "Người dùng";
       else if (segment === "grammar") label = "Ngữ pháp";

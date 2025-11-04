@@ -31,11 +31,12 @@ export default function BookSelector({
             onClick={() => onBookSelect(book)}
           >
             {/* Book cover */}
-            <div className="relative overflow-hidden w-full h-36">
+            <div className="relative overflow-hidden w-full">
               <Image
                 src={book.imageUrl}
                 alt={book.name}
-                fill
+                width={160}
+                height={213}
                 quality={100}
                 className="object-contain"
               />
@@ -52,7 +53,7 @@ export default function BookSelector({
             <div>
               <h3
                 className={cn(
-                  "text-sm md:text-base text-center font-semibold text-gray-800 mb-2",
+                  "text-xs md:text-base text-center font-semibold text-gray-800 mb-2 mt-2",
                   {
                     "text-primary": selectedBook?.id === book.id,
                   }

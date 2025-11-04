@@ -434,76 +434,120 @@ export function SpinningWheel() {
   };
 
   // Kiểm tra khung giờ hiện tại
-  const timeCheck = checkTimeSlotCreateSpinTicket();
 
   return (
     <>
-    <div className="text-center pt-4 mb-4 sm:pt-8 sm:mb-8">
-              <h1 className="text-xl md:text-2xl lg:text-4xl font-bold text-gray-800 mb-2 sm:mb-4">
-                Vòng Quay Bánh mì
-              </h1>
+      <div className="flex w-full flex-col items-center justify-content-between md:flex-row gap-2">
+        <div className="bg-white rounded-2xl border border-blue-200 shadow-lg p-6">
+            <div className="flex items-center gap-3 mb-6">
+              <Ticket className="w-6 h-6 text-blue-600" />
+              <h2 className="text-2xl font-bold text-blue-800">
+                Vé quay hôm nay
+              </h2>
             </div>
-      {/* Time Slot Notification */}
-      {!timeCheck.allowed && (
-        <div className="w-full max-w-4xl mx-auto px-4 py-4">
-          <div className="bg-gradient-to-r from-orange-50 to-red-50 border border-orange-200 rounded-xl p-4 shadow-sm">
-            <div className="flex items-center gap-3">
-              <div className="flex-shrink-0">
-                <div className="w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center">
-                  <span className="text-orange-600 text-lg">⏰</span>
-                </div>
+
+            {ticketsLoading ? (
+              <div className="flex items-center justify-center">
+                <div className="w-8 h-8 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin"></div>
+                <span className="ml-3 text-gray-600">Đang tải vé quay...</span>
               </div>
-              <div className="flex-1">
-                <h3 className="text-sm font-semibold text-orange-800 mb-1">
-                  Khung giờ nhận vé quay
+            ) : spinTickets.length === 0 ? (
+              <div className="text-center ">
+                <h3 className="text-xl font-semibold text-gray-700 mb-2">
+                  Chưa có vé quay nào
                 </h3>
-                <p className="text-sm text-orange-700">{timeCheck.message}</p>
               </div>
-            </div>
+            ) : (
+              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                {spinTickets.map((ticket) => (
+                  <motion.div
+                    key={ticket.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl border border-blue-200 p-4 hover:shadow-md transition-shadow"
+                  >
+                    <div className="flex items-start justify-between mb-3">
+                      <div className="flex items-center gap-2">
+                        <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
+                        <span className="text-sm font-medium text-yellow-700">
+                          Chưa sử dụng
+                        </span>
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        {/* Hiển thị trạng thái hết hạn */}
+                        {(() => {
+                          const vietnamTime = getVietnamTime();
+                          const currentDateKey = vietnamTime;
+                          const isExpired = ticket.dateKey !== currentDateKey;
+
+                          if (isExpired) {
+                            return (
+                              <span className="text-xs text-red-500 bg-red-100 px-2 py-1 rounded-full">
+                                ⏰ Hết hạn
+                              </span>
+                            );
+                          }
+                          return null;
+                        })()}
+                      </div>
+                    </div>
+
+                    <div className="space-y-2">
+                      <div className="flex items-center gap-2 text-sm">
+                        <BookOpen className="w-4 h-4 text-blue-600" />
+                        <span className="text-gray-700">
+                          Sách {ticket.bookId} - Lesson {ticket.lessonId}
+                        </span>
+                      </div>
+
+                      <div className="flex items-center gap-2 text-sm">
+                        <Calendar className="w-4 h-4 text-blue-600" />
+                        <span className="text-gray-700">
+                          {new Date(ticket.dateKey).toLocaleDateString("vi-VN")}
+                        </span>
+                      </div>
+                    </div>
+
+                    {(() => {
+                      const now = new Date();
+                      const vietnamTime = getVietnamTime();
+                      const isExpired = ticket.dateKey !== vietnamTime;
+
+                      return (
+                        <div className="mt-3 pt-3 border-t border-blue-200">
+                          {isExpired ? (
+                            <div className="text-xs text-red-600 bg-red-100 px-2 py-1 rounded-full text-center">
+                              ⏰ Vé đã hết hạn
+                            </div>
+                          ) : (
+                            <div className="text-xs text-blue-600 bg-blue-100 px-2 py-1 rounded-full text-center">
+                              Sẵn sàng quay!
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })()}
+                  </motion.div>
+                ))}
+              </div>
+            )}
+
+            {spinTickets.length > 0 && (
+              <div className="mt-3 p-4 bg-blue-50 rounded-lg">
+                <div className="flex items-center gap-2 text-blue-700">
+                  <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                  <span className="text-sm font-medium">
+                    Tổng cộng: {spinTickets.length} vé quay hôm nay
+                  </span>
+                </div>
+                <p className="text-xs text-blue-600 mt-1">
+                  Mỗi vé chỉ có thể sử dụng một lần. Hoàn thành thêm quiz để
+                  nhận thêm vé!
+                </p>
+              </div>
+            )}
           </div>
-        </div>
-      )}
-
-      <div className="flex w-full flex-col items-center justify-center gap-8 p-4 lg:flex-row lg:items-start lg:gap-12 lg:p-10">
-        <div
-          ref={canvasContainerRef}
-          className="w-full max-w-xs flex-shrink-0 sm:max-w-sm lg:w-120 lg:max-w-none"
-        >
-          <canvas
-            ref={canvasRef}
-            id="wheel"
-            className="rounded-full bg-[radial-gradient(circle_at_center,_#ffffff,_theme(colors.spin-wheel-blue))] shadow-spin-wheel"
-          ></canvas>
-        </div>
-
-        <div className="flex w-full max-w-md flex-col items-center gap-6 rounded-2xl border border-blue-300 bg-gradient-to-br from-sky-100 to-blue-200 p-6 shadow-lg lg:w-112.5 lg:p-8">
-          <div className="flex flex-col items-center gap-2 text-center">
-            <div className="relative">
-              <Image
-                className="h-20 w-20 sm:h-24 sm:w-24 transition-transform duration-500 hover:rotate-[360deg] hover:scale-110"
-                src="/assets/spin-dorayaki/doraemon.png"
-                alt="Doraemon"
-                width={96}
-                height={96}
-              />
-              {/* Sound toggle button */}
-              <button
-                onClick={toggleSound}
-                className="absolute -top-2 -right-2 w-8 h-8 bg-white rounded-full shadow-md flex items-center justify-center hover:bg-gray-50 transition-colors"
-                title={isSoundEnabled ? "Tắt âm thanh" : "Bật âm thanh"}
-              >
-                {isSoundEnabled ? (
-                  <Volume2 className="w-4 h-4 text-blue-600" />
-                ) : (
-                  <VolumeX className="w-4 h-4 text-gray-400" />
-                )}
-              </button>
-            </div>
-            <h1 className="text-2xl font-bold text-blue-800 [text-shadow:1px_1px_2px_#fff] sm:text-3xl">
-              Vòng Quay Bánh mì
-            </h1>
-          </div>
-
+        <div className="flex w-full max-w-md flex-col items-center gap-6 rounded-2xl border border-blue-300 bg-gradient-to-br from-sky-100 to-blue-200 p-2 shadow-lg lg:w-112.5 lg:p-8">
           <div className="w-full space-y-3">
             <h2 className="text-center text-base font-semibold text-blue-700 sm:text-lg">
               Chọn Sức Mạnh
@@ -516,7 +560,7 @@ export function SpinningWheel() {
               ].map(({ level, name, img }) => (
                 <div
                   key={level}
-                  className={`flex flex-1 cursor-pointer flex-col items-center gap-3 rounded-2xl border-2 bg-white/50 p-4 shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-lg ${
+                  className={`flex cursor-pointer flex-col items-center justify-end gap-1 rounded-2xl border-2 bg-white/50 p-1 shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-lg ${
                     power === level
                       ? "scale-105 border-yellow-400 shadow-xl"
                       : "border-transparent"
@@ -524,11 +568,10 @@ export function SpinningWheel() {
                   onClick={() => handlePowerSelection(level)}
                 >
                   <Image
-                    className="h-12 w-12 rounded-full border-2 border-white shadow-sm sm:h-14 sm:w-14"
                     src={`/assets/spin-dorayaki/${img}`}
                     alt={name}
-                    width={80}
-                    height={80}
+                    width={120}
+                    height={120}
                   />
                   <span className="text-sm font-semibold text-slate-700 sm:text-base">
                     {name}
@@ -537,164 +580,63 @@ export function SpinningWheel() {
               ))}
             </div>
           </div>
+          
+        </div>
 
-          <button
-            id="btnSpin"
-            onClick={startSpin}
-            disabled={isSpinning || isSpinLoading}
-            className={`flex items-center justify-center gap-3 rounded-full border-b-4 border-yellow-700 bg-yellow-500 px-10 py-4 text-2xl font-bold text-white transition-all hover:scale-105 active:translate-y-1 active:border-b-2 disabled:cursor-not-allowed disabled:opacity-50 ${
-              !isSpinning && !isSpinLoading && "animate-pulse"
-            }`}
-          >
-            <RotateCw
-              size={24}
-              className={isSpinning || isSpinLoading ? "animate-spin" : ""}
-            />
-            <span className="text-lg sm:text-xl">
-              {isSpinning || isSpinLoading ? "Đang quay..." : "QUAY NGAY!"}
-            </span>
-          </button>
+        <audio
+          ref={audioRef}
+          src="/sounds/spin-dorayaki-music.mp3"
+          className="hidden"
+        ></audio>
 
-          <audio
-            ref={audioRef}
-            src="/sounds/spin-dorayaki-music.mp3"
-            className="hidden"
-          ></audio>
+        {/* Page load sound */}
+        <audio
+          ref={pageLoadAudioRef}
+          src="/sounds/spin-dorayaki-music.mp3"
+          className="hidden"
+          preload="auto"
+        ></audio>
 
-          {/* Page load sound */}
-          <audio
-            ref={pageLoadAudioRef}
-            src="/sounds/spin-dorayaki-music.mp3"
-            className="hidden"
-            preload="auto"
-          ></audio>
-
-          {/* Power selection sound */}
-          <audio
-            ref={powerSelectAudioRef}
-            src="/sounds/spin-dorayaki-music.mp3"
-            className="hidden"
-            preload="auto"
-          ></audio>
+        {/* Power selection sound */}
+        <audio
+          ref={powerSelectAudioRef}
+          src="/sounds/spin-dorayaki-music.mp3"
+          className="hidden"
+          preload="auto"
+        ></audio>
+        <div
+          ref={canvasContainerRef}
+          className="w-full max-w-xs flex-shrink-0 sm:max-w-sm lg:w-120 lg:max-w-none"
+        >
+          <canvas
+            ref={canvasRef}
+            id="wheel"
+            className="rounded-full bg-[radial-gradient(circle_at_center,_#ffffff,_theme(colors.spin-wheel-blue))] shadow-spin-wheel"
+          ></canvas>
+          <div className="flex text-center justify-center mt-3">
+            <button
+              id="btnSpin"
+              onClick={startSpin}
+              disabled={isSpinning || isSpinLoading}
+              className={`flex items-center justify-center gap-3 rounded-full border-b-4 border-yellow-700 bg-yellow-500 px-10 py-4 text-2xl font-bold text-white transition-all hover:scale-105 active:translate-y-1 active:border-b-2 disabled:cursor-not-allowed disabled:opacity-50 ${
+                !isSpinning && !isSpinLoading && "animate-pulse"
+              }`}
+            >
+              <RotateCw
+                size={24}
+                className={isSpinning || isSpinLoading ? "animate-spin" : ""}
+              />
+              <span className="text-lg sm:text-xl">
+                {isSpinning || isSpinLoading ? "Đang quay..." : "QUAY NGAY!"}
+              </span>
+            </button>
+          </div>
         </div>
       </div>
 
       {/* Spin Tickets Section */}
-      <div className="w-full max-w-4xl mx-auto px-4 py-6">
-        <div className="bg-white rounded-2xl border border-blue-200 shadow-lg p-6">
-          <div className="flex items-center gap-3 mb-6">
-            <Ticket className="w-6 h-6 text-blue-600" />
-            <h2 className="text-2xl font-bold text-blue-800">
-              Vé quay hôm nay
-            </h2>
-          </div>
 
-          {ticketsLoading ? (
-            <div className="flex items-center justify-center py-8">
-              <div className="w-8 h-8 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin"></div>
-              <span className="ml-3 text-gray-600">Đang tải vé quay...</span>
-            </div>
-          ) : spinTickets.length === 0 ? (
-            <div className="text-center py-8">
-              <div className="text-6xl mb-4">🎫</div>
-              <h3 className="text-xl font-semibold text-gray-700 mb-2">
-                Chưa có vé quay nào
-              </h3>
-              <p className="text-gray-500">
-                Hoàn thành quiz với độ chính xác cao để nhận vé quay bánh mì!
-              </p>
-            </div>
-          ) : (
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-              {spinTickets.map((ticket) => (
-                <motion.div
-                  key={ticket.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl border border-blue-200 p-4 hover:shadow-md transition-shadow"
-                >
-                  <div className="flex items-start justify-between mb-3">
-                    <div className="flex items-center gap-2">
-                      <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-                      <span className="text-sm font-medium text-yellow-700">
-                        Chưa sử dụng
-                      </span>
-                    </div>
-                    <div className="flex flex-col gap-1">
-                      {/* Hiển thị trạng thái hết hạn */}
-                      {(() => {
-                        const vietnamTime = getVietnamTime();
-                        const currentDateKey = vietnamTime;
-                        const isExpired = ticket.dateKey !== currentDateKey;
-
-                        if (isExpired) {
-                          return (
-                            <span className="text-xs text-red-500 bg-red-100 px-2 py-1 rounded-full">
-                              ⏰ Hết hạn
-                            </span>
-                          );
-                        }
-                        return null;
-                      })()}
-                    </div>
-                  </div>
-
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2 text-sm">
-                      <BookOpen className="w-4 h-4 text-blue-600" />
-                      <span className="text-gray-700">
-                        Sách {ticket.bookId} - Lesson {ticket.lessonId}
-                      </span>
-                    </div>
-
-                    <div className="flex items-center gap-2 text-sm">
-                      <Calendar className="w-4 h-4 text-blue-600" />
-                      <span className="text-gray-700">
-                        {new Date(ticket.dateKey).toLocaleDateString("vi-VN")}
-                      </span>
-                    </div>
-                  </div>
-
-                  {(() => {
-                    const now = new Date();
-                    const vietnamTime = getVietnamTime();
-                    const isExpired = ticket.dateKey !== vietnamTime;
-
-                    return (
-                      <div className="mt-3 pt-3 border-t border-blue-200">
-                        {isExpired ? (
-                          <div className="text-xs text-red-600 bg-red-100 px-2 py-1 rounded-full text-center">
-                            ⏰ Vé đã hết hạn
-                          </div>
-                        ) : (
-                          <div className="text-xs text-blue-600 bg-blue-100 px-2 py-1 rounded-full text-center">
-                            Sẵn sàng quay!
-                          </div>
-                        )}
-                      </div>
-                    );
-                  })()}
-                </motion.div>
-              ))}
-            </div>
-          )}
-
-          {spinTickets.length > 0 && (
-            <div className="mt-6 p-4 bg-blue-50 rounded-lg">
-              <div className="flex items-center gap-2 text-blue-700">
-                <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                <span className="text-sm font-medium">
-                  Tổng cộng: {spinTickets.length} vé quay hôm nay
-                </span>
-              </div>
-              <p className="text-xs text-blue-600 mt-1">
-                Mỗi vé chỉ có thể sử dụng một lần. Hoàn thành thêm quiz để nhận
-                thêm vé!
-              </p>
-            </div>
-          )}
-        </div>
-      </div>
+      {/* Time Slot Notification */}
 
       <AnimatePresence>
         {result && (

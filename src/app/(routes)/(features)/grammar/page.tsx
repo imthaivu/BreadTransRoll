@@ -42,7 +42,7 @@ export default function GrammarPage() {
       <div className="bg-white">
         <StaggerContainer>
           <StaggerItem>
-            <div className="text-center pt-4 mb-4 sm:pt-8 sm:mb-8">
+            <div className="text-center">
               <h1 className="text-xl md:text-2xl lg:text-4xl font-bold text-gray-800 mb-2 sm:mb-4">
                 Ngữ pháp tiếng Anh 6 - 12
               </h1>

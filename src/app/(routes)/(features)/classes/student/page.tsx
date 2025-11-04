@@ -9,7 +9,7 @@ export default function StudentClassesPage() {
     <RequireAuth>
       <RequireRole roles={[UserRole.STUDENT]}>
         <main>
-          <div className="text-center pt-4 mb-4 sm:pt-8 sm:mb-8">
+          <div className="text-center">
               <h1 className="text-xl md:text-2xl lg:text-4xl font-bold text-gray-800 mb-2 sm:mb-4">
                 Lớp học của tôi
               </h1>
