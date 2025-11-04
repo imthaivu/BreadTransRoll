@@ -114,7 +114,7 @@ export default function MagicDoor({
   const [showShine, setShowShine] = useState(false);
   const [showShineBorder, setShowShineBorder] = useState(false);
   const [showAdventureButton, setShowAdventureButton] = useState(false);
-  const [showDoraemonMessage, setShowDoraemonMessage] = useState(false);
+  const [showMiluMessage, setShowMiluMessage] = useState(false);
   const [showDoorAdventureButton, setShowDoorAdventureButton] = useState(false);
   const [showPopupBlockedMessage, setShowPopupBlockedMessage] = useState(false);
   const [showReopenButton, setShowReopenButton] = useState(false);
@@ -134,7 +134,7 @@ export default function MagicDoor({
       setShowShine(false);
       setShowShineBorder(false);
       setShowAdventureButton(false);
-      setShowDoraemonMessage(false);
+      setShowMiluMessage(false);
     }
   }, [isOpen, showAdventureButton]);
 
@@ -147,7 +147,7 @@ export default function MagicDoor({
       // Close all modals
       onClose();
       setShowDoorAdventureButton(false);
-      setShowDoraemonMessage(false);
+      setShowMiluMessage(false);
       setShowAdventureButton(false);
     } catch (error: unknown) {
       console.error("NextAuth Google login failed:", error);
@@ -163,7 +163,7 @@ export default function MagicDoor({
   };
 
   const handleReopenFunMessage = () => {
-    setShowDoraemonMessage(true);
+    setShowMiluMessage(true);
     setShowAdventureButton(true);
     setShowReopenButton(false);
   };
@@ -188,12 +188,12 @@ export default function MagicDoor({
       let teacherAudio;
 
       if (isLate) {
-        // Teacher scolds Nobita (after 11 AM)
+        // Teacher scolds Milu (after 11 AM)
         teacherAudio = new Audio(
           "https://magical-tulumba-581427.netlify.app/mp3-ui/thay-giao-chui-nobita.mp3"
         );
       } else {
-        // Teacher praises Nobita (before 11 AM)
+        // Teacher praises Milu (before 11 AM)
         teacherAudio = new Audio(
           "https://magical-tulumba-581427.netlify.app/mp3-ui/thay-giao-khen-nobita.mp3"
         );
@@ -296,7 +296,7 @@ export default function MagicDoor({
 
       {/* Fun Message -  Only show after  teacher audio */}
       <AnimatePresence>
-        {showDoraemonMessage && (
+        {showMiluMessage && (
           <motion.div
             className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-[9999] bg-yellow-100 border-4 border-yellow-300 rounded-2xl p-6 text-center shadow-2xl max-w-[calc(100vw-40px)] w-[500px]"
             variants={modalVariants}
@@ -312,7 +312,7 @@ export default function MagicDoor({
             >
               <Button
                 onClick={() => {
-                  setShowDoraemonMessage(false);
+                  setShowMiluMessage(false);
                   setShowAdventureButton(false);
                   setShowDoorAdventureButton(true);
                   setShowReopenButton(true);
@@ -333,7 +333,7 @@ export default function MagicDoor({
             >
               <Image
                 src={"/assets/images/doraemon-1.png"}
-                alt="Doraemon"
+                alt="Milu"
                 width={120}
                 height={120}
               />
@@ -345,7 +345,7 @@ export default function MagicDoor({
               initial="hidden"
               animate="visible"
             >
-              &quot;Hãy cùng Doraemon khám phá tiếng Anh nhé!&quot;
+              &quot;Hãy cùng Milu khám phá tiếng Anh nhé!&quot;
             </motion.p>
 
             <AnimatePresence>
@@ -442,7 +442,7 @@ export default function MagicDoor({
               >
                 <Image
                   src={"/assets/images/doraemon-1.png"}
-                  alt="Doraemon"
+                  alt="Milu"
                   width={120}
                   height={120}
                 />
@@ -454,7 +454,7 @@ export default function MagicDoor({
                 initial="hidden"
                 animate="visible"
               >
-                &quot;Hãy cùng Doraemon khám phá tiếng Anh nhé!&quot;
+                &quot;Hãy cùng Milu khám phá tiếng Anh nhé!&quot;
               </motion.p>
 
               <motion.div

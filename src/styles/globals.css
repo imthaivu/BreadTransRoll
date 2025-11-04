@@ -9,13 +9,13 @@
   --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo,
     Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 
-  /* Doraemon Colors */
+  /* Milu Colors */
   --color-background: #ffffff; /* trắng nền chính */
   --color-foreground: #424242; /* xám đậm chữ chính */
   --color-muted: #757575; /* xám nhạt chữ phụ */
   --color-border: #b3e5fc; /* xanh nhạt viền/nền phụ */
 
-  --color-primary: #2aa7e2; /* xanh Doraemon */
+  --color-primary: #2aa7e2; /* xanh Milu */
   --color-primary-foreground: #ffffff; /* chữ trắng trên nền xanh */
 
   --color-secondary: #f9d71c; /* vàng chuông */

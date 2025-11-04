@@ -1,6 +1,6 @@
 "use client";
 
-import { DoraemonLoading } from "@/components/ui/LoadingSpinner";
+import { MiluLoading } from "@/components/ui/LoadingSpinner";
 import { useAuth } from "@/lib/auth/context";
 import { IClass } from "@/modules/admin";
 import { useEffect, useState } from "react";
@@ -41,7 +41,7 @@ export function StudentClassesList() {
 
   if (isLoading || isFetching || loading) {
     return (
-      <DoraemonLoading text="Chờ xíu nha, mình đang tìm lớp học của bạn..." />
+      <MiluLoading text="Chờ xíu nha, mình đang tìm lớp học của bạn..." />
     );
   }
 

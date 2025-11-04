@@ -52,7 +52,7 @@ export const menuItems = [
   },
   {
     id: "shopping",
-    title: "Nobita đi Shopping",
+    title: "Milu đi Shopping",
     path: "/shopping",
     description: "Mua sắm với điểm thưởng",
     image:

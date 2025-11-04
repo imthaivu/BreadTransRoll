@@ -1,6 +1,6 @@
 "use client";
 
-import { DoraemonLoading } from "@/components/ui/LoadingSpinner";
+import { MiluLoading } from "@/components/ui/LoadingSpinner";
 import PageMotion, {
   StaggerContainer,
   StaggerItem,
@@ -69,7 +69,7 @@ export default function GrammarPage() {
           <StaggerItem>
             <div>
               {isLoading || isFetching ? (
-                <DoraemonLoading text="Chờ xíu... Doraemon đang chuẩn bị bảo bối..." />
+                <MiluLoading text="Chờ xíu... Milu đang chuẩn bị bảo bối..." />
               ) : (
                 <TopicSelector
                   topics={topics}

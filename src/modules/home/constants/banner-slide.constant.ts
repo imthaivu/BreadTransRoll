@@ -1,7 +1,7 @@
 export const bannerSlides = [
   {
     id: "slide1",
-    title: "Học tiếng Anh với Doraemon",
+    title: "Học tiếng Anh với Milu",
     subtitle: "Streamline & 1000 Bài luyện",
     description: "Học nghe nói tiếng Anh chuẩn bản xứ với phương pháp hiệu quả",
     image: "https://magical-tulumba-581427.netlify.app/img-ui/streamline.png",
@@ -30,7 +30,7 @@ export const bannerSlides = [
   {
     id: "slide4",
     title: "Mua sắm với điểm thưởng",
-    subtitle: "Nobita đi Shopping",
+    subtitle: "Milu đi Shopping",
     description: "Sử dụng điểm thưởng để mua các vật phẩm thú vị",
     image:
       "https://magical-tulumba-581427.netlify.app/img-ui/nobita-shopee.png",

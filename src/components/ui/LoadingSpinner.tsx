@@ -132,8 +132,8 @@ export function PageLoading({ children }: { children: ReactNode }) {
   );
 }
 
-// Doraemon themed loading
-export function DoraemonLoading({ text = "Đang tải..." }: { text?: string }) {
+// Milu themed loading
+export function MiluLoading({ text = "Đang tải..." }: { text?: string }) {
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.8 }}
@@ -141,7 +141,7 @@ export function DoraemonLoading({ text = "Đang tải..." }: { text?: string }) 
       transition={{ duration: 0.3 }}
       className="text-center h-full"
     >
-      {/* Doraemon Animation */}
+      {/* Milu Animation */}
       <motion.div
         className="text-6xl mb-4"
         animate={{
@@ -156,7 +156,7 @@ export function DoraemonLoading({ text = "Đang tải..." }: { text?: string }) 
       >
         <Image
           src="/assets/images/doraemon-1.png"
-          alt="Doraemon"
+          alt="Milu"
           width={120}
           height={120}
         />
@@ -198,7 +198,7 @@ export function DoraemonLoading({ text = "Đang tải..." }: { text?: string }) 
         animate={{ opacity: 1 }}
         transition={{ delay: 0.5 }}
       >
-        Doraemon đang chuẩn bị bảo bối... ✨
+        Milu đang chuẩn bị bảo bối... ✨
       </motion.p>
     </motion.div>
   );

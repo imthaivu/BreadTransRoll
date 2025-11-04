@@ -12,14 +12,14 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Doraemon Colors
+        // Milu Colors
         background: "#ffffff", // trắng nền chính
         foreground: "#424242", // xám đậm chữ chính
         muted: "#757575", // xám nhạt chữ phụ
         border: "#b3e5fc", // xanh nhạt viền/nền phụ
 
         primary: {
-          DEFAULT: "#2aa7e2", // xanh Doraemon
+          DEFAULT: "#2aa7e2", // xanh Milu
           foreground: "#ffffff", // chữ trắng trên nền xanh
         },
 

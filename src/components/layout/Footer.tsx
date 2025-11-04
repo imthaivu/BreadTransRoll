@@ -24,7 +24,7 @@ export default function Footer() {
       aria-label="Footer dự án học tiếng Anh Breadtrans"
       className="bg-background border-t border-border p-6"
     >
-      {/* Doraemon themed gradient line */}
+      {/* Milu themed gradient line */}
       <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 text-sm md:text-base text-center sm:text-left">
         {/* Brand Section */}
         <div className="space-y-4 flex flex-col items-center">

@@ -80,7 +80,7 @@ export function PrizeModal({ prize, onClose }: PrizeModalProps) {
           <X size={24} />
         </button>
 
-        {/* Doraemon Image */}
+        {/* Milu Image */}
         <motion.div
           initial={{ scale: 0, rotate: -180 }}
           animate={{ scale: 1, rotate: 0 }}
@@ -89,7 +89,7 @@ export function PrizeModal({ prize, onClose }: PrizeModalProps) {
         >
           <Image
             src="/assets/spin-dorayaki/doraemon.png"
-            alt="Doraemon"
+            alt="Milu"
             width={120}
             height={120}
             className="drop-shadow-lg"

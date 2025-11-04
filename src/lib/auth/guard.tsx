@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/Button";
-import { DoraemonLoading } from "@/components/ui/LoadingSpinner";
+import { MiluLoading } from "@/components/ui/LoadingSpinner";
 import MagicDoor from "@/modules/home/components/MagicDoor";
 import { ShieldAlert, UserCircle } from "lucide-react";
 import Link from "next/link";
@@ -17,7 +17,7 @@ export function RequireAuth({ children }: { children: React.ReactNode }) {
   if (loading)
     return (
       <div className="p-6">
-        <DoraemonLoading />
+        <MiluLoading />
       </div>
     );
 
