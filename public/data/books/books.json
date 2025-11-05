@@ -70,5 +70,11 @@
     "name": "Book 8",
     "totalLessons": 80,
     "totalWords": 716
+  },
+  {
+    "id": 13,
+    "name": "Book Right on, Bright",
+    "totalLessons": 55,
+    "totalWords": 3110
   }
 ]
