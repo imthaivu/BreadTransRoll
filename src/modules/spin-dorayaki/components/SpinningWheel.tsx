@@ -230,7 +230,7 @@ export function SpinningWheel() {
     const radius = canvas.width / 2 - 10;
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.font = "bold 24px Arial";
+    ctx.font = "bold 21px Arial";
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
 
