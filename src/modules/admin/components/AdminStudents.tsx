@@ -21,6 +21,7 @@ import Image from "next/image";
 import { getStorageBucket } from "@/lib/firebase/client";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { createSpinTicketByAdmin } from "@/modules/spin-dorayaki/services";
+import { UpdateStudentData } from "../services/student.service";
 
 type StudentWithExtras = IProfile & {
   phone?: string;
@@ -124,6 +125,7 @@ export default function AdminStudents() {
 
     try {
       // Convert dateOfBirth string to Date if needed
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const updateData: any = { ...studentData };
       if (updateData.dateOfBirth && typeof updateData.dateOfBirth === 'string') {
         updateData.dateOfBirth = new Date(updateData.dateOfBirth);
@@ -141,7 +143,7 @@ export default function AdminStudents() {
           : updateData.streakCount;
       }
       
-      await updateStudent(target.id, updateData);
+      await updateStudent(target.id, updateData as UpdateStudentData);
       setIsDetailEditOpen(false);
       setActiveStudent(null);
       setSelectedStudent(null);
@@ -333,11 +335,13 @@ export default function AdminStudents() {
           <span className="text-xs sm:text-sm font-medium text-orange-600 whitespace-nowrap">
             {student.totalBanhRan || 0}
           </span>
-          <img 
-            src="https://magical-tulumba-581427.netlify.app/img-ui/dorayaki.png" 
-            alt="bánh mì" 
-            className="w-4 h-4 sm:w-5 sm:h-5 inline-block"
-          />
+          <Image
+  src="https://magical-tulumba-581427.netlify.app/img-ui/dorayaki.png"
+  alt="bánh mì"
+  width={20}  // tương đương w-5
+  height={20} // tương đương h-5
+  className="inline-block sm:w-5 sm:h-5 w-4 h-4"
+/>
         </div>
       ),
     },
@@ -786,35 +790,44 @@ export default function AdminStudents() {
       {/* Create Transaction Modal */}
       {selectedStudent && (
         <AdminModal
-          isOpen={isCreateTxModalOpen}
-          onClose={() => {
-            setIsCreateTxModalOpen(false);
-            setSelectedStudent(null);
-          }}
-          title="Tạo giao dịch bánh mì"
-          subtitle={`${selectedStudent.displayName || selectedStudent.email} — Số dư: ${selectedStudent.totalBanhRan || 0} <img 
-            src="https://magical-tulumba-581427.netlify.app/img-ui/dorayaki.png" 
-            alt="bánh mì" 
-            className="w-4 h-4 sm:w-5 sm:h-5 inline-block"
-          />`}
-          size="md"
-        >
-          <div className="space-y-4">
-            <AdminForm
-              fields={txFormFields}
-              defaultValues={{ type: "add", amount: 1, reason: "" }}
-              onSubmit={async (data: CurrencyTxFormData) => {
-                await handleCreateTransaction(data);
-              }}
-              isLoading={isCreating}
-              onCancel={() => {
-                setIsCreateTxModalOpen(false);
-                setSelectedStudent(null);
-              }}
-              submitText="Tạo giao dịch"
+        isOpen={isCreateTxModalOpen}
+        onClose={() => {
+          setIsCreateTxModalOpen(false);
+          setSelectedStudent(null);
+        }}
+        title="Tạo giao dịch bánh mì"
+        subtitle={
+          <span>
+            {selectedStudent.displayName || selectedStudent.email} — Số dư:{" "}
+            {selectedStudent.totalBanhRan || 0}{" "}
+            <Image
+              src="https://magical-tulumba-581427.netlify.app/img-ui/dorayaki.png"
+              alt="bánh mì"
+              width={20}
+              height={20}
+              className="inline-block w-4 h-4 sm:w-5 sm:h-5"
             />
-          </div>
-        </AdminModal>
+          </span>
+        }
+        size="md"
+      >
+        <div className="space-y-4">
+          <AdminForm
+            fields={txFormFields}
+            defaultValues={{ type: "add", amount: 1, reason: "" }}
+            onSubmit={async (data: CurrencyTxFormData) => {
+              await handleCreateTransaction(data);
+            }}
+            isLoading={isCreating}
+            onCancel={() => {
+              setIsCreateTxModalOpen(false);
+              setSelectedStudent(null);
+            }}
+            submitText="Tạo giao dịch"
+          />
+        </div>
+      </AdminModal>
+      
       )}
 
       {/* Create Spin Ticket Modal */}

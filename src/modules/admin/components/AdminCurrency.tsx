@@ -5,6 +5,7 @@ import { useAuth } from "@/lib/auth/context";
 import { motion } from "framer-motion";
 import { useEffect, useMemo, useState } from "react";
 import toast from "react-hot-toast";
+import Image from "next/image";
 import {
   FiDollarSign,
   FiMinus,
@@ -107,13 +108,7 @@ export default function AdminCurrency() {
       }
       return true;
     });
-  }, [
-    transactions,
-    studentQuery,
-    dorayakiFilter,
-    selectedClassId,
-    students,
-  ]);
+  }, [transactions, studentQuery, dorayakiFilter, selectedClassId, students]);
 
   // Get selected student info
   const selectedStudent = students.find(
@@ -521,11 +516,14 @@ export default function AdminCurrency() {
                 </div>
                 <div className="text-right">
                   <div className="text-3xl font-bold text-orange-600">
-                    {selectedStudent.totalBanhRan || 0} <img 
-            src="https://magical-tulumba-581427.netlify.app/img-ui/dorayaki.png" 
-            alt="bánh mì" 
-            className="w-4 h-4 sm:w-5 sm:h-5 inline-block"
-          />
+                    {selectedStudent.totalBanhRan || 0}{" "}
+                    <Image
+  src="https://magical-tulumba-581427.netlify.app/img-ui/dorayaki.png"
+  alt="bánh mì"
+  width={20}  // tương đương w-5
+  height={20} // tương đương h-5
+  className="inline-block sm:w-5 sm:h-5 w-4 h-4"
+/>
                   </div>
                 </div>
               </div>
@@ -588,11 +586,14 @@ export default function AdminCurrency() {
                   {students.map((student) => (
                     <option key={student.id} value={student.id}>
                       {student.displayName || "Chưa có tên"} ({student.email}) -{" "}
-                      {student.totalBanhRan || 0} <img 
-            src="https://magical-tulumba-581427.netlify.app/img-ui/dorayaki.png" 
-            alt="bánh mì" 
-            className="w-4 h-4 sm:w-5 sm:h-5 inline-block"
-          />
+                      {student.totalBanhRan || 0}{" "}
+                      <Image
+  src="https://magical-tulumba-581427.netlify.app/img-ui/dorayaki.png"
+  alt="bánh mì"
+  width={20}  // tương đương w-5
+  height={20} // tương đương h-5
+  className="inline-block sm:w-5 sm:h-5 w-4 h-4"
+/>
                     </option>
                   ))}
                 </select>
@@ -606,11 +607,14 @@ export default function AdminCurrency() {
                       Tổng bánh mì hiện tại:
                     </span>
                     <span className="text-lg font-bold text-orange-600">
-                      {selectedStudent.totalBanhRan || 0} <img 
-            src="https://magical-tulumba-581427.netlify.app/img-ui/dorayaki.png" 
-            alt="bánh mì" 
-            className="w-4 h-4 sm:w-5 sm:h-5 inline-block"
-          />
+                      {selectedStudent.totalBanhRan || 0}{" "}
+                      <Image
+  src="https://magical-tulumba-581427.netlify.app/img-ui/dorayaki.png"
+  alt="bánh mì"
+  width={20}  // tương đương w-5
+  height={20} // tương đương h-5
+  className="inline-block sm:w-5 sm:h-5 w-4 h-4"
+/>
                     </span>
                   </div>
                 </div>

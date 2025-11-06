@@ -9,7 +9,7 @@ export interface AdminModalProps {
   isOpen: boolean;
   onClose: () => void;
   title: string;
-  subtitle?: string;
+  subtitle?: string | ReactNode;
   children: ReactNode;
   footer?: ReactNode;
   size?: "sm" | "md" | "lg" | "xl" | "2xl";
