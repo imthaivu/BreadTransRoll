@@ -83,7 +83,7 @@ export default function AdminStudents() {
   // Get classes for filter
   const { data: classes = [], isLoading: classesLoading } = useClasses();
 
-  // Use the student management hook
+  // Use the student management hook - only fetch when class is selected
   const {
     students,
     isLoading,
@@ -92,7 +92,7 @@ export default function AdminStudents() {
     deleteStudent,
     isUpdating,
     isDeleting,
-  } = useStudentManagement(limit);
+  } = useStudentManagement(limit, selectedClassId ? selectedClassId : undefined);
 
   // Sync activeStudent with students list when it updates
   // But don't sync when modal is open to preserve local edits (badges, etc.)
@@ -122,12 +122,7 @@ export default function AdminStudents() {
         !addressFilter ||
         student.address?.toLowerCase().includes(addressFilter.toLowerCase());
 
-      // Filter by class
-      const classMatch =
-        !selectedClassId ||
-        (student.classIds && student.classIds.includes(selectedClassId));
-
-      return studentMatch && phoneMatch && addressMatch && classMatch;
+      return studentMatch && phoneMatch && addressMatch;
     });
   }, [students, studentFilter, phoneFilter, addressFilter, selectedClassId]);
 
@@ -791,14 +786,25 @@ export default function AdminStudents() {
         </div>
       )}
 
+      {/* No Class Selected State */}
+      {!selectedClassId && (
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 sm:p-6 text-center">
+          <p className="text-sm sm:text-base text-blue-800">
+            Vui lòng chọn lớp để xem danh sách học sinh
+          </p>
+        </div>
+      )}
+
       {/* Students Table */}
-      <AdminTable
-        columns={columns}
-        data={filteredStudents as unknown as StudentWithExtras[]}
-        loading={isLoading}
-        emptyMessage="Không có học sinh nào"
-        showCheckbox={false}
-      />
+      {selectedClassId && (
+        <AdminTable
+          columns={columns}
+          data={filteredStudents as unknown as StudentWithExtras[]}
+          loading={isLoading}
+          emptyMessage="Không có học sinh nào"
+          showCheckbox={false}
+        />
+      )}
 
       {/* Edit Modal */}
       {activeStudent && (

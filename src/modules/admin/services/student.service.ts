@@ -52,13 +52,22 @@ export interface UpdateStudentData {
 }
 
 // Get all students
-export const getStudents = async (count?: number): Promise<IStudent[]> => {
+export const getStudents = async (count?: number, classId?: string): Promise<IStudent[]> => {
   try {
     const studentsRef = collection(db, STUDENTS_COLLECTION);
     const queryConstraints: QueryConstraint[] = [
       where("role", "==", "student"),
-      orderBy("createdAt", "desc"),
     ];
+
+    // If classId is provided, filter by classIds array-contains
+    // Note: When using array-contains, we can't use orderBy in the same query without a composite index
+    // So we'll sort on the client side instead
+    if (classId) {
+      queryConstraints.push(where("classIds", "array-contains", classId));
+    } else {
+      // Only use orderBy when not filtering by classId to avoid needing a composite index
+      queryConstraints.push(orderBy("createdAt", "desc"));
+    }
 
     if (count) {
       queryConstraints.push(limit(count));
@@ -67,12 +76,28 @@ export const getStudents = async (count?: number): Promise<IStudent[]> => {
     const q = query(studentsRef, ...queryConstraints);
     const querySnapshot = await getDocs(q);
 
-    return querySnapshot.docs.map((doc) => ({
+    let students = querySnapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
       createdAt: doc.data().createdAt?.toDate(),
       updatedAt: doc.data().updatedAt?.toDate(),
     })) as IStudent[];
+
+    // Sort by createdAt desc on client side when filtering by classId
+    if (classId) {
+      students = students.sort((a, b) => {
+        const aDate = a.createdAt?.getTime() || 0;
+        const bDate = b.createdAt?.getTime() || 0;
+        return bDate - aDate; // desc order
+      });
+      
+      // Apply limit after sorting if needed
+      if (count && students.length > count) {
+        students = students.slice(0, count);
+      }
+    }
+
+    return students;
   } catch (error) {
     console.error("Error getting students:", error);
     throw error;

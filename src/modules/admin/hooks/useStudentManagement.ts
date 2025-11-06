@@ -14,15 +14,16 @@ import toast from "react-hot-toast";
 export const studentKeys = {
   all: ["students"] as const,
   lists: () => [...studentKeys.all, "list"] as const,
-  list: (limit?: number) => [...studentKeys.lists(), { limit }] as const,
+  list: (limit?: number, classId?: string) => [...studentKeys.lists(), { limit, classId }] as const,
   detail: (id: string) => [...studentKeys.all, "detail", id] as const,
 };
 
 // Get all students
-export const useStudents = (limit?: number) => {
+export const useStudents = (limit?: number, classId?: string) => {
   return useQuery({
-    queryKey: studentKeys.list(limit),
-    queryFn: () => getStudents(limit),
+    queryKey: studentKeys.list(limit, classId),
+    queryFn: () => getStudents(limit, classId),
+    enabled: classId !== undefined && classId !== "", // Only fetch when classId is provided and not empty
     staleTime: 5 * 60 * 1000, // 5 minutes
   });
 };
@@ -115,9 +116,9 @@ export const useDeleteStudent = () => {
 };
 
 // Custom hook for student management
-export const useStudentManagement = (limit?: number) => {
+export const useStudentManagement = (limit?: number, classId?: string) => {
   // Get students
-  const { data: students = [], isLoading, error } = useStudents(limit);
+  const { data: students = [], isLoading, error } = useStudents(limit, classId);
 
   // Mutations
   const createStudentMutation = useCreateStudent();
