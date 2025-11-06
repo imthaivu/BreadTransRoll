@@ -5,7 +5,6 @@ import { Modal } from "@/components/ui/Modal";
 import { StaggerContainer, StaggerItem } from "@/components/ui/PageMotion";
 import { playSound } from "@/lib/audio/soundManager";
 import { useAuth } from "@/lib/auth/context";
-import { useRouter } from "next/navigation";
 import {
   CompletionScreen,
   Confetti,
@@ -33,7 +32,6 @@ export default function FlashcardPage() {
   const [showConfirmExit, setShowConfirmExit] = useState(false);
   const [showReviewModal, setShowReviewModal] = useState(false);
   const { role, signInWithGoogle } = useAuth();
-  const router = useRouter();
 
   const {
     books,
@@ -58,9 +56,6 @@ export default function FlashcardPage() {
     handleAnswer,
     speak,
     reset,
-    showSpinPopup,
-    setShowSpinPopup,
-    completedQuizLesson,
   } = useFlashcard();
 
   const isGuest = !role || role === "guest";
@@ -314,65 +309,6 @@ export default function FlashcardPage() {
 
         {/* Confetti */}
         <Confetti show={showConfetti} duration={3000} />
-
-        {/* Spin Popup Modal */}
-        <Modal
-          open={showSpinPopup}
-          onClose={() => setShowSpinPopup(false)}
-          title="🎉 Chúc mừng!"
-          maxWidth="md"
-        >
-          <div className="text-center p-6">
-            <div className="mb-6">
-              <div className="text-6xl mb-4">🎊</div>
-              <h3 className="text-2xl font-bold text-green-600 mb-2">
-                Bạn đã hoàn thành quiz xuất sắc!
-              </h3>
-              <p className="text-gray-600 mb-4">
-                Bạn đã hoàn thành quiz với độ chính xác cao. Hãy thử vận may của
-                bạn tại vòng quay bánh mì!
-              </p>
-              {completedQuizLesson && (
-                <p className="text-sm text-gray-500 mb-4">
-                  Sách{" "}
-                  {
-                    books.find(
-                      (b) => b.id.toString() === completedQuizLesson.bookId
-                    )?.name
-                  }{" "}
-                  - Lesson {completedQuizLesson.lessonId}
-                </p>
-              )}
-            </div>
-
-            <div className="space-y-3">
-              <Button
-                onClick={() => {
-                  setShowSpinPopup(false);
-                  router.push("/spin-dorayaki");
-                }}
-                className="w-full bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-white font-bold py-3 px-6 rounded-full"
-              >
-                🎯 Đi quay bánh mì ngay!
-              </Button>
-
-              <Button
-                onClick={() => setShowSpinPopup(false)}
-                variant="outline"
-                className="w-full"
-              >
-                Để sau
-              </Button>
-            </div>
-
-            <div className="mt-6 p-4 bg-blue-50 rounded-lg">
-              <p className="text-sm text-blue-700">
-                💡 <strong>Lưu ý:</strong> Bạn có thể quay bánh mì bất cứ lúc
-                nào từ menu chính
-              </p>
-            </div>
-          </div>
-        </Modal>
 
         {/* Guide Button */}
         <Guide />
