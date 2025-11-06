@@ -37,6 +37,7 @@ export interface UpdateTeacherData {
   address?: string;
   specialization?: string;
   experience?: number;
+  note?: string;
 }
 
 // Get all teachers

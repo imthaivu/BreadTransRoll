@@ -17,12 +17,23 @@ import { useAuth } from "@/lib/auth/context";
 import { useCurrencyManagement } from "../hooks/useCurrencyManagement";
 import toast from "react-hot-toast";
 import { useMemo } from "react";
+import Image from "next/image";
+import { getStorageBucket } from "@/lib/firebase/client";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { createSpinTicketByAdmin } from "@/modules/spin-dorayaki/services";
 
 type StudentWithExtras = IProfile & {
   phone?: string;
   address?: string;
   totalBanhRan?: number;
   streakCount?: number;
+  parentEmail?: string;
+  parentPhone?: string;
+  grade?: string;
+  school?: string;
+  dateOfBirth?: Date;
+  avatarUrl?: string;
+  note?: string;
 };
 
 // Transaction form data type
@@ -42,6 +53,9 @@ export default function AdminStudents() {
   const [activeStudent, setActiveStudent] = useState<StudentWithExtras | null>(
     null
   );
+  const [avatarUploading, setAvatarUploading] = useState<string | null>(null);
+  const [isCreateTicketModalOpen, setIsCreateTicketModalOpen] = useState(false);
+  const [selectedStudentForTicket, setSelectedStudentForTicket] = useState<StudentWithExtras | null>(null);
 
   // Server-side limit
   const [limit, setLimit] = useState<number | undefined>(10);
@@ -53,6 +67,10 @@ export default function AdminStudents() {
 
   // Auth and roles
   const { session, profile } = useAuth();
+
+  // Spin ticket quantity
+  const [ticketQuantity, setTicketQuantity] = useState<number>(1);
+  const [isCreatingTicket, setIsCreatingTicket] = useState(false);
 
   // Use the student management hook
   const {
@@ -90,16 +108,40 @@ export default function AdminStudents() {
   const { createTransaction, isCreating } = useCurrencyManagement();
 
   const handleUpdateStudent = async (studentData: {
-    displayName: string;
-    email: string;
+    displayName?: string;
+    email?: string;
     phone?: string;
     address?: string;
+    parentPhone?: string;
+    dateOfBirth?: Date | string;
+    avatarUrl?: string;
+    totalBanhRan?: number | string;
+    streakCount?: number | string;
+    note?: string;
   }) => {
     const target = activeStudent || selectedStudent;
     if (!target) return;
 
     try {
-      await updateStudent(target.id, studentData);
+      // Convert dateOfBirth string to Date if needed
+      const updateData: any = { ...studentData };
+      if (updateData.dateOfBirth && typeof updateData.dateOfBirth === 'string') {
+        updateData.dateOfBirth = new Date(updateData.dateOfBirth);
+      }
+      
+      // Convert totalBanhRan and streakCount to numbers if they are strings
+      if (updateData.totalBanhRan !== undefined) {
+        updateData.totalBanhRan = typeof updateData.totalBanhRan === 'string' 
+          ? Number(updateData.totalBanhRan) 
+          : updateData.totalBanhRan;
+      }
+      if (updateData.streakCount !== undefined) {
+        updateData.streakCount = typeof updateData.streakCount === 'string' 
+          ? Number(updateData.streakCount) 
+          : updateData.streakCount;
+      }
+      
+      await updateStudent(target.id, updateData);
       setIsDetailEditOpen(false);
       setActiveStudent(null);
       setSelectedStudent(null);
@@ -187,23 +229,76 @@ export default function AdminStudents() {
     setIsDeleteModalOpen(false);
   };
 
+  const handleAvatarUpload = async (file: File | null, studentId: string) => {
+    if (!file || !studentId) return;
+
+    const toastId = toast.loading("Đang tải ảnh lên...");
+    setAvatarUploading(studentId);
+    try {
+      const storage = getStorageBucket();
+      const path = `users/${studentId}/avatar/${Date.now()}_${file.name}`;
+      const storageRef = ref(storage, path);
+      await uploadBytes(storageRef, file);
+      const url = await getDownloadURL(storageRef);
+      
+      // Use updateStudent from hook to ensure data refresh
+      await updateStudent(studentId, {
+        avatarUrl: url,
+      });
+      
+      toast.success("Cập nhật ảnh đại diện thành công!", { id: toastId });
+      
+      // Update active student state
+      if (activeStudent?.id === studentId) {
+        setActiveStudent({ ...activeStudent, avatarUrl: url });
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Đã có lỗi xảy ra khi tải ảnh.", { id: toastId });
+    } finally {
+      setAvatarUploading(null);
+    }
+  };
+
   // Table columns configuration
   const columns: AdminTableColumn<StudentWithExtras>[] = [
     {
       key: "student",
       title: "Học sinh",
       render: (_, student) => (
-        <div className="flex items-center">
-          <div className="flex-shrink-0 h-10 w-10">
-            <div className="h-10 w-10 rounded-full bg-green-100 flex items-center justify-center">
-              <FiUsers className="w-5 h-5 text-green-600" />
-            </div>
+        <div className="flex items-center min-w-0">
+          <div className="flex-shrink-0 h-8 w-8 sm:h-10 sm:w-10 relative">
+            {student.avatarUrl ? (
+              <Image
+                src={student.avatarUrl}
+                alt={student.displayName || "Avatar"}
+                width={40}
+                height={40}
+                className="h-8 w-8 sm:h-10 sm:w-10 rounded-full object-cover"
+              />
+            ) : (
+              <div className="h-8 w-8 sm:h-10 sm:w-10 rounded-full bg-green-100 flex items-center justify-center">
+                <FiUsers className="w-4 h-4 sm:w-5 sm:h-5 text-green-600" />
+              </div>
+            )}
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                setActiveStudent(student);
+                setIsDetailEditOpen(true);
+              }}
+              title="Sửa học sinh"
+              className="absolute -bottom-0.5 -right-0.5 w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-white shadow-md border border-gray-200 flex items-center justify-center hover:bg-gray-50 transition-colors z-10"
+            >
+              <FiEdit className="w-2 h-2 sm:w-3 sm:h-3 text-gray-600" />
+            </button>
           </div>
-          <div className="ml-4">
-            <div className="text-sm md:text-base font-medium text-gray-900">
+          <div className="ml-2 sm:ml-4 min-w-0 flex-1">
+            <div className="text-xs sm:text-sm md:text-base font-medium text-gray-900 truncate">
               {student.displayName || "Chưa có tên"}
             </div>
-            <div className="text-sm md:text-base text-gray-500">
+            <div className="text-xs sm:text-sm md:text-base text-gray-500 truncate">
               {student.email}
             </div>
           </div>
@@ -213,8 +308,9 @@ export default function AdminStudents() {
     {
       key: "phone",
       title: "SĐT",
+      className: "hidden md:table-cell",
       render: (_, student) => (
-        <span className="text-sm md:text-base text-gray-900">
+        <span className="text-sm text-gray-900">
           {student.phone || "-"}
         </span>
       ),
@@ -222,8 +318,9 @@ export default function AdminStudents() {
     {
       key: "address",
       title: "Địa chỉ",
+      className: "hidden lg:table-cell",
       render: (_, student) => (
-        <span className="text-sm md:text-base text-gray-900 truncate inline-block max-w-[220px]">
+        <span className="text-sm text-gray-900 truncate inline-block max-w-[200px]">
           {student.address || "(chưa có)"}
         </span>
       ),
@@ -232,19 +329,35 @@ export default function AdminStudents() {
       key: "totalBanhRan",
       title: "Bánh mì",
       render: (_, student) => (
-        <div className="flex items-center">
-          <span className="text-sm md:text-base font-medium text-orange-600">
-            {student.totalBanhRan || 0} 🥟
+        <div className="flex items-center gap-1">
+          <span className="text-xs sm:text-sm font-medium text-orange-600 whitespace-nowrap">
+            {student.totalBanhRan || 0}
           </span>
+          <img 
+            src="https://magical-tulumba-581427.netlify.app/img-ui/dorayaki.png" 
+            alt="bánh mì" 
+            className="w-4 h-4 sm:w-5 sm:h-5 inline-block"
+          />
         </div>
       ),
     },
     {
       key: "streakCount",
       title: "Streak",
+      className: "hidden sm:table-cell",
       render: (_, student) => (
-        <span className="text-sm md:text-base text-gray-900">
+        <span className="text-sm text-gray-900">
           {student.streakCount || 0}
+        </span>
+      ),
+    },
+    {
+      key: "note",
+      title: "Ghi chú",
+      className: "hidden lg:table-cell",
+      render: (_, student) => (
+        <span className="text-xs sm:text-sm text-gray-700 truncate inline-block max-w-[250px]" title={student.note || ""}>
+          {student.note || "-"}
         </span>
       ),
     },
@@ -252,49 +365,24 @@ export default function AdminStudents() {
       key: "actions",
       title: "Thao tác",
       render: (_, student) => (
-        <div className="flex space-x-2">
-          <Button
-            variant="outline"
-            size="sm"
-            className="flex items-center gap-1"
-            onClick={(e) => {
-              e.stopPropagation();
-              openDetailEditModal(student);
-            }}
-          >
-            <FiEye className="w-3 h-3" />
-            Chi tiết/Sửa
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            className="flex items-center gap-1 text-red-600 hover:text-red-700"
-            onClick={(e) => {
-              e.stopPropagation();
-              openDeleteModal(student);
-            }}
-          >
-            <FiTrash2 className="w-3 h-3" />
-            Xóa
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            className="flex items-center gap-1 text-green-700 hover:text-green-800"
-            onClick={(e) => {
-              e.stopPropagation();
-              openCreateTxModal(student);
-            }}
-          >
-            <FiDollarSign className="w-3 h-3" />
-            Giao dịch
-          </Button>
-        </div>
+        <Button
+          variant="outline"
+          size="sm"
+          className="flex items-center gap-1 text-blue-600 hover:text-blue-700"
+          onClick={(e) => {
+            e.stopPropagation();
+            setSelectedStudentForTicket(student);
+            setIsCreateTicketModalOpen(true);
+          }}
+        >
+          <FiDollarSign className="w-3 h-3" />
+          Phát vé
+        </Button>
       ),
     },
   ];
 
-  // Edit form fields (minimal important fields)
+  // Edit form fields (full student information)
   const editFormFields: AdminFormField[] = [
     {
       name: "displayName",
@@ -340,6 +428,64 @@ export default function AdminStudents() {
       type: "textarea",
       rows: 3,
     },
+    {
+      name: "parentPhone",
+      label: "Số điện thoại phụ huynh",
+      type: "text",
+      placeholder: "0123456789",
+      validation: {
+        pattern: {
+          value: /^[0-9]{10}$/,
+          message: "Số điện thoại phải có 10 chữ số",
+        },
+      },
+    },
+    {
+      name: "dateOfBirth",
+      label: "Ngày sinh",
+      type: "date",
+    },
+    {
+      name: "avatarUrl",
+      label: "URL ảnh đại diện",
+      type: "text",
+      placeholder: "https://example.com/avatar.jpg",
+      validation: {
+        pattern: {
+          value: /^https?:\/\/.+/i,
+          message: "URL phải bắt đầu bằng http:// hoặc https://",
+        },
+      },
+    },
+    {
+      name: "totalBanhRan",
+      label: "Số lượng bánh mì",
+      type: "number",
+      validation: {
+        min: {
+          value: 0,
+          message: "Số lượng bánh mì không thể âm",
+        },
+      },
+    },
+    {
+      name: "streakCount",
+      label: "Streak",
+      type: "number",
+      validation: {
+        min: {
+          value: 0,
+          message: "Streak không thể âm",
+        },
+      },
+    },
+    {
+      name: "note",
+      label: "Ghi chú",
+      type: "textarea",
+      rows: 4,
+      placeholder: "Nhập ghi chú về học sinh...",
+    },
   ];
 
   // Transaction form fields
@@ -378,15 +524,15 @@ export default function AdminStudents() {
         const presets = [1, 2, 3, 5, 10, 15, 20, 25, 30, 40, 50];
         return (
           <div className="mt-2">
-            <div className="text-xs text-gray-600 mb-1">
-              Chọn nhanh số lượng
+            <div className="text-xs text-gray-600 mb-1.5">
+              Chọn nhanh:
             </div>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-1.5 sm:gap-2">
               {presets.map((n) => (
                 <button
                   key={n}
                   type="button"
-                  className={`px-2.5 py-1 rounded-md border text-sm ${
+                  className={`px-2 sm:px-2.5 py-1 rounded-md border text-xs sm:text-sm transition-colors ${
                     Number(amount) === n
                       ? "bg-blue-600 text-white border-blue-600"
                       : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50"
@@ -418,82 +564,77 @@ export default function AdminStudents() {
   ];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-3 md:space-y-4 px-2 md:px-0">
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="flex items-center justify-between"
+        className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3"
       >
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900">Quản lý học sinh</h1>
-          
+        <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900">
+          Quản lý học sinh
+        </h1>
+        {/* Query Limit */}
+        <div className="flex items-center gap-2 sm:gap-3">
+          <label
+            htmlFor="limit-select"
+            className="text-xs sm:text-sm font-medium text-gray-700 whitespace-nowrap"
+          >
+            <span className="hidden sm:inline">Số lượng hiển thị: </span>
+            <span className="sm:hidden">Hiển thị: </span>
+          </label>
+          <select
+            id="limit-select"
+            value={limit || "all"}
+            onChange={(e) =>
+              setLimit(
+                e.target.value === "all" ? undefined : Number(e.target.value)
+              )
+            }
+            className="px-2 sm:px-3 py-1.5 sm:py-2 border border-gray-300 rounded-lg bg-gray-50 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-xs sm:text-sm"
+          >
+            <option value={10}>10</option>
+            <option value={50}>50</option>
+            <option value={100}>100</option>
+            <option value="all">Tất cả</option>
+          </select>
         </div>
       </motion.div>
 
-      {/* Query Limit */}
-      <div className="flex items-center gap-4 mb-4">
-        <label
-          htmlFor="limit-select"
-          className="text-sm font-medium text-gray-700"
-        >
-          Số lượng học sinh hiển thị:
-        </label>
-        <select
-          id="limit-select"
-          value={limit || "all"}
-          onChange={(e) =>
-            setLimit(
-              e.target.value === "all" ? undefined : Number(e.target.value)
-            )
-          }
-          className="px-3 py-2 border border-gray-300 rounded-lg bg-gray-50 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm"
-        >
-          <option value={10}>10</option>
-          <option value={50}>50</option>
-          <option value={100}>100</option>
-          <option value="all">Tất cả</option>
-        </select>
-      </div>
-
       {/* Filters */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-3">
         <input
           type="text"
-          placeholder="Lọc theo tên hoặc email..."
+          placeholder="Tên/Email..."
           value={studentFilter}
           onChange={(e) => setStudentFilter(e.target.value)}
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm"
+          className="w-full px-3 sm:px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm"
         />
         <input
           type="text"
-          placeholder="Lọc theo số điện thoại..."
+          placeholder="SĐT..."
           value={phoneFilter}
           onChange={(e) => setPhoneFilter(e.target.value)}
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm"
+          className="w-full px-3 sm:px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm"
         />
         <input
           type="text"
-          placeholder="Lọc theo địa chỉ..."
+          placeholder="Địa chỉ..."
           value={addressFilter}
           onChange={(e) => setAddressFilter(e.target.value)}
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm"
+          className="w-full px-3 sm:px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm sm:col-span-2 lg:col-span-1"
         />
       </div>
 
       {/* Error State */}
       {error && (
-        <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-          <div className="flex">
-            <div className="ml-3">
-              <h3 className="text-sm md:text-base font-medium text-red-800">
-                Có lỗi xảy ra khi tải dữ liệu
-              </h3>
-              <div className="mt-2 text-sm md:text-base text-red-700">
-                <p>{error.message || "Vui lòng thử lại sau"}</p>
-              </div>
-            </div>
-          </div>
+        <div className="bg-red-50 border border-red-200 rounded-lg p-3 sm:p-4">
+          <h3 className="text-sm font-medium text-red-800">
+            Có lỗi xảy ra khi tải dữ liệu
+          </h3>
+          <p className="mt-1 text-xs sm:text-sm text-red-700">
+            {error.message || "Vui lòng thử lại sau"}
+          </p>
         </div>
       )}
 
@@ -506,7 +647,7 @@ export default function AdminStudents() {
         showCheckbox={false}
       />
 
-      {/* Unified Detail/Edit Modal */}
+      {/* Edit Modal */}
       {activeStudent && (
         <AdminModal
           isOpen={isDetailEditOpen}
@@ -514,70 +655,102 @@ export default function AdminStudents() {
             setIsDetailEditOpen(false);
             setActiveStudent(null);
           }}
-          title="Chi tiết / Sửa học sinh"
-          size="xl"
+          title="Sửa học sinh"
+          size="lg"
         >
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Details */}
-            <div className="space-y-3 p-4 rounded-lg border border-gray-200 bg-white">
-              <h4 className="font-semibold mb-1">Thông tin chi tiết</h4>
-              <div className="text-sm space-y-2">
-                <div className="text-gray-700">
-                  <span className="font-medium">Tên:</span>{" "}
-                  {activeStudent.displayName || "(Chưa có tên)"}
+          {/* Avatar Section */}
+          <div className="flex flex-col items-center mb-4 sm:mb-6">
+            <div className="relative">
+              {activeStudent.avatarUrl ? (
+                <Image
+                  src={activeStudent.avatarUrl}
+                  alt={activeStudent.displayName || "Avatar"}
+                  width={96}
+                  height={96}
+                  className="w-24 h-24 rounded-full object-cover"
+                />
+              ) : (
+                <div className="w-24 h-24 rounded-full bg-green-100 flex items-center justify-center">
+                  <FiUsers className="w-12 h-12 text-green-600" />
                 </div>
-                <div className="text-gray-700">
-                  <span className="font-medium">Email:</span>{" "}
-                  {activeStudent.email}
-                </div>
-                <div className="text-gray-700">
-                  <span className="font-medium">Số điện thoại:</span>{" "}
-                  {activeStudent.phone || "(chưa có)"}
-                </div>
-                <div className="text-gray-700">
-                  <span className="font-medium">Địa chỉ:</span>{" "}
-                  {activeStudent.address || "(chưa có)"}
-                </div>
-                <div className="text-gray-700">
-                  <span className="font-medium">Bánh mì:</span>{" "}
-                  {activeStudent.totalBanhRan || 0}
-                </div>
-                <div className="text-gray-700">
-                  <span className="font-medium">Streak:</span>{" "}
-                  {activeStudent.streakCount || 0}
-                </div>
-              </div>
+              )}
+              <button
+                type="button"
+                onClick={() => {
+                  const fileInput = document.getElementById(`avatar-upload-${activeStudent.id}`) as HTMLInputElement;
+                  fileInput?.click();
+                }}
+                disabled={avatarUploading === activeStudent.id}
+                title="Đổi ảnh đại diện"
+                className="absolute -bottom-1 -right-1 w-8 h-8 rounded-full bg-white shadow-md border border-gray-200 flex items-center justify-center hover:bg-gray-50 transition-colors"
+              >
+                {avatarUploading === activeStudent.id ? (
+                  <div className="w-4 h-4 border-2 border-gray-300 border-t-blue-600 rounded-full animate-spin" />
+                ) : (
+                  <FiEdit className="w-4 h-4 text-gray-600" />
+                )}
+              </button>
             </div>
-
-            {/* Edit form */}
-            <div className="p-4 rounded-lg border border-gray-200 bg-white">
-              <h4 className="font-semibold mb-2">Sửa thông tin</h4>
-              <AdminForm
-                fields={editFormFields}
-                defaultValues={{
-                  displayName: activeStudent?.displayName || "",
-                  email: activeStudent?.email || "",
-                  phone: activeStudent?.phone || "",
-                  address: activeStudent?.address || "",
-                }}
-                onSubmit={async (data) => {
-                  await handleUpdateStudent(
-                    data as {
-                      displayName: string;
-                      email: string;
-                      phone?: string;
-                      address?: string;
-                    }
-                  );
-                }}
-                isLoading={isUpdating}
-                onCancel={() => {
-                  setIsDetailEditOpen(false);
-                  setActiveStudent(null);
-                }}
-              />
-            </div>
+            <input
+              type="file"
+              accept="image/*"
+              id={`avatar-upload-${activeStudent.id}`}
+              className="sr-only"
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (file && activeStudent.id) {
+                  handleAvatarUpload(file, activeStudent.id);
+                }
+              }}
+            />
           </div>
+
+          <AdminForm
+            fields={editFormFields}
+            defaultValues={{
+              displayName: activeStudent?.displayName || "",
+              email: activeStudent?.email || "",
+              phone: activeStudent?.phone || "",
+              address: activeStudent?.address || "",
+              parentPhone: activeStudent?.parentPhone || "",
+              dateOfBirth: activeStudent?.dateOfBirth
+                ? (() => {
+                    try {
+                      const date = new Date(activeStudent.dateOfBirth);
+                      if (isNaN(date.getTime())) return "";
+                      return date.toISOString().split("T")[0];
+                    } catch {
+                      return "";
+                    }
+                  })()
+                : "",
+              avatarUrl: activeStudent?.avatarUrl || "",
+              totalBanhRan: activeStudent?.totalBanhRan || 0,
+              streakCount: activeStudent?.streakCount || 0,
+              note: activeStudent?.note || "",
+            }}
+            onSubmit={async (data) => {
+              await handleUpdateStudent(
+                data as {
+                  displayName?: string;
+                  email?: string;
+                  phone?: string;
+                  address?: string;
+                  parentPhone?: string;
+                  dateOfBirth?: Date | string;
+                  avatarUrl?: string;
+                  totalBanhRan?: number | string;
+                  streakCount?: number | string;
+                  note?: string;
+                }
+              );
+            }}
+            isLoading={isUpdating}
+            onCancel={() => {
+              setIsDetailEditOpen(false);
+              setActiveStudent(null);
+            }}
+          />
         </AdminModal>
       )}
 
@@ -590,14 +763,19 @@ export default function AdminStudents() {
           subtitle={`Bạn có chắc chắn muốn xóa học sinh "${selectedStudent.displayName}" không? Hành động này không thể hoàn tác.`}
           size="sm"
         >
-          <div className="flex justify-end space-x-2">
-            <Button variant="outline" onClick={closeDeleteModal}>
+          <div className="flex flex-col-reverse sm:flex-row justify-end gap-2 sm:gap-2">
+            <Button 
+              variant="outline" 
+              onClick={closeDeleteModal}
+              className="w-full sm:w-auto"
+            >
               Hủy
             </Button>
             <Button
               variant="warning"
               onClick={handleDeleteStudent}
               disabled={isDeleting}
+              className="w-full sm:w-auto"
             >
               {isDeleting ? "Đang xóa..." : "Xóa"}
             </Button>
@@ -614,10 +792,12 @@ export default function AdminStudents() {
             setSelectedStudent(null);
           }}
           title="Tạo giao dịch bánh mì"
-          subtitle={`Học sinh: ${
-            selectedStudent.displayName || selectedStudent.email
-          } — Số dư: ${selectedStudent.totalBanhRan || 0} 🥟`}
-          size="lg"
+          subtitle={`${selectedStudent.displayName || selectedStudent.email} — Số dư: ${selectedStudent.totalBanhRan || 0} <img 
+            src="https://magical-tulumba-581427.netlify.app/img-ui/dorayaki.png" 
+            alt="bánh mì" 
+            className="w-4 h-4 sm:w-5 sm:h-5 inline-block"
+          />`}
+          size="md"
         >
           <div className="space-y-4">
             <AdminForm
@@ -633,6 +813,79 @@ export default function AdminStudents() {
               }}
               submitText="Tạo giao dịch"
             />
+          </div>
+        </AdminModal>
+      )}
+
+      {/* Create Spin Ticket Modal */}
+      {selectedStudentForTicket && (
+        <AdminModal
+          isOpen={isCreateTicketModalOpen}
+          onClose={() => {
+            setIsCreateTicketModalOpen(false);
+            setSelectedStudentForTicket(null);
+            setTicketQuantity(1);
+          }}
+          title="Phát vé quay bánh mì"
+          subtitle={`Phát vé cho học sinh: ${selectedStudentForTicket.displayName || selectedStudentForTicket.email}`}
+          size="sm"
+        >
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Số lượng vé <span className="text-red-500">*</span>
+              </label>
+              <select
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                value={ticketQuantity}
+                onChange={(e) => setTicketQuantity(Number(e.target.value))}
+              >
+                <option value={1}>1 vé</option>
+                <option value={2}>2 vé</option>
+                <option value={3}>3 vé</option>
+              </select>
+            </div>
+
+            <div className="flex justify-end space-x-2 pt-4">
+              <Button
+                variant="outline"
+                onClick={() => {
+                  setIsCreateTicketModalOpen(false);
+                  setSelectedStudentForTicket(null);
+                  setTicketQuantity(1);
+                }}
+              >
+                Hủy
+              </Button>
+              <Button
+                onClick={async () => {
+                  if (!selectedStudentForTicket) {
+                    toast.error("Vui lòng chọn học sinh");
+                    return;
+                  }
+
+                  setIsCreatingTicket(true);
+                  try {
+                    await createSpinTicketByAdmin(
+                      selectedStudentForTicket.id,
+                      ticketQuantity
+                    );
+                    toast.success(`Phát ${ticketQuantity} vé thành công!`);
+                    setIsCreateTicketModalOpen(false);
+                    setSelectedStudentForTicket(null);
+                    setTicketQuantity(1);
+                  } catch (error) {
+                    console.error("Error creating ticket:", error);
+                    toast.error("Có lỗi xảy ra khi phát vé");
+                  } finally {
+                    setIsCreatingTicket(false);
+                  }
+                }}
+                disabled={isCreatingTicket}
+              >
+                {isCreatingTicket ? "Đang phát vé..." : "Xác nhận"}
+              </Button>
+            </div>
           </div>
         </AdminModal>
       )}

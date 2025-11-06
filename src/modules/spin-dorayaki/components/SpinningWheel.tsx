@@ -4,15 +4,15 @@ import { useAuth } from "@/lib/auth/context";
 import { useQuery } from "@tanstack/react-query";
 import { AnimatePresence, motion } from "framer-motion";
 import {
-  BookOpen,
   Calendar,
+  RefreshCw,
   RotateCw,
   Ticket,
   Volume2,
   VolumeX,
 } from "lucide-react";
 import Image from "next/image";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { useSpin } from "../hooks";
 import { getTodaySpinTickets } from "../services";
@@ -123,7 +123,12 @@ export function SpinningWheel() {
   const [isSoundEnabled, setIsSoundEnabled] = useState(true);
 
   // Query to get today's spin tickets
-  const { data: spinTickets = [], isLoading: ticketsLoading } = useQuery<
+  const { 
+    data: allSpinTickets = [], 
+    isLoading: ticketsLoading,
+    refetch: refetchTickets,
+    isRefetching: isRefetchingTickets
+  } = useQuery<
     SpinTicket[]
   >({
     queryKey: ["todaySpinTickets", studentId],
@@ -132,13 +137,42 @@ export function SpinningWheel() {
     staleTime: 30 * 1000, // 30 seconds
   });
 
+  // Filter to only show valid tickets (not expired, dateKey matches today)
+  const spinTickets = useMemo(() => {
+    const vietnamTime = getVietnamTime();
+    const currentDateKey = vietnamTime;
+    return allSpinTickets.filter(
+      (ticket) => ticket.dateKey === currentDateKey && ticket.status === "pending"
+    );
+  }, [allSpinTickets]);
+
+  // Store prize result while spinning
+  const pendingPrizeRef = useRef<string | null>(null);
+
+  // Valid prizes list for validation
+  const VALID_PRIZES = ["10", "20", "30", "50", "60", "80", "100"];
+
   // Spin hook
   const { spin, isSpinning: isSpinLoading } = useSpin({
     onSuccess: (prize) => {
-      // Sau khi API trả về kết quả, quay wheel đến đúng vị trí
-      setTimeout(() => {
+      // Validate prize from server (security check)
+      if (!VALID_PRIZES.includes(prize)) {
+        console.error("Invalid prize from server:", prize);
+        toast.error("Có lỗi xảy ra, vui lòng thử lại");
+        setIsSpinning(false);
+        if (audioRef.current) {
+          audioRef.current.pause();
+          audioRef.current.currentTime = 0;
+        }
+        return;
+      }
+
+      // Lưu kết quả và điều chỉnh animation nếu đang quay
+      pendingPrizeRef.current = prize;
+      if (isSpinning) {
+        // Nếu đang quay, điều chỉnh target để dừng đúng vị trí
         spinWheelToResult(prize);
-      }, 100); // Delay nhỏ để đảm bảo state đã update
+      }
     },
   });
 
@@ -277,7 +311,16 @@ export function SpinningWheel() {
         const arcd = 360 / prizes.length;
         const deg = currentAngleDegRef.current;
         const index = Math.floor(((360 - (deg % 360) + 270) % 360) / arcd);
-        setResult(prizes[index].text);
+        const finalPrize = prizes[index].text;
+        
+        // Verify final prize matches server result (if available)
+        if (pendingPrizeRef.current && finalPrize !== pendingPrizeRef.current) {
+          // If mismatch, use server result (source of truth)
+          console.warn("Prize mismatch, using server result");
+          setResult(pendingPrizeRef.current);
+        } else {
+          setResult(finalPrize);
+        }
       }
     },
     [drawWheel, isSoundEnabled]
@@ -360,41 +403,68 @@ export function SpinningWheel() {
     }
   };
 
+  // Client-side rate limiting (backup layer - server is primary)
+  const lastSpinTimeRef = useRef<number>(0);
+  const MIN_SPIN_INTERVAL_MS = 1000; // Minimum 1 second between spins
+
   const startSpin = () => {
     if (isSpinning || isSpinLoading) return;
 
-    // Tìm vé quay chưa sử dụng và còn hiệu lực
-    const vietnamTime = getVietnamTime();
-    const currentDateKey = vietnamTime;
-
-    const availableTicket = spinTickets.find(
-      (ticket) => ticket.dateKey === currentDateKey
-    );
-
-    if (!availableTicket) {
-      // Kiểm tra xem có vé hết hạn không
-      const expiredTickets = spinTickets.filter(
-        (ticket) => ticket.dateKey !== currentDateKey
-      );
-
-      if (expiredTickets.length > 0) {
-        toast.error(
-          "Tất cả vé quay đã hết hạn. Vé chỉ có thể sử dụng trong ngày tạo!"
-        );
-      } else {
-        toast.error("Bạn không có vé quay nào để sử dụng!");
-      }
+    // Client-side rate limiting check
+    const now = Date.now();
+    const timeSinceLastSpin = now - lastSpinTimeRef.current;
+    if (timeSinceLastSpin < MIN_SPIN_INTERVAL_MS) {
+      toast.error("Vui lòng chờ một chút trước khi quay lại");
       return;
     }
 
-    // Gọi API để thực hiện quay
+    // Tìm vé quay chưa sử dụng (đã được filter chỉ còn vé hợp lệ)
+    const availableTicket = spinTickets.find(
+      (ticket) => ticket.status === "pending"
+    );
+
+    if (!availableTicket) {
+      toast.error("Bạn không có vé quay nào để sử dụng!");
+      return;
+    }
+
+    // Double-check ticket validity (defense in depth)
+    const vietnamTime = getVietnamTime();
+    if (availableTicket.dateKey !== vietnamTime) {
+      toast.error("Vé đã hết hạn, vui lòng làm mới trang");
+      return;
+    }
+
+    // Update last spin time
+    lastSpinTimeRef.current = now;
+
+    // Reset pending prize
+    pendingPrizeRef.current = null;
+
+    // Bắt đầu animation ngay lập tức với một góc quay lớn (tạm thời)
+    // Animation sẽ được điều chỉnh khi API trả về
+    const tempTargetDeg = currentAngleDegRef.current + 360 * (power + 5); // Quay nhiều vòng hơn
+    animStartDegRef.current = currentAngleDegRef.current;
+    animTargetDegRef.current = tempTargetDeg;
+    animDurationMsRef.current = 10000 + power * 500;
+    animStartTimeRef.current = null;
+
+    // Play music ngay
+    if (isSoundEnabled && audioRef.current) {
+      audioRef.current.volume = 0.6;
+      audioRef.current.play().catch(() => {});
+    }
+
+    setResult(null);
+    setIsSpinning(true);
+    requestAnimationFrame(animate);
+
+    // Gọi API để thực hiện quay (song song với animation)
     spin(availableTicket.id);
   };
 
   // Hàm quay wheel với kết quả đã biết (sau khi API trả về)
   const spinWheelToResult = (decidedPrize: string) => {
-    if (isSpinning) return;
-
     // 1) Pick a visual segment index that has that prize text (random among them)
     const candidateIndexes: number[] = [];
     for (let i = 0; i < prizes.length; i++) {
@@ -414,23 +484,48 @@ export function SpinningWheel() {
 
     // Add extra full turns based on power to be dramatic
     const extraTurns = power; // 3, 6, 10 turns
-    const targetDeg = currentDeg + neededWithin360 + 360 * extraTurns;
-
-    // 3) Configure animation
-    animStartDegRef.current = currentAngleDegRef.current;
-    animTargetDegRef.current = targetDeg;
-    animDurationMsRef.current = 10000 + power * 500; // base 10s + a bit more with power
-    animStartTimeRef.current = null;
-
-    // Play music
-    if (isSoundEnabled && audioRef.current) {
-      audioRef.current.volume = 0.6; // 60% volume for spinning sound
-      audioRef.current.play().catch(() => {});
+    
+    // Nếu đang quay, điều chỉnh target để dừng đúng vị trí
+    if (isSpinning && animStartTimeRef.current !== null) {
+      // Tính thời gian đã trôi qua
+      const elapsed = performance.now() - animStartTimeRef.current;
+      const progress = Math.min(1, elapsed / animDurationMsRef.current);
+      
+      // Tính góc hiện tại dựa trên progress
+      const eased = easeOutCubic(progress);
+      const currentDelta = animTargetDegRef.current - animStartDegRef.current;
+      const currentAngle = animStartDegRef.current + currentDelta * eased;
+      
+      // Tính target mới để đảm bảo quay đủ vòng và dừng đúng vị trí
+      // Đảm bảo quay thêm ít nhất 2-3 vòng nữa từ vị trí hiện tại
+      const remainingTurns = Math.max(extraTurns, 3);
+      const finalTarget = currentAngle + neededWithin360 + 360 * remainingTurns;
+      
+      // Cập nhật animation để dừng đúng vị trí
+      animStartDegRef.current = currentAngle;
+      animTargetDegRef.current = finalTarget;
+      animStartTimeRef.current = performance.now();
+      // Giữ nguyên duration còn lại
+      const remainingTime = animDurationMsRef.current * (1 - progress);
+      animDurationMsRef.current = Math.max(remainingTime, 5000); // Tối thiểu 5 giây
+    } else {
+      // Nếu chưa bắt đầu quay, setup như bình thường
+      const targetDeg = currentDeg + neededWithin360 + 360 * extraTurns;
+      animStartDegRef.current = currentAngleDegRef.current;
+      animTargetDegRef.current = targetDeg;
+      animDurationMsRef.current = 10000 + power * 500;
+      animStartTimeRef.current = null;
+      
+      // Play music
+      if (isSoundEnabled && audioRef.current) {
+        audioRef.current.volume = 0.6;
+        audioRef.current.play().catch(() => {});
+      }
+      
+      setResult(null);
+      setIsSpinning(true);
+      requestAnimationFrame(animate);
     }
-
-    setResult(null);
-    setIsSpinning(true);
-    requestAnimationFrame(animate);
   };
 
   // Kiểm tra khung giờ hiện tại
@@ -440,11 +535,24 @@ export function SpinningWheel() {
       <div className="flex w-full flex-col items-center justify-center md:flex-row gap-2">
         <div className="flex flex-col items-center gap-4">
           <div className="bg-white rounded-2xl border border-blue-200 shadow-lg p-6">
-            <div className="flex items-center gap-3 mb-6">
-              <Ticket className="w-6 h-6 text-blue-600" />
-              <h2 className="text-2xl font-bold text-blue-800">
-                Vé quay hôm nay
-              </h2>
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center gap-3">
+                <Ticket className="w-6 h-6 text-blue-600" />
+                <h2 className="text-2xl font-bold text-blue-800">
+                  Vé quay hôm nay
+                </h2>
+              </div>
+              <button
+                onClick={() => refetchTickets()}
+                disabled={isRefetchingTickets || ticketsLoading}
+                className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-blue-700 bg-blue-50 hover:bg-blue-100 rounded-lg border border-blue-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                title="Làm mới danh sách vé"
+              >
+                <RefreshCw 
+                  className={`w-4 h-4 ${isRefetchingTickets || ticketsLoading ? 'animate-spin' : ''}`} 
+                />
+                <span className="hidden sm:inline">Lấy vé</span>
+              </button>
             </div>
 
             {ticketsLoading ? (
@@ -459,94 +567,49 @@ export function SpinningWheel() {
                 </h3>
               </div>
             ) : (
-              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+              <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
                 {spinTickets.map((ticket) => (
                   <motion.div
                     key={ticket.id}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl border border-blue-200 p-4 hover:shadow-md transition-shadow"
+                    className="relative bg-white rounded-lg border-2 border-dashed border-blue-300 p-3 hover:border-blue-400 hover:shadow-md transition-all duration-200"
                   >
-                    <div className="flex items-start justify-between mb-3">
-                      <div className="flex items-center gap-2">
-                        <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-                        <span className="text-sm font-medium text-yellow-700">
-                          Chưa sử dụng
-                        </span>
-                      </div>
-                      <div className="flex flex-col gap-1">
-                        {/* Hiển thị trạng thái hết hạn */}
-                        {(() => {
-                          const vietnamTime = getVietnamTime();
-                          const currentDateKey = vietnamTime;
-                          const isExpired = ticket.dateKey !== currentDateKey;
-
-                          if (isExpired) {
-                            return (
-                              <span className="text-xs text-red-500 bg-red-100 px-2 py-1 rounded-full">
-                                ⏰ Hết hạn
-                              </span>
-                            );
-                          }
-                          return null;
-                        })()}
-                      </div>
+                    {/* Ticket icon decoration */}
+                    <div className="absolute top-1.5 right-1.5">
+                      <Ticket className="w-3.5 h-3.5 text-blue-400 opacity-20" />
                     </div>
 
-                    <div className="space-y-2">
-                      <div className="flex items-center gap-2 text-sm">
-                        <BookOpen className="w-4 h-4 text-blue-600" />
-                        <span className="text-gray-700">
-                          Sách {ticket.bookId} - Lesson {ticket.lessonId}
-                        </span>
-                      </div>
-
-                      <div className="flex items-center gap-2 text-sm">
-                        <Calendar className="w-4 h-4 text-blue-600" />
-                        <span className="text-gray-700">
-                          {new Date(ticket.dateKey).toLocaleDateString("vi-VN")}
-                        </span>
-                      </div>
+                    {/* Status badge */}
+                    <div className="flex items-center gap-1.5 mb-2">
+                      <div className="w-1.5 h-1.5 rounded-full bg-green-500"></div>
+                      <span className="text-[10px] font-semibold text-green-600 uppercase tracking-wide">
+                        Sẵn sàng
+                      </span>
                     </div>
 
-                    {(() => {
-                      const now = new Date();
-                      const vietnamTime = getVietnamTime();
-                      const isExpired = ticket.dateKey !== vietnamTime;
-
-                      return (
-                        <div className="mt-3 pt-3 border-t border-blue-200">
-                          {isExpired ? (
-                            <div className="text-xs text-red-600 bg-red-100 px-2 py-1 rounded-full text-center">
-                              ⏰ Vé đã hết hạn
-                            </div>
-                          ) : (
-                            <div className="text-xs text-blue-600 bg-blue-100 px-2 py-1 rounded-full text-center">
-                              Sẵn sàng quay!
-                            </div>
-                          )}
-                        </div>
-                      );
-                    })()}
+                    {/* Date info */}
+                    <div className="flex items-center gap-2">
+                      <div className="flex items-center justify-center w-6 h-6 rounded-full bg-blue-50 flex-shrink-0">
+                        <Calendar className="w-3 h-3 text-blue-600" />
+                      </div>
+                      <div className="min-w-0">
+                        <p className="text-[10px] text-gray-400 mb-0.5">Hạn sử dụng</p>
+                        <p className="text-xs font-semibold text-gray-800 truncate">
+                          {new Date(ticket.dateKey).toLocaleDateString("vi-VN", {
+                            day: "2-digit",
+                            month: "2-digit",
+                            year: "numeric"
+                          })}
+                        </p>
+                      </div>
+                    </div>
                   </motion.div>
                 ))}
               </div>
             )}
 
-            {spinTickets.length > 0 && (
-              <div className="mt-3 p-4 bg-blue-50 rounded-lg">
-                <div className="flex items-center gap-2 text-blue-700">
-                  <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                  <span className="text-sm font-medium">
-                    Tổng cộng: {spinTickets.length} vé quay hôm nay
-                  </span>
-                </div>
-                <p className="text-xs text-blue-600 mt-1">
-                  Mỗi vé chỉ có thể sử dụng một lần. Hoàn thành thêm quiz để
-                  nhận thêm vé!
-                </p>
-              </div>
-            )}
+            
           </div>
         <div className="flex w-full max-w-md flex-col items-center gap-6 rounded-2xl border border-blue-300 bg-gradient-to-br from-sky-100 to-blue-200 p-2 shadow-lg lg:w-112.5 lg:p-8">
           <div className="w-full space-y-3">

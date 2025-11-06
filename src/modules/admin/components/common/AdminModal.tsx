@@ -50,7 +50,7 @@ export default function AdminModal({
     <AnimatePresence>
       {isOpen && (
         <div
-          className="fixed inset-0 z-[50] flex items-center justify-center p-4 bg-black/50"
+          className="fixed inset-0 z-[50] flex items-center justify-center p-2 sm:p-4 bg-black/50"
           onClick={handleOverlayClick}
         >
           <motion.div
@@ -58,17 +58,17 @@ export default function AdminModal({
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
             transition={{ duration: 0.2 }}
-            className={`bg-white rounded-lg shadow-xl w-full ${sizeClasses[size]} ${className}`}
+            className={`bg-white rounded-lg shadow-xl w-full max-h-[80vh] sm:max-h-[80vh] flex flex-col ${sizeClasses[size]} ${className}`}
           >
             {/* Header */}
             {showHeader && (
-              <div className="flex items-center justify-between p-6 border-b border-gray-200">
-                <div>
-                  <h2 className="text-xl font-semibold text-gray-900">
+              <div className="flex items-center justify-between p-4 sm:p-6 border-b border-gray-200 flex-shrink-0">
+                <div className="min-w-0 flex-1">
+                  <h2 className="text-lg sm:text-xl font-semibold text-gray-900 truncate">
                     {title}
                   </h2>
                   {subtitle && (
-                    <p className="text-sm md:text-base text-gray-600 mt-1">
+                    <p className="text-xs sm:text-sm md:text-base text-gray-600 mt-1 truncate">
                       {subtitle}
                     </p>
                   )}
@@ -78,7 +78,7 @@ export default function AdminModal({
                     variant="ghost"
                     size="sm"
                     onClick={onClose}
-                    className="text-gray-400 hover:text-gray-600"
+                    className="text-gray-400 hover:text-gray-600 flex-shrink-0 ml-2"
                   >
                     <FiX className="w-5 h-5" />
                   </Button>
@@ -87,7 +87,7 @@ export default function AdminModal({
             )}
 
             {/* Content */}
-            <div className="p-6 max-h-[80vh] overflow-y-auto">{children}</div>
+            <div className="p-4 sm:p-6 overflow-y-auto flex-1 min-h-0">{children}</div>
 
             {/* Footer */}
             {footer && (

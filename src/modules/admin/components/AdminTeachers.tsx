@@ -1,10 +1,9 @@
 "use client";
 
-import { Button } from "@/components/ui/Button";
 import { IProfile } from "@/types";
 import { motion } from "framer-motion";
 import { useMemo, useState } from "react";
-import { FiEdit, FiEye, FiTrash2, FiUsers } from "react-icons/fi";
+import { FiEdit, FiUsers } from "react-icons/fi";
 import { useTeacherManagement } from "../hooks/useTeacherManagement";
 import {
   AdminForm,
@@ -13,6 +12,10 @@ import {
   AdminTable,
   AdminTableColumn,
 } from "./common";
+import Image from "next/image";
+import { getStorageBucket } from "@/lib/firebase/client";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import toast from "react-hot-toast";
 
 // Extended interface for Teacher
 interface ITeacher extends IProfile {
@@ -20,13 +23,13 @@ interface ITeacher extends IProfile {
   address?: string;
   specialization?: string;
   experience?: number;
+  note?: string;
 }
 
 export default function AdminTeachers() {
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [selectedTeacher, setSelectedTeacher] = useState<ITeacher | null>(null); // For delete modal
   const [isDetailEditOpen, setIsDetailEditOpen] = useState(false);
   const [activeTeacher, setActiveTeacher] = useState<ITeacher | null>(null); // For detail/edit modal
+  const [avatarUploading, setAvatarUploading] = useState<string | null>(null);
 
   // Filters
   const [nameFilter, setNameFilter] = useState("");
@@ -39,9 +42,7 @@ export default function AdminTeachers() {
     isLoading,
     error,
     updateTeacher,
-    deleteTeacher,
     isUpdating,
-    isDeleting,
   } = useTeacherManagement();
 
   // Apply filters
@@ -63,12 +64,12 @@ export default function AdminTeachers() {
   }, [teachers, nameFilter, emailFilter, phoneFilter]);
 
   const handleUpdateTeacher = async (teacherData: {
-    displayName: string;
-    email: string;
+    displayName?: string;
+    email?: string;
     phone?: string;
     address?: string;
     specialization?: string;
-    experience?: number;
+    note?: string;
   }) => {
     if (!activeTeacher) return;
 
@@ -81,15 +82,34 @@ export default function AdminTeachers() {
     }
   };
 
-  const handleDeleteTeacher = async () => {
-    if (!selectedTeacher) return;
+  const handleAvatarUpload = async (file: File | null, teacherId: string) => {
+    if (!file || !teacherId) return;
 
+    const toastId = toast.loading("Đang tải ảnh lên...");
+    setAvatarUploading(teacherId);
     try {
-      await deleteTeacher(selectedTeacher.id);
-      setIsDeleteModalOpen(false);
-      setSelectedTeacher(null);
+      const storage = getStorageBucket();
+      const path = `users/${teacherId}/avatar/${Date.now()}_${file.name}`;
+      const storageRef = ref(storage, path);
+      await uploadBytes(storageRef, file);
+      const url = await getDownloadURL(storageRef);
+      
+      // Use updateTeacher from hook to ensure data refresh
+      await updateTeacher(teacherId, {
+        avatarUrl: url,
+      });
+      
+      toast.success("Cập nhật ảnh đại diện thành công!", { id: toastId });
+      
+      // Update active teacher state
+      if (activeTeacher?.id === teacherId) {
+        setActiveTeacher({ ...activeTeacher, avatarUrl: url });
+      }
     } catch (error) {
-      console.error("Error deleting teacher:", error);
+      console.error(error);
+      toast.error("Đã có lỗi xảy ra khi tải ảnh.", { id: toastId });
+    } finally {
+      setAvatarUploading(null);
     }
   };
 
@@ -98,33 +118,45 @@ export default function AdminTeachers() {
     setIsDetailEditOpen(true);
   };
 
-  const openDeleteModal = (teacher: ITeacher) => {
-    setSelectedTeacher(teacher);
-    setIsDeleteModalOpen(true);
-  };
-
-  const closeDeleteModal = () => {
-    setSelectedTeacher(null);
-    setIsDeleteModalOpen(false);
-  };
-
   // Table columns configuration
   const columns: AdminTableColumn<ITeacher>[] = [
     {
       key: "teacher",
       title: "Giáo viên",
       render: (_, teacher) => (
-        <div className="flex items-center">
-          <div className="flex-shrink-0 h-10 w-10">
-            <div className="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center">
-              <FiUsers className="w-5 h-5 text-blue-600" />
-            </div>
+        <div className="flex items-center min-w-0">
+          <div className="flex-shrink-0 h-8 w-8 sm:h-10 sm:w-10 relative">
+            {teacher.avatarUrl ? (
+              <Image
+                src={teacher.avatarUrl}
+                alt={teacher.displayName || "Avatar"}
+                width={40}
+                height={40}
+                className="h-8 w-8 sm:h-10 sm:w-10 rounded-full object-cover"
+              />
+            ) : (
+              <div className="h-8 w-8 sm:h-10 sm:w-10 rounded-full bg-blue-100 flex items-center justify-center">
+                <FiUsers className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600" />
+              </div>
+            )}
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                setActiveTeacher(teacher);
+                setIsDetailEditOpen(true);
+              }}
+              title="Sửa giáo viên"
+              className="absolute -bottom-0.5 -right-0.5 w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-white shadow-md border border-gray-200 flex items-center justify-center hover:bg-gray-50 transition-colors z-10"
+            >
+              <FiEdit className="w-2 h-2 sm:w-3 sm:h-3 text-gray-600" />
+            </button>
           </div>
-          <div className="ml-4">
-            <div className="text-sm md:text-base font-medium text-gray-900">
+          <div className="ml-2 sm:ml-4 min-w-0 flex-1">
+            <div className="text-xs sm:text-sm md:text-base font-medium text-gray-900 truncate">
               {teacher.displayName || "Chưa có tên"}
             </div>
-            <div className="text-sm md:text-base text-gray-500">
+            <div className="text-xs sm:text-sm md:text-base text-gray-500 truncate">
               {teacher.email}
             </div>
           </div>
@@ -134,60 +166,31 @@ export default function AdminTeachers() {
     {
       key: "specialization",
       title: "Chuyên môn",
+      className: "hidden sm:table-cell",
       render: (_, teacher) => (
-        <span className="text-sm md:text-base text-gray-900">
-          {teacher.specialization || "Chưa có"}
-        </span>
-      ),
-    },
-    {
-      key: "experience",
-      title: "Kinh nghiệm",
-      render: (_, teacher) => (
-        <span className="text-sm md:text-base text-gray-900">
-          {teacher.experience ? `${teacher.experience} năm` : "Chưa có"}
+        <span className="text-sm text-gray-900">
+          {teacher.specialization || "-"}
         </span>
       ),
     },
     {
       key: "phone",
       title: "Số điện thoại",
+      className: "hidden md:table-cell",
       render: (_, teacher) => (
-        <span className="text-sm md:text-base text-gray-900">
-          {teacher.phone || "Chưa có"}
+        <span className="text-sm text-gray-900">
+          {teacher.phone || "-"}
         </span>
       ),
     },
     {
-      key: "actions",
-      title: "Thao tác",
+      key: "note",
+      title: "Ghi chú",
+      className: "hidden lg:table-cell",
       render: (_, teacher) => (
-        <div className="flex space-x-2">
-          <Button
-            variant="outline"
-            size="sm"
-            className="flex items-center gap-1"
-            onClick={(e) => {
-              e.stopPropagation();
-              openDetailEditModal(teacher);
-            }}
-          >
-            <FiEye className="w-3 h-3" />
-            Chi tiết/Sửa
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            className="flex items-center gap-1 text-red-600 hover:text-red-700"
-            onClick={(e) => {
-              e.stopPropagation();
-              openDeleteModal(teacher);
-            }}
-          >
-            <FiTrash2 className="w-3 h-3" />
-            Xóa
-          </Button>
-        </div>
+        <span className="text-xs sm:text-sm text-gray-700 truncate inline-block max-w-[250px]" title={teacher.note || ""}>
+          {teacher.note || "-"}
+        </span>
       ),
     },
   ];
@@ -235,27 +238,20 @@ export default function AdminTeachers() {
       name: "specialization",
       label: "Chuyên môn",
       type: "text",
-    },
-    {
-      name: "experience",
-      label: "Kinh nghiệm (năm)",
-      type: "number",
-      validation: {
-        min: {
-          value: 0,
-          message: "Kinh nghiệm không thể âm",
-        },
-        max: {
-          value: 50,
-          message: "Kinh nghiệm không thể quá 50 năm",
-        },
-      },
+      placeholder: "Ví dụ: Tiếng Anh, Toán, Văn...",
     },
     {
       name: "address",
       label: "Địa chỉ",
       type: "textarea",
       rows: 2,
+    },
+    {
+      name: "note",
+      label: "Ghi chú",
+      type: "textarea",
+      rows: 4,
+      placeholder: "Nhập ghi chú về giáo viên...",
     },
   ];
 
@@ -333,91 +329,75 @@ export default function AdminTeachers() {
             setIsDetailEditOpen(false);
             setActiveTeacher(null);
           }}
-          title="Chi tiết / Sửa giáo viên"
-          size="xl"
+          title="Sửa giáo viên"
+          size="lg"
         >
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Details */}
-            <div className="space-y-3 p-4 rounded-lg border border-gray-200 bg-white">
-              <h4 className="font-semibold mb-1">Thông tin chi tiết</h4>
-              <div className="text-sm space-y-2">
-                <div className="text-gray-700">
-                  <span className="font-medium">Tên:</span>{" "}
-                  {activeTeacher.displayName || "(Chưa có tên)"}
+          {/* Avatar Section */}
+          <div className="flex flex-col items-center mb-4 sm:mb-6">
+            <div className="relative">
+              {activeTeacher.avatarUrl ? (
+                <Image
+                  src={activeTeacher.avatarUrl}
+                  alt={activeTeacher.displayName || "Avatar"}
+                  width={96}
+                  height={96}
+                  className="w-24 h-24 rounded-full object-cover"
+                />
+              ) : (
+                <div className="w-24 h-24 rounded-full bg-blue-100 flex items-center justify-center">
+                  <FiUsers className="w-12 h-12 text-blue-600" />
                 </div>
-                <div className="text-gray-700">
-                  <span className="font-medium">Email:</span>{" "}
-                  {activeTeacher.email}
-                </div>
-                <div className="text-gray-700">
-                  <span className="font-medium">Số điện thoại:</span>{" "}
-                  {activeTeacher.phone || "(chưa có)"}
-                </div>
-                <div className="text-gray-700">
-                  <span className="font-medium">Chuyên môn:</span>{" "}
-                  {activeTeacher.specialization || "(chưa có)"}
-                </div>
-                <div className="text-gray-700">
-                  <span className="font-medium">Kinh nghiệm:</span>{" "}
-                  {activeTeacher.experience
-                    ? `${activeTeacher.experience} năm`
-                    : "(chưa có)"}
-                </div>
-                <div className="text-gray-700">
-                  <span className="font-medium">Địa chỉ:</span>{" "}
-                  {activeTeacher.address || "(chưa có)"}
-                </div>
-              </div>
+              )}
+              <button
+                type="button"
+                onClick={() => {
+                  const fileInput = document.getElementById(`avatar-upload-${activeTeacher.id}`) as HTMLInputElement;
+                  fileInput?.click();
+                }}
+                disabled={avatarUploading === activeTeacher.id}
+                title="Đổi ảnh đại diện"
+                className="absolute -bottom-1 -right-1 w-8 h-8 rounded-full bg-white shadow-md border border-gray-200 flex items-center justify-center hover:bg-gray-50 transition-colors"
+              >
+                {avatarUploading === activeTeacher.id ? (
+                  <div className="w-4 h-4 border-2 border-gray-300 border-t-blue-600 rounded-full animate-spin" />
+                ) : (
+                  <FiEdit className="w-4 h-4 text-gray-600" />
+                )}
+              </button>
             </div>
-
-            {/* Edit form */}
-            <div className="p-4 rounded-lg border border-gray-200 bg-white">
-              <h4 className="font-semibold mb-2">Sửa thông tin</h4>
-              <AdminForm
-                fields={editFormFields}
-                defaultValues={{
-                  displayName: activeTeacher?.displayName || "",
-                  email: activeTeacher?.email || "",
-                  phone: activeTeacher?.phone || "",
-                  specialization: activeTeacher?.specialization || "",
-                  experience: activeTeacher?.experience || 0,
-                  address: activeTeacher?.address || "",
-                }}
-                onSubmit={async (data) => {
-                  await handleUpdateTeacher(data);
-                }}
-                isLoading={isUpdating}
-                onCancel={() => {
-                  setIsDetailEditOpen(false);
-                  setActiveTeacher(null);
-                }}
-              />
-            </div>
+            <input
+              type="file"
+              accept="image/*"
+              id={`avatar-upload-${activeTeacher.id}`}
+              className="sr-only"
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (file && activeTeacher.id) {
+                  handleAvatarUpload(file, activeTeacher.id);
+                }
+              }}
+            />
           </div>
-        </AdminModal>
-      )}
 
-      {/* Delete Confirmation Modal */}
-      {selectedTeacher && (
-        <AdminModal
-          isOpen={isDeleteModalOpen}
-          onClose={closeDeleteModal}
-          title="Xác nhận xóa giáo viên"
-          subtitle={`Bạn có chắc chắn muốn xóa giáo viên "${selectedTeacher.displayName}" không? Hành động này không thể hoàn tác.`}
-          size="sm"
-        >
-          <div className="flex justify-end space-x-2">
-            <Button variant="outline" onClick={closeDeleteModal}>
-              Hủy
-            </Button>
-            <Button
-              variant="warning"
-              onClick={handleDeleteTeacher}
-              disabled={isDeleting}
-            >
-              {isDeleting ? "Đang xóa..." : "Xóa"}
-            </Button>
-          </div>
+          <AdminForm
+            fields={editFormFields}
+            defaultValues={{
+              displayName: activeTeacher?.displayName || "",
+              email: activeTeacher?.email || "",
+              phone: activeTeacher?.phone || "",
+              specialization: activeTeacher?.specialization || "",
+              address: activeTeacher?.address || "",
+              note: activeTeacher?.note || "",
+            }}
+            onSubmit={async (data) => {
+              await handleUpdateTeacher(data);
+            }}
+            isLoading={isUpdating}
+            onCancel={() => {
+              setIsDetailEditOpen(false);
+              setActiveTeacher(null);
+            }}
+          />
         </AdminModal>
       )}
     </div>

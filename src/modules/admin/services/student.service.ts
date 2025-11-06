@@ -38,13 +38,13 @@ export interface UpdateStudentData {
   email?: string;
   avatarUrl?: string;
   classIds?: string[];
-  parentEmail?: string;
   parentPhone?: string;
-  grade?: string;
-  school?: string;
   dateOfBirth?: Date;
   address?: string;
   phone?: string;
+  totalBanhRan?: number;
+  streakCount?: number;
+  note?: string;
 }
 
 // Get all students

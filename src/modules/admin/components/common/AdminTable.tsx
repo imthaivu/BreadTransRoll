@@ -11,6 +11,7 @@ export interface AdminTableColumn<T = any> {
   width?: string;
   render?: (value: any, record: T, index: number) => ReactNode;
   sortable?: boolean;
+  className?: string;
 }
 
 export interface AdminTableProps<T = any> {
@@ -102,7 +103,7 @@ export default function AdminTable<T = any>({
               {columns.map((column) => (
                 <th
                   key={column.key}
-                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  className={`px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider ${column.className || ""}`}
                   style={{ width: column.width }}
                 >
                   {column.title}
@@ -160,7 +161,7 @@ export default function AdminTable<T = any>({
                   {columns.map((column) => (
                     <td
                       key={column.key}
-                      className="px-6 py-4 whitespace-nowrap text-sm md:text-base text-gray-900"
+                      className={`px-6 py-4 whitespace-nowrap text-sm md:text-base text-gray-900 ${column.className || ""}`}
                     >
                       {column.render
                         ? column.render(

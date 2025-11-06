@@ -10,15 +10,8 @@ import {
   saveQuizResult,
   updateLessonStatus,
 } from "@/modules/flashcard/services";
-import { checkSpeakingSubmission } from "@/modules/speaking-upload/services";
-import {
-  checkExistingSpinTicket,
-  checkTimeSlotCreateSpinTicket,
-  createSpinTicket,
-} from "@/modules/spin-dorayaki/services";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { SpinTicketSource } from "../spin-dorayaki";
 import {
   Book,
   LessonStatus,
@@ -96,11 +89,6 @@ export function useFlashcard() {
   const [deck, setDeck] = useState<Word[]>([]);
   const [quizTimer, setQuizTimer] = useState<NodeJS.Timeout | null>(null);
   const [sessionAnswers, setSessionAnswers] = useState<SessionAnswer[]>([]);
-  const [showSpinPopup, setShowSpinPopup] = useState(false);
-  const [completedQuizLesson, setCompletedQuizLesson] = useState<{
-    bookId: string;
-    lessonId: number;
-  } | null>(null);
   const englishVoiceRef = useRef<SpeechSynthesisVoice | null>(null);
 
   const {
@@ -264,78 +252,6 @@ export function useFlashcard() {
               isCompleted,
             };
             saveQuizResultMutation.mutate(resultData);
-
-            // Check if quiz completed with >= 90% accuracy for spin popup
-            if (accuracy >= 90) {
-              // Check if already has spin ticket for today
-              const checkAndCreateTicket = async () => {
-                try {
-                  // First check if speaking submission exists
-                  const hasSpeakingSubmission = await checkSpeakingSubmission(
-                    userId,
-                    selectedBook,
-                    lessonId
-                  );
-
-                  if (!hasSpeakingSubmission) {
-                    return;
-                  }
-
-                  const existingTicket = await checkExistingSpinTicket(
-                    userId,
-                    selectedBook,
-                    lessonId
-                  );
-
-                  if (existingTicket) {
-                    // console.log(
-                    //   "Already has spin ticket for today:",
-                    //   existingTicket
-                    // );
-                    // Don't show popup if already has ticket
-                  } else {
-                    // Kiểm tra khung giờ trước khi tạo vé
-                    const timeCheck = checkTimeSlotCreateSpinTicket();
-                    if (!timeCheck.allowed) {
-                      // console.log(
-                      //   "Cannot create ticket due to time restrictions:",
-                      //   timeCheck.message
-                      // );
-                      // Không hiển thị popup khi không trong khung giờ
-                      return;
-                    }
-
-                    // Create new spin ticket
-                    const newTicket = await createSpinTicket({
-                      studentId: userId,
-                      bookId: selectedBook,
-                      lessonId: lessonId,
-                      source: SpinTicketSource.FLASHCARD,
-                    });
-
-                    if (newTicket) {
-                      // console.log("Created new spin ticket:", newTicket);
-                      setCompletedQuizLesson({
-                        bookId: selectedBook,
-                        lessonId,
-                      });
-                      setShowSpinPopup(true);
-                    } else {
-                      // console.log(
-                      //   "Cannot create ticket due to time restrictions"
-                      // );
-                    }
-                  }
-                } catch (error) {
-                  console.error("Error checking/creating spin ticket:", error);
-                  // Still show popup on other errors
-                  setCompletedQuizLesson({ bookId: selectedBook, lessonId });
-                  setShowSpinPopup(true);
-                }
-              };
-
-              checkAndCreateTicket();
-            }
 
             // Also update the lesson status
             const statusData: Omit<LessonStatus, "lastAttempt"> = {
@@ -508,10 +424,5 @@ export function useFlashcard() {
     handleAnswer,
     speak,
     reset,
-
-    // Spin popup
-    showSpinPopup,
-    setShowSpinPopup,
-    completedQuizLesson,
   };
 }

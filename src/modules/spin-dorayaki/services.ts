@@ -18,7 +18,7 @@ import {
   where,
 } from "firebase/firestore";
 import { CreateCurrencyData } from "../admin";
-import { CreateSpinTicketData, SpinTicket, SpinTicketStatus } from "./types";
+import { CreateSpinTicketData, SpinTicket, SpinTicketStatus, SpinTicketSource } from "./types";
 
 const NODE_ENV = process.env.NODE_ENV;
 const IS_DEV = NODE_ENV === "development" || NODE_ENV === "test";
@@ -100,16 +100,18 @@ function isTicketValid(ticket: SpinTicket): boolean {
   return ticket.dateKey === currentDateKey;
 }
 
-// Tạo vé quay mới
+// Tạo vé quay mới (có kiểm tra khung giờ)
 export async function createSpinTicket(
   data: CreateSpinTicketData
 ): Promise<SpinTicket | null> {
   const { studentId, bookId, lessonId, source } = data;
 
-  // Kiểm tra khung giờ cho phép tạo vé
-  const timeCheck = checkTimeSlotCreateSpinTicket();
-  if (!timeCheck.allowed) {
-    return null;
+  // Kiểm tra khung giờ cho phép tạo vé (trừ khi là admin)
+  if (source !== SpinTicketSource.ADMIN) {
+    const timeCheck = checkTimeSlotCreateSpinTicket();
+    if (!timeCheck.allowed) {
+      return null;
+    }
   }
 
   // Tạo dateKey theo format YYYY-MM-DD (Vietnam timezone)
@@ -137,6 +139,50 @@ export async function createSpinTicket(
     ...ticketData,
     createdAt: Timestamp.now(), // Fallback for client-side
   };
+}
+
+// Tạo vé quay mới bởi admin (không kiểm tra khung giờ)
+export async function createSpinTicketByAdmin(
+  studentId: string,
+  quantity: number = 1
+): Promise<SpinTicket[]> {
+  const tickets: SpinTicket[] = [];
+
+  // Tạo dateKey theo format YYYY-MM-DD (Vietnam timezone)
+  const vietnamTime = getVietnamTime();
+  const dateKey = vietnamTime; // YYYY-MM-DD
+
+  // Dùng giá trị mặc định cho admin tickets
+  const bookId = "admin";
+  const lessonId = 0;
+
+  // Tạo nhiều vé
+  for (let i = 0; i < quantity; i++) {
+    // Tạo unique ID với timestamp để tránh trùng
+    const timestamp = Date.now() + i; // Thêm i để đảm bảo unique
+    const docId = `${studentId}_${bookId}_${lessonId}_${dateKey}_${timestamp}`;
+    const docRef = doc(spinTicketsCol, docId);
+
+    const ticketData = {
+      studentId,
+      bookId,
+      lessonId,
+      dateKey,
+      createdAt: serverTimestamp(),
+      status: SpinTicketStatus.PENDING,
+      source: SpinTicketSource.ADMIN,
+    };
+
+    await setDoc(docRef, ticketData);
+
+    tickets.push({
+      id: docId,
+      ...ticketData,
+      createdAt: Timestamp.now(), // Fallback for client-side
+    });
+  }
+
+  return tickets;
 }
 
 // Kiểm tra vé quay đã tồn tại chưa (dựa trên studentId, bookId, lessonId, dateKey)

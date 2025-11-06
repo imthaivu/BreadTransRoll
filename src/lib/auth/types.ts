@@ -14,6 +14,10 @@ export interface AppUserProfile {
   updatedAt: Date;
   streakCount?: number;
   lastStreakUpdate?: Date;
+  dateOfBirth?: Date;
+  parentPhone?: string;
+  preferences?: string;
+  giftPhone?: string;
 }
 
 export enum UserRole {

@@ -9,7 +9,7 @@ import { useForm, Controller } from "react-hook-form";
 export interface AdminFormField {
   name: string;
   label: string;
-  type: "text" | "email" | "password" | "select" | "textarea" | "number";
+  type: "text" | "email" | "password" | "select" | "textarea" | "number" | "date";
   placeholder?: string;
   required?: boolean;
   defaultValue?: string;
@@ -174,6 +174,23 @@ export default function AdminForm({
                     min={field.min}
                     max={field.max}
                     step={field.step}
+                    className={`${commonProps.className} ${errorClass}`}
+                  />
+                  {errors[field.name] && (
+                    <p className="mt-1 text-sm md:text-base text-red-600">
+                      {errors[field.name]?.message as string}
+                    </p>
+                  )}
+                </div>
+              );
+
+            case "date":
+              return (
+                <div>
+                  <input
+                    {...controllerField}
+                    {...commonProps}
+                    type="date"
                     className={`${commonProps.className} ${errorClass}`}
                   />
                   {errors[field.name] && (

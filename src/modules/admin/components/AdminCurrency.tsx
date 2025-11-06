@@ -45,14 +45,7 @@ export default function AdminCurrency() {
   // Single day filter for transactions (default today)
   const [dateStr, setDateStr] = useState<string>("");
   // Frontend filters
-  const [typeFilter, setTypeFilter] = useState<"all" | "add" | "subtract">(
-    "all"
-  );
   const [studentQuery, setStudentQuery] = useState<string>("");
-  const [adminQuery, setAdminQuery] = useState<string>("");
-  const [reasonQuery, setReasonQuery] = useState<string>("");
-  const [minAmount, setMinAmount] = useState<string>("");
-  const [maxAmount, setMaxAmount] = useState<string>("");
   const [dorayakiFilter, setDorayakiFilter] = useState<
     "all" | "dorayaki" | "non-dorayaki"
   >("all");
@@ -92,14 +85,8 @@ export default function AdminCurrency() {
   const filteredTransactions = useMemo(() => {
     const normalize = (v?: string) => (v || "").toLowerCase();
     const sq = normalize(studentQuery);
-    const aq = normalize(adminQuery);
-    const rq = normalize(reasonQuery);
-    const min = minAmount ? Number(minAmount) : undefined;
-    const max = maxAmount ? Number(maxAmount) : undefined;
 
     return (transactions || []).filter((t) => {
-      if (typeFilter !== "all" && t.type !== typeFilter) return false;
-
       // Dorayaki filter
       if (dorayakiFilter === "dorayaki") {
         if (!t.reason.includes("quay_dorayaki")) return false;
@@ -118,27 +105,11 @@ export default function AdminCurrency() {
         const hay = `${normalize(t.studentName)} ${t.studentId}`;
         if (!hay.includes(sq)) return false;
       }
-      if (aq) {
-        const hay = `${normalize(t.userName)} ${t.userRole || ""}`;
-        if (!hay.includes(aq)) return false;
-      }
-      if (rq) {
-        if (!normalize(t.reason).includes(rq)) return false;
-      }
-      if (min !== undefined && !Number.isNaN(min) && t.amount < min)
-        return false;
-      if (max !== undefined && !Number.isNaN(max) && t.amount > max)
-        return false;
       return true;
     });
   }, [
     transactions,
-    typeFilter,
     studentQuery,
-    adminQuery,
-    reasonQuery,
-    minAmount,
-    maxAmount,
     dorayakiFilter,
     selectedClassId,
     students,
@@ -474,20 +445,6 @@ export default function AdminCurrency() {
           {/* Frontend Filters */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-2 md:gap-3 mb-4">
             <div>
-              <label className="block text-xs text-gray-600 mb-1">Loại</label>
-              <select
-                className="w-full px-3 py-2 border border-blue-300 rounded-md text-sm bg-blue-50 text-blue-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                value={typeFilter}
-                onChange={(e) =>
-                  setTypeFilter(e.target.value as typeof typeFilter)
-                }
-              >
-                <option value="all">Tất cả</option>
-                <option value="add">Cộng</option>
-                <option value="subtract">Trừ</option>
-              </select>
-            </div>
-            <div>
               <label className="block text-xs text-gray-600 mb-1">
                 Học sinh
               </label>
@@ -496,50 +453,6 @@ export default function AdminCurrency() {
                 placeholder="Tìm theo tên/ID"
                 value={studentQuery}
                 onChange={(e) => setStudentQuery(e.target.value)}
-                className="w-full px-3 py-2 border border-blue-300 rounded-md text-sm bg-blue-50 text-blue-900 placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              />
-            </div>
-            <div>
-              <label className="block text-xs text-gray-600 mb-1">
-                Người thực hiện
-              </label>
-              <input
-                type="text"
-                placeholder="Tìm theo tên/vai trò"
-                value={adminQuery}
-                onChange={(e) => setAdminQuery(e.target.value)}
-                className="w-full px-3 py-2 border border-blue-300 rounded-md text-sm bg-blue-50 text-blue-900 placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              />
-            </div>
-            <div>
-              <label className="block text-xs text-gray-600 mb-1">
-                Tối thiểu
-              </label>
-              <input
-                type="number"
-                inputMode="numeric"
-                value={minAmount}
-                onChange={(e) => setMinAmount(e.target.value)}
-                className="w-full px-3 py-2 border border-blue-300 rounded-md text-sm bg-blue-50 text-blue-900 placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              />
-            </div>
-            <div>
-              <label className="block text-xs text-gray-600 mb-1">Tối đa</label>
-              <input
-                type="number"
-                inputMode="numeric"
-                value={maxAmount}
-                onChange={(e) => setMaxAmount(e.target.value)}
-                className="w-full px-3 py-2 border border-blue-300 rounded-md text-sm bg-blue-50 text-blue-900 placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              />
-            </div>
-            <div>
-              <label className="block text-xs text-gray-600 mb-1">Lý do</label>
-              <input
-                type="text"
-                placeholder="Tìm theo lý do"
-                value={reasonQuery}
-                onChange={(e) => setReasonQuery(e.target.value)}
                 className="w-full px-3 py-2 border border-blue-300 rounded-md text-sm bg-blue-50 text-blue-900 placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               />
             </div>
@@ -581,12 +494,7 @@ export default function AdminCurrency() {
             <Button
               variant="outline"
               onClick={() => {
-                setTypeFilter("all");
                 setStudentQuery("");
-                setAdminQuery("");
-                setReasonQuery("");
-                setMinAmount("");
-                setMaxAmount("");
                 setDorayakiFilter("all");
                 setSelectedClassId("");
               }}
@@ -613,7 +521,11 @@ export default function AdminCurrency() {
                 </div>
                 <div className="text-right">
                   <div className="text-3xl font-bold text-orange-600">
-                    {selectedStudent.totalBanhRan || 0} 🥟
+                    {selectedStudent.totalBanhRan || 0} <img 
+            src="https://magical-tulumba-581427.netlify.app/img-ui/dorayaki.png" 
+            alt="bánh mì" 
+            className="w-4 h-4 sm:w-5 sm:h-5 inline-block"
+          />
                   </div>
                 </div>
               </div>
@@ -676,7 +588,11 @@ export default function AdminCurrency() {
                   {students.map((student) => (
                     <option key={student.id} value={student.id}>
                       {student.displayName || "Chưa có tên"} ({student.email}) -{" "}
-                      {student.totalBanhRan || 0} 🥟
+                      {student.totalBanhRan || 0} <img 
+            src="https://magical-tulumba-581427.netlify.app/img-ui/dorayaki.png" 
+            alt="bánh mì" 
+            className="w-4 h-4 sm:w-5 sm:h-5 inline-block"
+          />
                     </option>
                   ))}
                 </select>
@@ -690,7 +606,11 @@ export default function AdminCurrency() {
                       Tổng bánh mì hiện tại:
                     </span>
                     <span className="text-lg font-bold text-orange-600">
-                      {selectedStudent.totalBanhRan || 0} 🥟
+                      {selectedStudent.totalBanhRan || 0} <img 
+            src="https://magical-tulumba-581427.netlify.app/img-ui/dorayaki.png" 
+            alt="bánh mì" 
+            className="w-4 h-4 sm:w-5 sm:h-5 inline-block"
+          />
                     </span>
                   </div>
                 </div>

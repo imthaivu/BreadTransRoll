@@ -167,13 +167,15 @@ function MemberManager({
   if (isLoading) return <p>Đang tải danh sách thành viên...</p>;
 
   return (
-    <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <h4 className="font-medium">Thêm học sinh</h4>
+    <div className="space-y-3 sm:space-y-4">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-0">
+        <h4 className="text-sm sm:text-base font-medium">Thêm học sinh</h4>
         <Button
           variant="outline"
+          size="sm"
           onClick={handleSyncAll}
           disabled={syncingAll || members.length === 0}
+          className="w-full sm:w-auto"
         >
           {syncingAll ? "Đang đồng bộ..." : "Đồng bộ tất cả"}
         </Button>
@@ -274,7 +276,7 @@ function MemberManager({
       </div>
 
       <div>
-        <h4 className="font-medium mb-2">
+        <h4 className="text-sm sm:text-base font-medium mb-2">
           Danh sách thành viên ({members.length})
         </h4>
         {(() => {
@@ -562,9 +564,9 @@ export function ClassDetailModal({
       size="xl"
     >
       {/* Tabs */}
-      <div className="border-b border-border mb-4 flex gap-2">
+      <div className="border-b border-border mb-3 sm:mb-4 flex gap-2 flex-shrink-0">
         <button
-          className={`px-4 py-2 text-sm font-medium transition-colors ${
+          className={`px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium transition-colors ${
             activeTab === "info"
               ? "border-b-2 border-primary text-primary"
               : "text-muted hover:text-foreground"
@@ -574,7 +576,7 @@ export function ClassDetailModal({
           Thông tin lớp
         </button>
         <button
-          className={`px-4 py-2 text-sm font-medium transition-colors ${
+          className={`px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium transition-colors ${
             activeTab === "members"
               ? "border-b-2 border-primary text-primary"
               : "text-muted hover:text-foreground"
@@ -586,9 +588,9 @@ export function ClassDetailModal({
       </div>
 
       {activeTab === "info" && (
-        <div className="space-y-6">
+        <div className="space-y-3 sm:space-y-4">
           {/* Header overview */}
-          <div className="p-4 rounded-lg border border-gray-200 bg-white flex flex-col gap-3">
+          <div className="p-3 sm:p-4 rounded-lg border border-gray-200 bg-white flex flex-col gap-2 sm:gap-3">
             <div className="flex items-center justify-between gap-2">
               <div className="min-w-0">
                 <h3 className="text-xl font-bold text-gray-900 truncate">
@@ -662,11 +664,11 @@ export function ClassDetailModal({
           </div>
 
           {/* Body: details + form */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
             {/* Read-only details */}
-            <div className="space-y-3 p-4 rounded-lg border border-gray-200 bg-white">
-              <h4 className="text-base font-semibold">Thông tin chi tiết</h4>
-              <div className="text-sm space-y-2">
+            <div className="space-y-2 sm:space-y-3 p-3 sm:p-4 rounded-lg border border-gray-200 bg-white">
+              <h4 className="text-sm sm:text-base font-semibold">Thông tin chi tiết</h4>
+              <div className="text-xs sm:text-sm space-y-1.5 sm:space-y-2">
                 <div className="flex items-center gap-2">
                   <FiUser className="text-gray-500" />
                   <span className="font-medium">Giáo viên hiện tại:</span>
@@ -724,11 +726,11 @@ export function ClassDetailModal({
             </div>
 
             {/* Edit form */}
-            <div className="p-4 rounded-lg border border-gray-200 bg-white">
-              <h4 className="text-base font-semibold mb-2">
+            <div className="p-3 sm:p-4 rounded-lg border border-gray-200 bg-white">
+              <h4 className="text-sm sm:text-base font-semibold mb-2">
                 Chỉnh sửa thông tin
               </h4>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-2 sm:gap-3">
                 <div className="md:col-span-2">
                   <label className="block text-sm font-medium text-gray-700">
                     Tên lớp
@@ -816,7 +818,7 @@ export function ClassDetailModal({
       )}
 
       {activeTab === "members" && (
-        <div className="space-y-6">
+        <div className="space-y-3 sm:space-y-4">
           <MemberManager
             classItem={classItem}
             onOpenStudent={(member) => setActiveStudent(member)}
@@ -837,8 +839,8 @@ export function ClassDetailModal({
           size="2xl"
         >
           {/* Profile header */}
-          <div className="flex items-center gap-4 mb-4 p-3 rounded-lg bg-gray-50 border border-gray-200">
-            <div className="relative h-12 w-12 flex-shrink-0">
+          <div className="flex items-center gap-3 sm:gap-4 mb-3 sm:mb-4 p-2 sm:p-3 rounded-lg bg-gray-50 border border-gray-200">
+            <div className="relative h-10 w-10 sm:h-12 sm:w-12 flex-shrink-0">
               {((teacherProfile as IStudent | undefined)?.avatarUrl && (
                 <Image
                   src={
@@ -874,10 +876,10 @@ export function ClassDetailModal({
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="space-y-3 p-4 rounded-lg border border-gray-200 bg-white">
-              <h4 className="font-semibold mb-1">Thông tin chi tiết</h4>
-              <div className="text-sm space-y-2">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+            <div className="space-y-2 sm:space-y-3 p-3 sm:p-4 rounded-lg border border-gray-200 bg-white">
+              <h4 className="text-sm sm:text-base font-semibold mb-1">Thông tin chi tiết</h4>
+              <div className="text-xs sm:text-sm space-y-1.5 sm:space-y-2">
                 <div className="flex items-center gap-2">
                   <FiUser className="text-gray-500" />
                   <span className="font-medium">Tên:</span>
@@ -902,8 +904,8 @@ export function ClassDetailModal({
                 </div>
               </div>
             </div>
-            <div className="p-4 rounded-lg border border-gray-200 bg-white">
-              <h4 className="font-semibold mb-2">Sửa thông tin</h4>
+            <div className="p-3 sm:p-4 rounded-lg border border-gray-200 bg-white">
+              <h4 className="text-sm sm:text-base font-semibold mb-2">Sửa thông tin</h4>
               <AdminForm
                 fields={teacherFormFields}
                 defaultValues={
@@ -975,8 +977,8 @@ export function ClassDetailModal({
           size="2xl"
         >
           {/* Profile header */}
-          <div className="flex items-center gap-4 mb-4 p-3 rounded-lg bg-gray-50 border border-gray-200">
-            <div className="relative h-12 w-12 flex-shrink-0">
+          <div className="flex items-center gap-3 sm:gap-4 mb-3 sm:mb-4 p-2 sm:p-3 rounded-lg bg-gray-50 border border-gray-200">
+            <div className="relative h-10 w-10 sm:h-12 sm:w-12 flex-shrink-0">
               {(activeStudent.avatarUrl && (
                 <Image
                   src={activeStudent.avatarUrl}
@@ -1016,11 +1018,11 @@ export function ClassDetailModal({
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
             {/* Details (from member doc) */}
-            <div className="space-y-3 p-4 rounded-lg border border-gray-200 bg-white">
-              <h4 className="font-semibold mb-1">Thông tin chi tiết</h4>
-              <div className="text-sm space-y-2">
+            <div className="space-y-2 sm:space-y-3 p-3 sm:p-4 rounded-lg border border-gray-200 bg-white">
+              <h4 className="text-sm sm:text-base font-semibold mb-1">Thông tin chi tiết</h4>
+              <div className="text-xs sm:text-sm space-y-1.5 sm:space-y-2">
                 <div className="flex items-center gap-2">
                   <FiUser className="text-gray-500" />
                   <span className="font-medium">Tên:</span>
@@ -1054,8 +1056,8 @@ export function ClassDetailModal({
             </div>
 
             {/* Edit form (user profile) */}
-            <div className="p-4 rounded-lg border border-gray-200 bg-white">
-              <h4 className="font-semibold mb-2">Sửa thông tin</h4>
+            <div className="p-3 sm:p-4 rounded-lg border border-gray-200 bg-white">
+              <h4 className="text-sm sm:text-base font-semibold mb-2">Sửa thông tin</h4>
               <AdminForm
                 fields={studentFormFields}
                 defaultValues={

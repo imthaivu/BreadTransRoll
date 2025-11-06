@@ -83,6 +83,82 @@ export const Guide = () => {
               Chọn câu trả lời đúng cho từ vựng được hiển thị trước khi hết thời
               gian.
             </p>
+            <p>Chú ý:</p>
+            <ul>
+              <li>6.0 → 1</li>
+              <li>6.1 → 2</li>
+              <li>6.2 → 3</li>
+              <li>6.3 → 4</li>
+              <li>6.4 → 5</li>
+              <li>6.5 → 6</li>
+              <li>6.6 → 7</li>
+
+              <br />
+
+              <li>7.0 → 8</li>
+              <li>7.1 → 9</li>
+              <li>7.2 → 10</li>
+              <li>7.3 → 11</li>
+              <li>7.4 → 12</li>
+              <li>7.5 → 13</li>
+              <li>7.6 → 14</li>
+
+              <br />
+
+              <li>8.0 → 15</li>
+              <li>8.1 → 16</li>
+              <li>8.2 → 17</li>
+              <li>8.3 → 18</li>
+              <li>8.4 → 19</li>
+              <li>8.5 → 20</li>
+              <li>8.6 → 21</li>
+
+              <br />
+
+              <li>9.0 → 22</li>
+              <li>9.1 → 23</li>
+              <li>9.2 → 24</li>
+              <li>9.3 → 25</li>
+              <li>9.4 → 26</li>
+              <li>9.5 → 27</li>
+              <li>9.6 → 28</li>
+
+              <br />
+
+              <li>10.0 → 29</li>
+              <li>10.1 → 30</li>
+              <li>10.2 → 31</li>
+              <li>10.3 → 32</li>
+              <li>10.4 → 33</li>
+              <li>10.5 → 34</li>
+              <li>10.6 → 35</li>
+              <li>10.7 → 36</li>
+              <li>10.8 → 37</li>
+
+              <br />
+
+              <li>11.0 → 38</li>
+              <li>11.1 → 39</li>
+              <li>11.2 → 40</li>
+              <li>11.3 → 41</li>
+              <li>11.4 → 42</li>
+              <li>11.5 → 43</li>
+              <li>11.6 → 44</li>
+              <li>11.7 → 45</li>
+              <li>11.8 → 46</li>
+
+              <br />
+
+              <li>12.0 → 47</li>
+              <li>12.1 → 48</li>
+              <li>12.2 → 49</li>
+              <li>12.3 → 50</li>
+              <li>12.4 → 51</li>
+              <li>12.5 → 52</li>
+              <li>12.6 → 53</li>
+              <li>12.7 → 54</li>
+              <li>12.8 → 55</li>
+            </ul>
           </div>
           <div className="pt-2 sm:pt-4 text-right">
             <Button onClick={() => setShowGuideModal(false)}>Đã hiểu</Button>

@@ -5,9 +5,8 @@ import { Modal } from "@/components/ui/Modal";
 import { PhoneRequiredModal } from "@/components/ui/PhoneRequiredModal";
 import { getDb, getFirebaseAuth } from "@/lib/firebase/client";
 import { useUpdateStudentStreak } from "@/modules/user/hooks";
-import { updateUserPhone } from "@/services/user.service";
 import { signOut, User } from "firebase/auth";
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { Session } from "next-auth";
 import {
   signIn as nextSignIn,
@@ -86,25 +85,48 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }, [session, status]);
 
-  const handleUpdatePhone = async (phone: string) => {
+  const handleUpdatePhone = async (data: {
+    phone: string;
+    dateOfBirth: string;
+    address: string;
+    parentPhone: string;
+    preferences: string;
+    giftPhone: string;
+  }) => {
     if (!phoneModalData.userId) return;
 
-    await updateUserPhone({
-      userId: phoneModalData.userId,
-      phone,
-    });
-
-    // Update local profile state
-    if (profile) {
-      setProfile({
-        ...profile,
-        phone,
+    try {
+      const userRef = doc(getDb(), "users", phoneModalData.userId);
+      await updateDoc(userRef, {
+        phone: data.phone,
+        dateOfBirth: new Date(data.dateOfBirth),
+        address: data.address,
+        parentPhone: data.parentPhone,
+        preferences: data.preferences,
+        giftPhone: data.giftPhone,
         updatedAt: new Date(),
       });
-    }
 
-    // Close modal
-    setPhoneModalData({ showModal: false, userId: "" });
+      // Update local profile state
+      if (profile) {
+        setProfile({
+          ...profile,
+          phone: data.phone,
+          dateOfBirth: new Date(data.dateOfBirth),
+          address: data.address,
+          parentPhone: data.parentPhone,
+          preferences: data.preferences,
+          giftPhone: data.giftPhone,
+          updatedAt: new Date(),
+        });
+      }
+
+      // Close modal
+      setPhoneModalData({ showModal: false, userId: "" });
+    } catch (error) {
+      console.error("Error updating user info:", error);
+      throw error;
+    }
   };
 
   const fetchProfile = useCallback(
@@ -117,10 +139,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setProfile(current);
         setLoading(false);
 
-        // --- Phone Check Logic for Students ---
+        // --- Required Info Check Logic for Students ---
         if (
           current?.role === "student" &&
-          (!current.phone || current.phone.trim() === "")
+          (!current.phone || 
+           current.phone.trim() === "" ||
+           !current.dateOfBirth ||
+           !current.address ||
+           current.address.trim() === "" ||
+           !current.parentPhone ||
+           current.parentPhone.trim() === "" ||
+           !current.preferences ||
+           current.preferences.trim() === "")
         ) {
           setPhoneModalData({ showModal: true, userId: current.uid });
         }
@@ -241,13 +271,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         </Modal>
       )}
 
-      {/* Phone Required Modal for Students */}
+      {/* Required Info Modal for Students */}
       {phoneModalData.showModal && (
         <PhoneRequiredModal
           isOpen={phoneModalData.showModal}
-          onClose={() => {}} // Prevent closing without phone
+          onClose={() => {}} // Prevent closing without required info
           onSave={handleUpdatePhone}
-          currentPhone={profile?.phone || ""}
+          currentData={{
+            phone: profile?.phone || "",
+            dateOfBirth: profile?.dateOfBirth,
+            address: profile?.address || "",
+            parentPhone: profile?.parentPhone || "",
+            preferences: profile?.preferences || "",
+            giftPhone: profile?.giftPhone || (profile?.phone ? "student" : "parent") || "parent",
+          }}
         />
       )}
     </AuthContext.Provider>
