@@ -166,7 +166,16 @@ export async function createSpinTicketByAdmin(
     const docId = `${studentId}_${bookId}_${lessonId}_${dateKey}_${timestamp}`;
     const docRef = doc(spinTicketsCol, docId);
 
-    const ticketData: any = {
+    const ticketData: {
+      studentId: string;
+      bookId: string;
+      lessonId: number;
+      dateKey: string;
+      createdAt: ReturnType<typeof serverTimestamp>;
+      status: SpinTicketStatus;
+      source: SpinTicketSource;
+      isPremium?: boolean;
+    } = {
       studentId,
       bookId,
       lessonId,

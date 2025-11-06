@@ -93,7 +93,7 @@ export default function AdminStudents() {
         setActiveStudent(updatedStudent as StudentWithExtras);
       }
     }
-  }, [students]);
+  }, [students, activeStudent]);
 
   // Apply filters
   const filteredStudents = useMemo(() => {
