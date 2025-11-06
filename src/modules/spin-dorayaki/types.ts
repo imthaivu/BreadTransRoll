@@ -22,6 +22,7 @@ export interface SpinTicket {
   prize?: string;
   usedAt?: Timestamp;
   source: SpinTicketSource;
+  isPremium?: boolean; // Vé xịn có tỉ lệ trúng giải cao hơn
 }
 
 export interface CreateSpinTicketData {

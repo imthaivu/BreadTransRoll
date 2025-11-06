@@ -72,6 +72,7 @@ export default function AdminStudents() {
   // Spin ticket quantity
   const [ticketQuantity, setTicketQuantity] = useState<number>(1);
   const [isCreatingTicket, setIsCreatingTicket] = useState(false);
+  const [isPremiumTicket, setIsPremiumTicket] = useState(false);
 
   // Use the student management hook
   const {
@@ -899,6 +900,7 @@ export default function AdminStudents() {
             setIsCreateTicketModalOpen(false);
             setSelectedStudentForTicket(null);
             setTicketQuantity(1);
+            setIsPremiumTicket(false);
           }}
           title="Phát vé quay bánh mì"
           subtitle={`Phát vé cho học sinh: ${selectedStudentForTicket.displayName || selectedStudentForTicket.email}`}
@@ -920,6 +922,19 @@ export default function AdminStudents() {
               </select>
             </div>
 
+            <div className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                id="premium-ticket"
+                checked={isPremiumTicket}
+                onChange={(e) => setIsPremiumTicket(e.target.checked)}
+                className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+              />
+              <label htmlFor="premium-ticket" className="text-sm font-medium text-gray-700 cursor-pointer">
+                Vé xịn (tỉ lệ trúng giải cao hơn)
+              </label>
+            </div>
+
             <div className="flex justify-end space-x-2 pt-4">
               <Button
                 variant="outline"
@@ -927,6 +942,7 @@ export default function AdminStudents() {
                   setIsCreateTicketModalOpen(false);
                   setSelectedStudentForTicket(null);
                   setTicketQuantity(1);
+                  setIsPremiumTicket(false);
                 }}
               >
                 Hủy
@@ -942,12 +958,16 @@ export default function AdminStudents() {
                   try {
                     await createSpinTicketByAdmin(
                       selectedStudentForTicket.id,
-                      ticketQuantity
+                      ticketQuantity,
+                      isPremiumTicket
                     );
-                    toast.success(`Phát ${ticketQuantity} vé thành công!`);
+                    toast.success(
+                      `Phát ${ticketQuantity} ${isPremiumTicket ? "vé xịn" : "vé"} thành công!`
+                    );
                     setIsCreateTicketModalOpen(false);
                     setSelectedStudentForTicket(null);
                     setTicketQuantity(1);
+                    setIsPremiumTicket(false);
                   } catch (error) {
                     console.error("Error creating ticket:", error);
                     toast.error("Có lỗi xảy ra khi phát vé");

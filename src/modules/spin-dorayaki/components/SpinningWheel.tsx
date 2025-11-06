@@ -5,7 +5,6 @@ import { useQuery } from "@tanstack/react-query";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   Calendar,
-  RefreshCw,
   RotateCw,
   Ticket,
   Volume2,
@@ -15,7 +14,7 @@ import Image from "next/image";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { useSpin } from "../hooks";
-import { getTodaySpinTickets } from "../services";
+import { getTodaySpinTickets, subscribeTodaySpinTickets } from "../services";
 import { SpinTicket } from "../types";
 import { PrizeModal } from "./PrizeModal";
 import { getVietnamTime } from "@/utils/time";
@@ -91,8 +90,8 @@ const prizeDisplayConfig = [
   { text: "50", count: 3, color: "#FF9800", textColor: "#FFFFFF" }, // 20%
   { text: "80", count: 2, color: "#F8BBD0", textColor: "#333333" }, // 15%
   { text: "60", count: 2, color: "#4CAF50", textColor: "#FFFFFF" }, // 15%
-  { text: "30", count: 3, color: "#FFEB3B", textColor: "#333333" }, // 10%
-  { text: "100", count: 2, color: "#F44336", textColor: "#FFFFFF" }, // 10%
+  { text: "30", count: 4, color: "#FFEB3B", textColor: "#333333" }, // 10%
+  { text: "100", count: 1, color: "#F44336", textColor: "#FFFFFF" }, // 10%
 ];
 
 // Generate the 20-segment array for visual display
@@ -122,12 +121,14 @@ export function SpinningWheel() {
   const [result, setResult] = useState<string | null>(null);
   const [isSoundEnabled, setIsSoundEnabled] = useState(true);
 
-  // Query to get today's spin tickets
+  // State để lưu danh sách vé từ real-time listener
+  const [realTimeTickets, setRealTimeTickets] = useState<SpinTicket[] | null>(null);
+  const previousTicketCountRef = useRef<number>(0);
+
+  // Query to get today's spin tickets (initial load)
   const { 
-    data: allSpinTickets = [], 
+    data: initialTickets = [], 
     isLoading: ticketsLoading,
-    refetch: refetchTickets,
-    isRefetching: isRefetchingTickets
   } = useQuery<
     SpinTicket[]
   >({
@@ -136,6 +137,39 @@ export function SpinningWheel() {
     enabled: !!studentId,
     staleTime: 30 * 1000, // 30 seconds
   });
+
+  // Real-time listener để tự động cập nhật khi admin phát vé
+  useEffect(() => {
+    if (!studentId) return;
+
+    // Reset counter khi subscribe mới
+    previousTicketCountRef.current = 0;
+
+    // Subscribe to real-time updates
+    const unsubscribe = subscribeTodaySpinTickets(studentId, (tickets) => {
+      // Kiểm tra nếu có vé mới được thêm vào (chỉ khi đã có data trước đó)
+      const currentCount = previousTicketCountRef.current;
+      if (currentCount > 0 && tickets.length > currentCount) {
+        const newTicketsCount = tickets.length - currentCount;
+        if (newTicketsCount > 0) {
+          toast.success(`Bạn có ${newTicketsCount} vé quay mới! 🎉`, {
+            icon: "🎫",
+            duration: 3000,
+          });
+        }
+      }
+      previousTicketCountRef.current = tickets.length;
+      setRealTimeTickets(tickets);
+    });
+
+    // Cleanup subscription on unmount
+    return () => {
+      unsubscribe();
+    };
+  }, [studentId]);
+
+  // Sử dụng real-time tickets nếu đã có data từ listener, nếu không thì dùng initial tickets
+  const allSpinTickets = realTimeTickets !== null ? realTimeTickets : initialTickets;
 
   // Filter to only show valid tickets (not expired, dateKey matches today)
   const spinTickets = useMemo(() => {
@@ -403,20 +437,8 @@ export function SpinningWheel() {
     }
   };
 
-  // Client-side rate limiting (backup layer - server is primary)
-  const lastSpinTimeRef = useRef<number>(0);
-  const MIN_SPIN_INTERVAL_MS = 1000; // Minimum 1 second between spins
-
   const startSpin = () => {
     if (isSpinning || isSpinLoading) return;
-
-    // Client-side rate limiting check
-    const now = Date.now();
-    const timeSinceLastSpin = now - lastSpinTimeRef.current;
-    if (timeSinceLastSpin < MIN_SPIN_INTERVAL_MS) {
-      toast.error("Vui lòng chờ một chút trước khi quay lại");
-      return;
-    }
 
     // Tìm vé quay chưa sử dụng (đã được filter chỉ còn vé hợp lệ)
     const availableTicket = spinTickets.find(
@@ -434,9 +456,6 @@ export function SpinningWheel() {
       toast.error("Vé đã hết hạn, vui lòng làm mới trang");
       return;
     }
-
-    // Update last spin time
-    lastSpinTimeRef.current = now;
 
     // Reset pending prize
     pendingPrizeRef.current = null;
@@ -474,14 +493,33 @@ export function SpinningWheel() {
       candidateIndexes[Math.floor(Math.random() * candidateIndexes.length)];
 
     // 2) Compute target angle so that pointer (top) lands at the middle of that segment
+    // Formula from animate function: index = Math.floor(((360 - (deg % 360) + 270) % 360) / arcd)
+    // We need to reverse this: given targetIndex, calculate the deg that makes this formula true
     const arcd = 360 / prizes.length;
-    const mid = targetIndex * arcd + arcd / 2; // segment middle in display frame
-    // Inversion of index formula: desired (360 - (deg % 360) + 270) % 360 = mid
+    
+    // We want the middle of the target segment to be at the top (270 degrees)
+    // The middle of segment targetIndex is at: targetIndex * arcd + arcd / 2
+    const targetSegmentMiddle = targetIndex * arcd + arcd / 2;
+    
+    // Current angle in degrees
     const currentDeg = currentAngleDegRef.current;
-    const base = 630 - mid; // 360 + 270 - mid
     const currentMod = ((currentDeg % 360) + 360) % 360;
-    const neededWithin360 = (base - currentMod + 360) % 360;
-
+    
+    // The formula: ((360 - (finalDeg % 360) + 270) % 360) should equal targetSegmentMiddle
+    // Solving for finalDeg:
+    // (360 - (finalDeg % 360) + 270) % 360 = targetSegmentMiddle
+    // (630 - (finalDeg % 360)) % 360 = targetSegmentMiddle
+    // (finalDeg % 360) = (630 - targetSegmentMiddle) % 360
+    const targetMod = (630 - targetSegmentMiddle) % 360;
+    
+    // Calculate how much we need to rotate from current position
+    let neededRotation = (targetMod - currentMod + 360) % 360;
+    
+    // If neededRotation is 0 or very small, add a full rotation to make it more dramatic
+    if (neededRotation < 10) {
+      neededRotation += 360;
+    }
+    
     // Add extra full turns based on power to be dramatic
     const extraTurns = power; // 3, 6, 10 turns
     
@@ -499,7 +537,15 @@ export function SpinningWheel() {
       // Tính target mới để đảm bảo quay đủ vòng và dừng đúng vị trí
       // Đảm bảo quay thêm ít nhất 2-3 vòng nữa từ vị trí hiện tại
       const remainingTurns = Math.max(extraTurns, 3);
-      const finalTarget = currentAngle + neededWithin360 + 360 * remainingTurns;
+      
+      // Tính lại neededRotation từ góc hiện tại
+      const currentAngleMod = ((currentAngle % 360) + 360) % 360;
+      let newNeededRotation = (targetMod - currentAngleMod + 360) % 360;
+      if (newNeededRotation < 10) {
+        newNeededRotation += 360;
+      }
+      
+      const finalTarget = currentAngle + newNeededRotation + 360 * remainingTurns;
       
       // Cập nhật animation để dừng đúng vị trí
       animStartDegRef.current = currentAngle;
@@ -510,7 +556,7 @@ export function SpinningWheel() {
       animDurationMsRef.current = Math.max(remainingTime, 5000); // Tối thiểu 5 giây
     } else {
       // Nếu chưa bắt đầu quay, setup như bình thường
-      const targetDeg = currentDeg + neededWithin360 + 360 * extraTurns;
+      const targetDeg = currentDeg + neededRotation + 360 * extraTurns;
       animStartDegRef.current = currentAngleDegRef.current;
       animTargetDegRef.current = targetDeg;
       animDurationMsRef.current = 10000 + power * 500;
@@ -535,24 +581,13 @@ export function SpinningWheel() {
       <div className="flex w-full flex-col items-center justify-center md:flex-row gap-2">
         <div className="flex flex-col items-center gap-4">
           <div className="bg-white rounded-2xl border border-blue-200 shadow-lg p-6">
-            <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center mb-6">
               <div className="flex items-center gap-3">
                 <Ticket className="w-6 h-6 text-blue-600" />
                 <h2 className="text-2xl font-bold text-blue-800">
                   Vé quay hôm nay
                 </h2>
               </div>
-              <button
-                onClick={() => refetchTickets()}
-                disabled={isRefetchingTickets || ticketsLoading}
-                className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-blue-700 bg-blue-50 hover:bg-blue-100 rounded-lg border border-blue-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                title="Làm mới danh sách vé"
-              >
-                <RefreshCw 
-                  className={`w-4 h-4 ${isRefetchingTickets || ticketsLoading ? 'animate-spin' : ''}`} 
-                />
-                <span className="hidden sm:inline">Lấy vé</span>
-              </button>
             </div>
 
             {ticketsLoading ? (

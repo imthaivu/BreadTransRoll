@@ -9,6 +9,7 @@ import {
   getDoc,
   getDocs,
   increment,
+  onSnapshot,
   query,
   runTransaction,
   serverTimestamp,
@@ -16,6 +17,7 @@ import {
   Timestamp,
   updateDoc,
   where,
+  Unsubscribe,
 } from "firebase/firestore";
 import { CreateCurrencyData } from "../admin";
 import { CreateSpinTicketData, SpinTicket, SpinTicketStatus, SpinTicketSource } from "./types";
@@ -144,7 +146,8 @@ export async function createSpinTicket(
 // Tạo vé quay mới bởi admin (không kiểm tra khung giờ)
 export async function createSpinTicketByAdmin(
   studentId: string,
-  quantity: number = 1
+  quantity: number = 1,
+  isPremium: boolean = false
 ): Promise<SpinTicket[]> {
   const tickets: SpinTicket[] = [];
 
@@ -163,7 +166,7 @@ export async function createSpinTicketByAdmin(
     const docId = `${studentId}_${bookId}_${lessonId}_${dateKey}_${timestamp}`;
     const docRef = doc(spinTicketsCol, docId);
 
-    const ticketData = {
+    const ticketData: any = {
       studentId,
       bookId,
       lessonId,
@@ -172,6 +175,11 @@ export async function createSpinTicketByAdmin(
       status: SpinTicketStatus.PENDING,
       source: SpinTicketSource.ADMIN,
     };
+
+    // Chỉ thêm isPremium nếu là true (để tiết kiệm storage)
+    if (isPremium) {
+      ticketData.isPremium = true;
+    }
 
     await setDoc(docRef, ticketData);
 
@@ -236,6 +244,43 @@ export async function getTodaySpinTickets(
   );
 }
 
+// Real-time listener cho vé quay (tự động cập nhật khi có thay đổi)
+export function subscribeTodaySpinTickets(
+  studentId: string,
+  callback: (tickets: SpinTicket[]) => void
+): Unsubscribe {
+  const vietnamTime = getVietnamTime();
+  const dateKey = vietnamTime; // YYYY-MM-DD
+
+  const q = query(
+    spinTicketsCol,
+    where("studentId", "==", studentId),
+    where("dateKey", "==", dateKey)
+  );
+
+  return onSnapshot(
+    q,
+    (snapshot) => {
+      const tickets = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      })) as SpinTicket[];
+
+      // Lọc ra các vé còn hiệu lực (chỉ trong ngày) và chưa sử dụng
+      const validTickets = tickets.filter(
+        (ticket) => isTicketValid(ticket) && ticket.status === "pending"
+      );
+
+      callback(validTickets);
+    },
+    (error) => {
+      console.error("Error listening to spin tickets:", error);
+      // Trả về mảng rỗng nếu có lỗi
+      callback([]);
+    }
+  );
+}
+
 // Sử dụng vé quay (đánh dấu đã sử dụng và lưu giải thưởng)
 export async function useSpinTicket(
   ticketId: string,
@@ -280,13 +325,10 @@ export async function performSpin(
   // 1. Kiểm tra session restrictions
   await checkSessionRestrictions(studentId, sessionId);
 
-  // 2. Kiểm tra rate limit cho user
-  await checkUserRateLimit(studentId);
-
-  // 3. Tạo user-level lock để chống đa thiết bị
+  // 2. Tạo user-level lock để chống đa thiết bị
   await createUserSpinLock(studentId, deviceInfo);
 
-  // 4. Tạo ticket-level lock để tránh race condition
+  // 3. Tạo ticket-level lock để tránh race condition
   await createSpinLock(ticketId, studentId);
 
   try {
@@ -323,8 +365,15 @@ export async function performSpin(
         );
       }
 
-      // 5. Tính kết quả dựa trên xác suất thật
-      const prize = pickPrizeByRealProbability();
+      // 5. Tính kết quả dựa trên xác suất thật (vé xịn có tỉ lệ cao hơn)
+      const isPremium = ticket.isPremium === true;
+      const prize = pickPrizeByRealProbability(isPremium);
+
+      // Validate prize value (security: ensure prize is valid)
+      const VALID_PRIZES = ["10", "20", "30", "50", "60", "80", "100"];
+      if (!VALID_PRIZES.includes(prize)) {
+        throw new Error("Invalid prize value generated");
+      }
 
       // 6. Tất cả WRITES sau
       transaction.update(ticketRef, {
@@ -347,13 +396,19 @@ export async function performSpin(
     });
 
     // 8. Tạo currency transaction sau khi transaction chính hoàn thành
+    // Validate prize amount before creating transaction (security)
+    const prizeAmount = parseInt(result.prize, 10);
+    if (isNaN(prizeAmount) || prizeAmount <= 0) {
+      throw new Error("Invalid prize amount");
+    }
+
     await createCurrencyTransaction({
       studentId: result.ticket.studentId,
       studentName: result.userData.displayName || "Chưa đặt tên",
       userId: studentId,
       userName: result.userData.displayName || "Chưa đặt tên",
       userRole: result.userData.role as UserRole,
-      amount: parseInt(result.prize),
+      amount: prizeAmount,
       reason: `quay_dorayaki_book_${result.ticket.bookId}_lesson_${result.ticket.lessonId}`,
       type: "add",
     });
@@ -373,9 +428,9 @@ export async function performSpin(
 }
 
 // Chọn giải thưởng dựa trên xác suất thật
-function pickPrizeByRealProbability(): string {
-  // Real probabilities (sum = 100)
-  const REAL_PROBS: Record<string, number> = {
+function pickPrizeByRealProbability(isPremium: boolean = false): string {
+  // Xác suất cho vé thường (normal)
+  const NORMAL_PROBS: Record<string, number> = {
     "100": 3,
     "80": 5,
     "60": 10,
@@ -384,6 +439,19 @@ function pickPrizeByRealProbability(): string {
     "20": 23,
     "10": 32,
   };
+
+  // Xác suất cho vé xịn (premium) - tỉ lệ trúng giải cao hơn
+  const PREMIUM_PROBS: Record<string, number> = {
+    "100": 10,   // Tăng từ 3% lên 10%
+    "80": 10,   // Tăng từ 5% lên 10%
+    "60": 18,   // Tăng từ 10% lên 18%
+    "50": 15,   // Tăng từ 12% lên 15%
+    "30": 20,   // Tăng từ 15% lên 20%
+    "20": 18,   // Giảm từ 23% xuống 18% (để tăng giải cao)
+    "10": 9,    // Giảm từ 32% xuống 9% (để tăng giải cao)
+  };
+
+  const REAL_PROBS = isPremium ? PREMIUM_PROBS : NORMAL_PROBS;
 
   const keys = Object.keys(REAL_PROBS);
   const r = Math.random() * 100;
@@ -511,50 +579,6 @@ async function releaseUserSpinLock(studentId: string): Promise<void> {
   const userLockKey = `user_spin_${studentId}`;
   const userLockRef = doc(locksCol, userLockKey);
   await deleteDoc(userLockRef);
-}
-
-// Kiểm tra rate limit cho user (1 phút/lần)
-async function checkUserRateLimit(studentId: string): Promise<void> {
-  const rateLimitKey = `rate_limit_${studentId}`;
-  const rateLimitRef = doc(locksCol, rateLimitKey);
-
-  const now = new Date();
-  const oneMinuteAgo = new Date(now.getTime() - 60000); // 1 phút trước
-
-  try {
-    const rateLimitSnap = await getDoc(rateLimitRef);
-
-    if (rateLimitSnap.exists()) {
-      const rateLimitData = rateLimitSnap.data();
-      const lastSpinTime = rateLimitData.lastSpinTime?.toDate();
-
-      if (lastSpinTime && lastSpinTime > oneMinuteAgo) {
-        const remainingTime = Math.ceil(
-          (lastSpinTime.getTime() + 60000 - now.getTime()) / 1000
-        );
-        throw new Error(
-          `Bạn cần chờ ${remainingTime} giây trước khi quay tiếp`
-        );
-      }
-    }
-
-    // Cập nhật rate limit
-    await setDoc(
-      rateLimitRef,
-      {
-        studentId,
-        lastSpinTime: serverTimestamp(),
-        count: increment(1),
-      },
-      { merge: true }
-    );
-  } catch (error) {
-    if (error instanceof Error && error.message.includes("Bạn cần chờ")) {
-      throw error;
-    }
-    // Nếu lỗi khác, cho phép tiếp tục
-    console.warn("Rate limit check failed:", error);
-  }
 }
 
 // Kiểm tra session restrictions (chống đa thiết bị, timeout 30 phút)
