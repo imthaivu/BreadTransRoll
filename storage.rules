@@ -1,9 +1,20 @@
 rules_version = '2';
 service firebase.storage {
   match /b/{bucket}/o {
+    // Avatars: public read, authenticated write (allows admin to upload for students)
+    match /users/{userId}/avatar/{fileName} {
+      allow read: if true; // Public read
+      allow write: if request.auth != null; // Any authenticated user can write (admin can upload for students)
+    }
+    
+    // Speaking submissions: authenticated users only
+    match /speaking_submissions/{allPaths=**} {
+      allow read, write: if request.auth != null;
+    }
+    
+    // Default: authenticated users only (for other paths)
     match /{allPaths=**} {
-      // WARNING: Public access. For development only.
-      allow read, write: if true;
+      allow read, write: if request.auth != null;
     }
   }
 }

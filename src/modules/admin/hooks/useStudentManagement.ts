@@ -72,8 +72,11 @@ export const useUpdateStudent = () => {
       studentData: UpdateStudentData;
     }) => updateStudent(studentId, studentData),
     onSuccess: (_, { studentId }) => {
-      // Invalidate and refetch students list
-      queryClient.invalidateQueries({ queryKey: studentKeys.lists() });
+      // Invalidate and refetch all students lists (with any limit)
+      queryClient.invalidateQueries({ 
+        queryKey: studentKeys.lists(),
+        exact: false // Invalidate all queries that start with this key
+      });
 
       // Invalidate specific student detail
       queryClient.invalidateQueries({

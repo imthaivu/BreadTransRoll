@@ -16,7 +16,7 @@ import { useStudentManagement } from "../hooks/useStudentManagement";
 import { useAuth } from "@/lib/auth/context";
 import { useCurrencyManagement } from "../hooks/useCurrencyManagement";
 import toast from "react-hot-toast";
-import { useMemo } from "react";
+import { useMemo, useEffect } from "react";
 import Image from "next/image";
 import { getStorageBucket } from "@/lib/firebase/client";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
@@ -83,6 +83,16 @@ export default function AdminStudents() {
     isUpdating,
     isDeleting,
   } = useStudentManagement(limit);
+
+  // Sync activeStudent with students list when it updates
+  useEffect(() => {
+    if (activeStudent) {
+      const updatedStudent = students.find(s => s.id === activeStudent.id);
+      if (updatedStudent) {
+        setActiveStudent(updatedStudent as StudentWithExtras);
+      }
+    }
+  }, [students]);
 
   // Apply filters
   const filteredStudents = useMemo(() => {
@@ -234,14 +244,53 @@ export default function AdminStudents() {
   const handleAvatarUpload = async (file: File | null, studentId: string) => {
     if (!file || !studentId) return;
 
+    // Check authentication and admin role
+    if (!session?.user?.id) {
+      toast.error("Bạn cần đăng nhập để upload ảnh.");
+      return;
+    }
+
+    if (!profile || profile.role !== "admin") {
+      toast.error("Chỉ admin mới có quyền upload ảnh cho học sinh.");
+      return;
+    }
+
     const toastId = toast.loading("Đang tải ảnh lên...");
     setAvatarUploading(studentId);
     try {
+      // Validate file type
+      if (!file.type.startsWith('image/')) {
+        throw new Error("File phải là ảnh");
+      }
+
+      // Validate file size (max 5MB)
+      const maxSize = 5 * 1024 * 1024; // 5MB
+      if (file.size > maxSize) {
+        throw new Error("Kích thước ảnh không được vượt quá 5MB");
+      }
+
       const storage = getStorageBucket();
+      if (!storage) {
+        throw new Error("Không thể kết nối với Firebase Storage. Vui lòng kiểm tra cấu hình.");
+      }
+
       const path = `users/${studentId}/avatar/${Date.now()}_${file.name}`;
       const storageRef = ref(storage, path);
+      
+      console.log("Uploading to path:", path);
+      console.log("Storage bucket:", process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET);
+      console.log("User ID:", session.user.id);
+      console.log("User role:", profile.role);
+      
       await uploadBytes(storageRef, file);
       const url = await getDownloadURL(storageRef);
+      
+      console.log("Upload successful, URL:", url);
+      
+      // Update active student state immediately (optimistic update)
+      if (activeStudent?.id === studentId) {
+        setActiveStudent({ ...activeStudent, avatarUrl: url });
+      }
       
       // Use updateStudent from hook to ensure data refresh
       await updateStudent(studentId, {
@@ -249,14 +298,26 @@ export default function AdminStudents() {
       });
       
       toast.success("Cập nhật ảnh đại diện thành công!", { id: toastId });
-      
-      // Update active student state
-      if (activeStudent?.id === studentId) {
-        setActiveStudent({ ...activeStudent, avatarUrl: url });
-      }
     } catch (error) {
-      console.error(error);
-      toast.error("Đã có lỗi xảy ra khi tải ảnh.", { id: toastId });
+      console.error("Avatar upload error:", error);
+      
+      // More detailed error messages
+      let errorMessage = "Đã có lỗi xảy ra khi tải ảnh.";
+      if (error instanceof Error) {
+        if (error.message.includes("storage/unauthorized") || error.message.includes("403")) {
+          errorMessage = "Không có quyền upload. Vui lòng kiểm tra Firebase Storage rules. Đảm bảo admin có quyền upload vào path users/{userId}/avatar/";
+        } else if (error.message.includes("storage/quota-exceeded")) {
+          errorMessage = "Storage quota đã hết. Vui lòng liên hệ admin.";
+        } else if (error.message.includes("storage/unauthenticated")) {
+          errorMessage = "Bạn cần đăng nhập để upload ảnh.";
+        } else if (error.message.includes("network")) {
+          errorMessage = "Lỗi kết nối mạng. Vui lòng thử lại.";
+        } else {
+          errorMessage = error.message || errorMessage;
+        }
+      }
+      
+      toast.error(errorMessage, { id: toastId });
     } finally {
       setAvatarUploading(null);
     }
