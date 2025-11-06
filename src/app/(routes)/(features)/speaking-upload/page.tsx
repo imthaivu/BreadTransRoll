@@ -4,18 +4,15 @@ import { Button } from "@/components/ui/Button";
 import { Modal } from "@/components/ui/Modal";
 import { RequireAuth, RequireRole } from "@/lib/auth/guard";
 import { UserRole } from "@/lib/auth/types";
-import { AdminModal } from "@/modules/admin";
 import {
   AudioRecorder,
   SubmissionControls,
   useSpeakingUpload,
 } from "@/modules/speaking-upload/";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 export default function SpeakingUploadPage() {
-  const router = useRouter();
   const {
     books,
     lessons,
@@ -37,8 +34,6 @@ export default function SpeakingUploadPage() {
     isAIAnalyzing,
     aiError,
     setAiError,
-    showSpinPopup,
-    setShowSpinPopup,
   } = useSpeakingUpload();
 
   useEffect(() => {
@@ -204,54 +199,6 @@ export default function SpeakingUploadPage() {
             </div>
           </div>
         </div>
-
-        {/* Spin Popup Modal */}
-        <Modal
-          open={showSpinPopup}
-          onClose={() => setShowSpinPopup(false)}
-          title="🎉 Chúc mừng!"
-          maxWidth="md"
-        >
-          <div className="text-center p-6">
-            <div className="mb-6">
-              <div className="text-6xl mb-4">🎊</div>
-              <h3 className="text-2xl font-bold text-green-600 mb-2">
-                Bạn đã hoàn thành đủ điều kiện!
-              </h3>
-              <p className="text-gray-600 mb-4">
-                Bạn đã hoàn thành quiz với độ chính xác cao và nộp bài nói thành
-                công. Hãy thử vận may của bạn tại vòng quay bánh mì!
-              </p>
-            </div>
-
-            <div className="space-y-3">
-              <Button
-                onClick={() => {
-                  setShowSpinPopup(false);
-                  router.push("/spin-dorayaki");
-                }}
-                className="w-full bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-white font-bold py-3 px-6 rounded-full"
-              >
-                🎯 Đi quay bánh mì ngay!
-              </Button>
-
-              <Button
-                onClick={() => setShowSpinPopup(false)}
-                variant="outline"
-                className="w-full"
-              >
-                Để sau
-              </Button>
-            </div>
-
-            <div className="mt-6 p-4 bg-blue-50 rounded-lg">
-              <p className="text-sm text-blue-700">
-                💡 <strong>Lưu ý:</strong> Bạn có thể quay bánh mì bất cứ lúc
-                nào từ menu chính
-              </p>
-            </div>
-          </div>
-        </Modal>
       </RequireRole>
     </RequireAuth>
   );
