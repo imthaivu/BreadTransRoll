@@ -35,6 +35,10 @@ type StudentWithExtras = IProfile & {
   dateOfBirth?: Date;
   avatarUrl?: string;
   note?: string;
+  rank?: "dong" | "bac" | "vang" | "kim cuong" | "cao thu";
+  badges?: string[];
+  mvpWins?: number;
+  mvpLosses?: number;
 };
 
 // Transaction form data type
@@ -86,14 +90,15 @@ export default function AdminStudents() {
   } = useStudentManagement(limit);
 
   // Sync activeStudent with students list when it updates
+  // But don't sync when modal is open to preserve local edits (badges, etc.)
   useEffect(() => {
-    if (activeStudent) {
+    if (activeStudent && !isDetailEditOpen) {
       const updatedStudent = students.find(s => s.id === activeStudent.id);
       if (updatedStudent) {
         setActiveStudent(updatedStudent as StudentWithExtras);
       }
     }
-  }, [students, activeStudent]);
+  }, [students, isDetailEditOpen]);
 
   // Apply filters
   const filteredStudents = useMemo(() => {
@@ -130,6 +135,10 @@ export default function AdminStudents() {
     totalBanhRan?: number | string;
     streakCount?: number | string;
     note?: string;
+    rank?: string;
+    badges?: string[];
+    mvpWins?: number | string;
+    mvpLosses?: number | string;
   }) => {
     const target = activeStudent || selectedStudent;
     if (!target) return;
@@ -152,6 +161,23 @@ export default function AdminStudents() {
         updateData.streakCount = typeof updateData.streakCount === 'string' 
           ? Number(updateData.streakCount) 
           : updateData.streakCount;
+      }
+      
+      // Convert mvpWins and mvpLosses to numbers if they are strings
+      if (updateData.mvpWins !== undefined) {
+        updateData.mvpWins = typeof updateData.mvpWins === 'string' 
+          ? Number(updateData.mvpWins) 
+          : updateData.mvpWins;
+      }
+      if (updateData.mvpLosses !== undefined) {
+        updateData.mvpLosses = typeof updateData.mvpLosses === 'string' 
+          ? Number(updateData.mvpLosses) 
+          : updateData.mvpLosses;
+      }
+      
+      // Handle rank: if empty string, set to undefined
+      if (updateData.rank === "") {
+        updateData.rank = undefined;
       }
       
       await updateStudent(target.id, updateData as UpdateStudentData);
@@ -223,7 +249,11 @@ export default function AdminStudents() {
   };
 
   const openDetailEditModal = (student: StudentWithExtras) => {
-    setActiveStudent(student);
+    // Ensure badges is always an array
+    setActiveStudent({
+      ...student,
+      badges: student.badges || [],
+    });
     setIsDetailEditOpen(true);
   };
 
@@ -552,6 +582,41 @@ export default function AdminStudents() {
       rows: 4,
       placeholder: "Nhập ghi chú về học sinh...",
     },
+    {
+      name: "rank",
+      label: "Rank",
+      type: "select",
+      options: [
+        { value: "", label: "Chưa có rank" },
+        { value: "dong", label: "Đồng" },
+        { value: "bac", label: "Bạc" },
+        { value: "vang", label: "Vàng" },
+        { value: "kim cuong", label: "Kim cương" },
+        { value: "cao thu", label: "Cao thủ" },
+      ],
+    },
+    {
+      name: "mvpWins",
+      label: "Số lần MVP thắng",
+      type: "number",
+      validation: {
+        min: {
+          value: 0,
+          message: "Số lần MVP thắng không thể âm",
+        },
+      },
+    },
+    {
+      name: "mvpLosses",
+      label: "Số lần MVP thua",
+      type: "number",
+      validation: {
+        min: {
+          value: 0,
+          message: "Số lần MVP thua không thể âm",
+        },
+      },
+    },
   ];
 
   // Transaction form fields
@@ -771,6 +836,77 @@ export default function AdminStudents() {
             />
           </div>
 
+          {/* Badges Section */}
+          <div className="mb-4 sm:mb-6">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Huy hiệu (tối đa 5)
+            </label>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+              {[
+                { name: "Fast Learner", image: "fast.png" },
+                { name: "Never Missed", image: "never.png" },
+                { name: "Fluency", image: "master.png" },
+                { name: "Pronunciation Pro", image: "pronun.png" },
+                { name: "Grammar Guardian", image: "gramar.png" },
+              ].map(({ name: badge, image }) => {
+                const isSelected = activeStudent?.badges?.includes(badge) || false;
+                return (
+                  <label
+                    key={badge}
+                    className={`flex items-center gap-2 p-2 rounded-lg border cursor-pointer transition-colors ${
+                      isSelected
+                        ? "bg-blue-50 border-blue-300"
+                        : "bg-white border-gray-300 hover:bg-gray-50"
+                    }`}
+                  >
+                    <input
+                      type="checkbox"
+                      checked={isSelected}
+                      onChange={(e) => {
+                        if (!activeStudent) return;
+                        
+                        const currentBadges = activeStudent.badges || [];
+                        let newBadges: string[];
+                        if (e.target.checked) {
+                          // Max 5 badges
+                          if (currentBadges.length >= 5) {
+                            toast.error("Tối đa 5 huy hiệu");
+                            e.target.checked = false; // Prevent checkbox from being checked
+                            return;
+                          }
+                          newBadges = [...currentBadges, badge];
+                        } else {
+                          newBadges = currentBadges.filter((b) => b !== badge);
+                        }
+                        
+                        // Update activeStudent with new badges
+                        setActiveStudent({
+                          ...activeStudent,
+                          badges: newBadges,
+                        } as StudentWithExtras);
+                      }}
+                      onClick={(e) => {
+                        // Prevent event bubbling
+                        e.stopPropagation();
+                      }}
+                      className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                    />
+                    <div className="relative w-5 h-5 sm:w-6 sm:h-6 flex-shrink-0">
+                      <Image
+                        src={`/assets/rank/${image}`}
+                        alt={badge}
+                        width={24}
+                        height={24}
+                        className="w-5 h-5 sm:w-6 sm:h-6 object-contain"
+                      />
+                    </div>
+                    <span className="text-xs sm:text-sm text-gray-700">{badge}</span>
+                  </label>
+                );
+              })}
+            </div>
+          </div>
+
           <AdminForm
             fields={editFormFields}
             defaultValues={{
@@ -794,22 +930,30 @@ export default function AdminStudents() {
               totalBanhRan: activeStudent?.totalBanhRan || 0,
               streakCount: activeStudent?.streakCount || 0,
               note: activeStudent?.note || "",
+              rank: activeStudent?.rank || "",
+              mvpWins: activeStudent?.mvpWins || 0,
+              mvpLosses: activeStudent?.mvpLosses || 0,
             }}
             onSubmit={async (data) => {
-              await handleUpdateStudent(
-                data as {
-                  displayName?: string;
-                  email?: string;
-                  phone?: string;
-                  address?: string;
-                  parentPhone?: string;
-                  dateOfBirth?: Date | string;
-                  avatarUrl?: string;
-                  totalBanhRan?: number | string;
-                  streakCount?: number | string;
-                  note?: string;
-                }
-              );
+              await handleUpdateStudent({
+                ...data,
+                badges: activeStudent?.badges || [],
+              } as {
+                displayName?: string;
+                email?: string;
+                phone?: string;
+                address?: string;
+                parentPhone?: string;
+                dateOfBirth?: Date | string;
+                avatarUrl?: string;
+                totalBanhRan?: number | string;
+                streakCount?: number | string;
+                note?: string;
+                rank?: string;
+                badges?: string[];
+                mvpWins?: number | string;
+                mvpLosses?: number | string;
+              });
             }}
             isLoading={isUpdating}
             onCancel={() => {

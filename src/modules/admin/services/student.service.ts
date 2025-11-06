@@ -45,6 +45,10 @@ export interface UpdateStudentData {
   totalBanhRan?: number;
   streakCount?: number;
   note?: string;
+  rank?: "dong" | "bac" | "vang" | "kim cuong" | "cao thu";
+  badges?: string[];
+  mvpWins?: number;
+  mvpLosses?: number;
 }
 
 // Get all students

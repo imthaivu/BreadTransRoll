@@ -12,10 +12,35 @@ import { useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { Flame } from "lucide-react";
 // ...existing code...
+// Combined Avatar and Achievements Card
 export function AvatarCard() {
   const { session, profile } = useAuth();
   const [avatarUploading, setAvatarUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const profileWithExtras = profile as {
+    rank?: "dong" | "bac" | "vang" | "kim cuong" | "cao thu";
+    badges?: string[];
+    mvpWins?: number;
+    mvpLosses?: number;
+  };
+
+  const rankNames: Record<string, string> = {
+    dong: "Đồng",
+    bac: "Bạc",
+    vang: "Vàng",
+    "kim cuong": "Kim cương",
+    "cao thu": "Cao thủ",
+  };
+
+  // Badge name to image file mapping
+  const badgeImageMap: Record<string, string> = {
+    "Fast Learner": "fast.png",
+    "Never Missed": "never.png",
+    "Fluency": "master.png",
+    "Pronunciation Pro": "pronun.png",
+    "Grammar Guardian": "gramar.png",
+  };
 
   async function handleAvatarChange(file: File | null) {
     if (!session?.user || !file) return;
@@ -42,66 +67,193 @@ export function AvatarCard() {
 
   return (
     <Card>
-      <CardContent>
-        <div className="flex flex-col items-center text-center gap-3">
-          {/* Avatar */}
-          <div className="relative">
-            {profile?.avatarUrl ? (
-              <Image
-                src={profile.avatarUrl}
-                alt="Avatar"
-                width={96}
-                height={96}
-                className="w-24 h-24 rounded-full object-cover"
-              />
-            ) : (
-              <div className="w-24 h-24 rounded-full bg-slate-200 flex items-center justify-center">
-                <User size={48} className="text-slate-500" />
-              </div>
-            )}
+      <CardContent className="p-4 sm:p-6">
+        <div className="flex flex-col md:flex-row gap-6 md:gap-8 items-start">
+          {/* Left side: Avatar section */}
+          <div className="flex flex-col items-center text-center flex-shrink-0 w-full md:w-auto md:max-w-xs">
+            {/* Avatar */}
+            <div className="relative mb-3">
+              {profile?.avatarUrl ? (
+                <Image
+                  src={profile.avatarUrl}
+                  alt="Avatar"
+                  width={96}
+                  height={96}
+                  className="w-24 h-24 rounded-full object-cover"
+                />
+              ) : (
+                <div className="w-24 h-24 rounded-full bg-slate-200 flex items-center justify-center">
+                  <User size={48} className="text-slate-500" />
+                </div>
+              )}
 
-            {/* small edit icon bottom-right */}
-            <button
-              type="button"
-              onClick={() => fileInputRef.current?.click()}
-              disabled={avatarUploading}
-              title="Đổi ảnh đại diện"
-              className="absolute -bottom-1 -right-1 w-8 h-8 rounded-full bg-white shadow flex items-center justify-center hover:bg-gray-100 transition-colors"
-            >
-              <Edit3 size={16} />
-            </button>
+              {/* small edit icon bottom-right */}
+              <button
+                type="button"
+                onClick={() => fileInputRef.current?.click()}
+                disabled={avatarUploading}
+                title="Đổi ảnh đại diện"
+                className="absolute -bottom-1 -right-1 w-8 h-8 rounded-full bg-white shadow flex items-center justify-center hover:bg-gray-100 transition-colors"
+              >
+                <Edit3 size={16} />
+              </button>
+            </div>
+
+            {/* Tên người dùng */}
+            <div className="text-2xl sm:text-3xl font-medium text-slate-800 mb-2">
+              {(profile as { displayName?: string; email?: string })
+                ?.displayName ??
+                (profile as { displayName?: string; email?: string })?.email ??
+                "Người dùng"}
+            </div>
+
+            {/* Streak */}
+            {profile?.streakCount && profile.streakCount > 0 && (() => {
+              const userName = (profile as { displayName?: string; email?: string })
+                ?.displayName ??
+                (profile as { displayName?: string; email?: string })?.email ??
+                "Bạn";
+              return (
+                <div className="space-y-2 w-full">
+                  {profile.streakCount < 30 ? (
+                    <div className="flex items-center gap-1 text-sm text-gray-600">
+                      <Flame className="text-orange-500 w-4 h-4 flex-shrink-0" />
+                      <span>
+                        Đã liên tục học tiếng Anh trong{" "}
+                        <span className="font-medium text-slate-800">
+                          {profile.streakCount}
+                        </span>{" "}
+                        ngày
+                      </span>
+                    </div>
+                  ) : (
+                    <div className="text-xs sm:text-sm text-gray-600 italic leading-relaxed break-words">
+                      <span className="font-semibold text-slate-800">{userName}</span>
+                      {" là minh chứng sống cho sự kiên trì — hiếm ai bằng tuổi có thể học tiếng Anh 1 tiếng/ngày liên tục suốt "}
+                      <span className="font-semibold text-orange-600">
+                        {profile.streakCount}
+                      </span>
+                      {" ngày. Ý chí và quyết tâm ấy đã giúp "}
+                      <span className="font-semibold text-slate-800">{userName}</span>
+                      {" vượt qua hơn 80% người khác. BreadTrans, Gia đình đều tự hào về bạn đấy."}
+                      <span className="font-semibold text-slate-800">{userName}</span>
+                      {", và mọi người đều phải nể phục tinh thần không bỏ cuộc này."}
+                    </div>
+                  )}
+                </div>
+              );
+            })()}
+
+            {/* Hidden file input */}
+            <input
+              type="file"
+              accept="image/*"
+              className="sr-only"
+              ref={fileInputRef}
+              onChange={(e) => handleAvatarChange(e.target.files?.[0] ?? null)}
+            />
           </div>
 
-          {/* Tên người dùng */}
-          <div className="text-3xl font-medium text-slate-800">
-            {(profile as { displayName?: string; email?: string })
-              ?.displayName ??
-              (profile as { displayName?: string; email?: string })?.email ??
-              "Người dùng"}
-          </div>
+          {/* Right side: Achievements section */}
+          {(profileWithExtras?.rank || 
+            profileWithExtras?.badges?.length || 
+            profileWithExtras?.mvpWins !== undefined || 
+            profileWithExtras?.mvpLosses !== undefined) && (
+            <div className="flex-1 space-y-4 border-t md:border-t-0 md:border-l pt-4 md:pt-0 md:pl-6 lg:pl-8 border-gray-200 min-w-0 overflow-hidden">
+              {/* Rank */}
+              {profileWithExtras?.rank && (
+                <div className="flex items-center gap-3">
+                  <span className="text-sm font-medium text-gray-700">Rank:</span>
+                  <div className="relative w-16 h-16 sm:w-20 sm:h-20">
+                    <Image
+                      src={`/assets/rank/${profileWithExtras.rank.replace(" ", "-")}.png`}
+                      alt={profileWithExtras.rank}
+                      width={80}
+                      height={80}
+                      className="w-16 h-16 sm:w-20 sm:h-20 object-contain"
+                    />
+                  </div>
+                  <span className="text-base sm:text-lg font-semibold text-gray-800">
+                    {rankNames[profileWithExtras.rank] || profileWithExtras.rank}
+                  </span>
+                </div>
+              )}
 
-          {/* Streak */}
-          {profile?.streakCount && profile.streakCount > 0 && (
-            <div className="flex items-center gap-1 text-sm text-gray-600">
-              <Flame className="text-orange-500 w-4 h-4" />
-              <span>
-                Đã liên tục học tiếng Anh trong{" "}
-                <span className="font-medium text-slate-800">
-                  {profile.streakCount}
-                </span>{" "}
-                ngày
-              </span>
+              {/* MVP Stats */}
+              {(profileWithExtras?.mvpWins !== undefined || profileWithExtras?.mvpLosses !== undefined) && (
+                <div className="flex items-center gap-3 flex-wrap">
+                  <span className="text-sm font-medium text-gray-700 flex-shrink-0">MVP:</span>
+                  <div className="flex flex-wrap items-center gap-3 sm:gap-4">
+                    {profileWithExtras?.mvpWins !== undefined && (
+                      <div className="flex items-center gap-2">
+                        <div className="relative w-8 h-8 sm:w-10 sm:h-10">
+                          <Image
+                            src="/assets/rank/do.png"
+                            alt="MVP Win"
+                            width={40}
+                            height={40}
+                            className="w-8 h-8 sm:w-10 sm:h-10 object-contain"
+                          />
+                        </div>
+                        <span className="text-sm sm:text-base text-gray-700">
+                          Thắng: <span className="font-semibold">{profileWithExtras.mvpWins || 0}</span>
+                        </span>
+                      </div>
+                    )}
+                    {profileWithExtras?.mvpLosses !== undefined && (
+                      <div className="flex items-center gap-2">
+                        <div className="relative w-8 h-8 sm:w-10 sm:h-10">
+                          <Image
+                            src="/assets/rank/tim.png"
+                            alt="MVP Loss"
+                            width={40}
+                            height={40}
+                            className="w-8 h-8 sm:w-10 sm:h-10 object-contain"
+                          />
+                        </div>
+                        <span className="text-sm sm:text-base text-gray-700">
+                          Thua: <span className="font-semibold">{profileWithExtras.mvpLosses || 0}</span>
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {/* Badges */}
+              {profileWithExtras?.badges && profileWithExtras.badges.length > 0 && (
+                <div className="space-y-2">
+                  <span className="text-sm font-medium text-gray-700">Huy hiệu:</span>
+                  <div className="flex flex-wrap gap-2">
+                    {profileWithExtras.badges.map((badge) => {
+                      const badgeImage = badgeImageMap[badge];
+                      return (
+                        <div
+                          key={badge}
+                          className="flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg flex-shrink-0 max-w-full"
+                        >
+                          {badgeImage && (
+                            <div className="relative w-8 h-8 sm:w-10 sm:h-10 flex-shrink-0">
+                              <Image
+                                src={`/assets/rank/${badgeImage}`}
+                                alt={badge}
+                                width={40}
+                                height={40}
+                                className="w-8 h-8 sm:w-10 sm:h-10 object-contain"
+                              />
+                            </div>
+                          )}
+                          <span className="text-sm sm:text-base font-medium text-blue-700 whitespace-nowrap">
+                            {badge}
+                          </span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
             </div>
           )}
-
-          {/* Hidden file input */}
-          <input
-            type="file"
-            accept="image/*"
-            className="sr-only"
-            ref={fileInputRef}
-            onChange={(e) => handleAvatarChange(e.target.files?.[0] ?? null)}
-          />
         </div>
       </CardContent>
     </Card>

@@ -18,6 +18,10 @@ export interface AppUserProfile {
   parentPhone?: string;
   preferences?: string;
   giftPhone?: string;
+  rank?: "dong" | "bac" | "vang" | "kim cuong" | "cao thu";
+  badges?: string[];
+  mvpWins?: number;
+  mvpLosses?: number;
 }
 
 export enum UserRole {
