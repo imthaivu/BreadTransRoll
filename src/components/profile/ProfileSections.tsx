@@ -37,7 +37,7 @@ export function AvatarCard() {
   const badgeImageMap: Record<string, string> = {
     "Fast Learner": "fast.png",
     "Never Missed": "never.png",
-    "Fluency": "master.png",
+    "Master of Words": "master.png",
     "Pronunciation Pro": "pronun.png",
     "Grammar Guardian": "gramar.png",
   };

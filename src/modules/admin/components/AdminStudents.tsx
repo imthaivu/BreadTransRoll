@@ -15,6 +15,7 @@ import {
 import { useStudentManagement } from "../hooks/useStudentManagement";
 import { useAuth } from "@/lib/auth/context";
 import { useCurrencyManagement } from "../hooks/useCurrencyManagement";
+import { useClasses } from "../hooks/useClassManagement";
 import toast from "react-hot-toast";
 import { useMemo, useEffect } from "react";
 import Image from "next/image";
@@ -69,6 +70,7 @@ export default function AdminStudents() {
   const [studentFilter, setStudentFilter] = useState("");
   const [phoneFilter, setPhoneFilter] = useState("");
   const [addressFilter, setAddressFilter] = useState("");
+  const [selectedClassId, setSelectedClassId] = useState<string>("");
 
   // Auth and roles
   const { session, profile } = useAuth();
@@ -77,6 +79,9 @@ export default function AdminStudents() {
   const [ticketQuantity, setTicketQuantity] = useState<number>(1);
   const [isCreatingTicket, setIsCreatingTicket] = useState(false);
   const [isPremiumTicket, setIsPremiumTicket] = useState(false);
+
+  // Get classes for filter
+  const { data: classes = [], isLoading: classesLoading } = useClasses();
 
   // Use the student management hook
   const {
@@ -117,9 +122,14 @@ export default function AdminStudents() {
         !addressFilter ||
         student.address?.toLowerCase().includes(addressFilter.toLowerCase());
 
-      return studentMatch && phoneMatch && addressMatch;
+      // Filter by class
+      const classMatch =
+        !selectedClassId ||
+        (student.classIds && student.classIds.includes(selectedClassId));
+
+      return studentMatch && phoneMatch && addressMatch && classMatch;
     });
-  }, [students, studentFilter, phoneFilter, addressFilter]);
+  }, [students, studentFilter, phoneFilter, addressFilter, selectedClassId]);
 
   // Currency management
   const { createTransaction, isCreating } = useCurrencyManagement();
@@ -733,7 +743,19 @@ export default function AdminStudents() {
       </motion.div>
 
       {/* Filters */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3">
+        <select
+          value={selectedClassId}
+          onChange={(e) => setSelectedClassId(e.target.value)}
+          className="w-full px-3 sm:px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm"
+        >
+          <option value="">Tất cả lớp</option>
+          {classes.map((classItem) => (
+            <option key={classItem.id} value={classItem.id}>
+              {classItem.name}
+            </option>
+          ))}
+        </select>
         <input
           type="text"
           placeholder="Tên/Email..."
@@ -753,7 +775,7 @@ export default function AdminStudents() {
           placeholder="Địa chỉ..."
           value={addressFilter}
           onChange={(e) => setAddressFilter(e.target.value)}
-          className="w-full px-3 sm:px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm sm:col-span-2 lg:col-span-1"
+          className="w-full px-3 sm:px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm"
         />
       </div>
 
@@ -845,7 +867,7 @@ export default function AdminStudents() {
               {[
                 { name: "Fast Learner", image: "fast.png" },
                 { name: "Never Missed", image: "never.png" },
-                { name: "Fluency", image: "master.png" },
+                { name: "Master of Words", image: "master.png" },
                 { name: "Pronunciation Pro", image: "pronun.png" },
                 { name: "Grammar Guardian", image: "gramar.png" },
               ].map(({ name: badge, image }) => {
