@@ -50,21 +50,29 @@ export function AvatarCard() {
     try {
       const storage = getStorageBucket();
       
-      // Delete old avatar files before uploading new one
+      // Delete all old avatar files in the folder before uploading new one
+      const avatarFolderRef = ref(storage, `users/${session.user.id}/avatar`);
       try {
-        const avatarFolderRef = ref(storage, `users/${session.user.id}/avatar`);
         const oldFiles = await listAll(avatarFolderRef);
-        await Promise.all(
-          oldFiles.items.map((item) => deleteObject(item))
-        );
-      } catch (deleteError) {
-        // Ignore errors when deleting (folder might not exist or already empty)
-        console.log("No old avatar files to delete or error deleting:", deleteError);
+        console.log(`Found ${oldFiles.items.length} old avatar file(s) to delete`);
+        // Delete all files in the avatar folder
+        if (oldFiles.items.length > 0) {
+          const deletePromises = oldFiles.items.map((item) => {
+            console.log(`Deleting old avatar: ${item.fullPath}`);
+            return deleteObject(item);
+          });
+          await Promise.all(deletePromises);
+          console.log("All old avatar files deleted successfully");
+        }
+      } catch (deleteError: unknown) {
+        // Ignore errors - folder might not exist or already empty
+        // This is expected for first-time uploads
+        console.log("No old avatar files to delete or error:", deleteError);
       }
 
-      // Use fixed path with timestamp to ensure unique filename
+      // Use fixed filename to ensure only one avatar exists
       const fileExtension = file.name.split('.').pop() || 'jpg';
-      const path = `users/${session.user.id}/avatar/avatar_${Date.now()}.${fileExtension}`;
+      const path = `users/${session.user.id}/avatar/avatar.${fileExtension}`;
       const storageRef = ref(storage, path);
       await uploadBytes(storageRef, file);
       const url = await getDownloadURL(storageRef);
