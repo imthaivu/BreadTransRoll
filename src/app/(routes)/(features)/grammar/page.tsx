@@ -12,7 +12,9 @@ import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 
 export default function GrammarPage() {
-  const { role, signInWithGoogle, isGuest } = useAuth();
+  const { role, signInWithGoogle, isGuest, session } = useAuth();
+  const isNotLoggedIn = !session?.user;
+  const isGuestAfterLogin = session?.user && role === "guest";
 
   const {
     data: topics,
@@ -51,18 +53,13 @@ export default function GrammarPage() {
 
           {isGuest && !isLoading && (
             <StaggerItem>
-              <div className="text-center p-4 my-4 max-w-2xl mx-auto bg-yellow-50 border border-yellow-200 rounded-lg">
-                <p className="text-sm md:text-base text-yellow-800">
-                  Bạn đang xem trước với tư cách khách (giới hạn 6 chủ đề).{" "}
-                  <button
-                    onClick={signInWithGoogle}
-                    className="font-semibold underline hover:text-yellow-900"
-                  >
-                    Đăng nhập
-                  </button>{" "}
-                  để truy cập không giới hạn!
-                </p>
-              </div>
+              <div className="text-center p-3 my-3 max-w-2xl mx-auto bg-yellow-50 border border-yellow-200 rounded-lg sm:p-4 sm:my-4">
+              <p className="text-sm md:text-base text-yellow-800">
+                {isGuestAfterLogin
+                  ? "Vui lòng liên hệ BreadTrans để kích hoạt tài khoản"
+                  : "Bạn đang xem 1 phần bài học. Tham gia để truy cập trọn vẹn!"}
+              </p>
+            </div>
             </StaggerItem>
           )}
 

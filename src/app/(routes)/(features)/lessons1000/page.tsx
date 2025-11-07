@@ -13,7 +13,9 @@ import { useState } from "react";
 const MAX_GUEST_LESSONS = 10;
 
 export default function Lessons1000Page() {
-  const { role, signInWithGoogle } = useAuth();
+  const { role, signInWithGoogle, session } = useAuth();
+  const isNotLoggedIn = !session?.user;
+  const isGuestAfterLogin = session?.user && role === "guest";
   const [selectedBook, setSelectedBook] = useState<Lessons1000Book | null>(
     LESSONS_1000_BOOKS[0]
   );
@@ -52,18 +54,13 @@ export default function Lessons1000Page() {
               />
 
               {isGuest && (
-                <div className="text-center p-4 my-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-                  <p className="text-sm md:text-base text-yellow-800">
-                    Bạn đang xem trước với tư cách khách.{" "}
-                    <button
-                      onClick={signInWithGoogle}
-                      className="font-semibold underline hover:text-yellow-900"
-                    >
-                      Đăng nhập
-                    </button>{" "}
-                    để truy cập toàn bộ bài học!
-                  </p>
-                </div>
+                <div className="text-center p-3 my-3 max-w-2xl mx-auto bg-yellow-50 border border-yellow-200 rounded-lg sm:p-4 sm:my-4">
+                <p className="text-sm md:text-base text-yellow-800">
+                  {isGuestAfterLogin
+                    ? "Vui lòng liên hệ BreadTrans để kích hoạt tài khoản"
+                    : "Bạn đang xem 1 phần bài học. Tham gia để truy cập trọn vẹn!"}
+                </p>
+              </div>
               )}
 
               {selectedBook && (

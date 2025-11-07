@@ -31,7 +31,7 @@ export default function FlashcardPage() {
   const [showLearningModal, setShowLearningModal] = useState(false);
   const [showConfirmExit, setShowConfirmExit] = useState(false);
   const [showReviewModal, setShowReviewModal] = useState(false);
-  const { role, signInWithGoogle } = useAuth();
+  const { role, signInWithGoogle, session } = useAuth();
 
   const {
     books,
@@ -59,6 +59,8 @@ export default function FlashcardPage() {
   } = useFlashcard();
 
   const isGuest = !role || role === "guest";
+  const isNotLoggedIn = !session?.user;
+  const isGuestAfterLogin = session?.user && role === "guest";
 
   const sampleFlashcardData = useMemo(
     () => ({
@@ -175,15 +177,9 @@ export default function FlashcardPage() {
           <StaggerItem>
             <div className="text-center p-3 my-3 max-w-2xl mx-auto bg-yellow-50 border border-yellow-200 rounded-lg sm:p-4 sm:my-4">
               <p className="text-sm md:text-base text-yellow-800">
-                Bạn đang xem trước với tư cách khách (giới hạn 1 sách và 6 bài
-                học).{" "}
-                <button
-                  onClick={signInWithGoogle}
-                  className="font-semibold underline hover:text-yellow-900"
-                >
-                  Đăng nhập
-                </button>{" "}
-                để truy cập không giới hạn!
+                {isGuestAfterLogin
+                  ? "Vui lòng liên hệ BreadTrans để kích hoạt tài khoản"
+                  : "Bạn đang xem 1 phần bài học. Tham gia để truy cập trọn vẹn!"}
               </p>
             </div>
           </StaggerItem>
