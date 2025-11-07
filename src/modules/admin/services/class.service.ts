@@ -203,10 +203,11 @@ export const updateClass = async (
         collection(db, CLASSES_COLLECTION, classId, "members"),
         newTeacherId
       );
+      const teacherWithImage = newTeacherProfile as IProfile & { image?: string };
       batch.set(newTeacherMemberRef, {
         name: newTeacherProfile.displayName || "N/A",
         email: newTeacherProfile.email,
-        avatarUrl: newTeacherProfile.avatarUrl || (newTeacherProfile as any).image || "",
+        avatarUrl: newTeacherProfile.avatarUrl || teacherWithImage.image || "",
         phone: (newTeacherProfile as unknown as IStudent)?.phone || "",
         role: "teacher",
         status: "active",
@@ -227,10 +228,11 @@ export const updateClass = async (
         collection(db, CLASSES_COLLECTION, classId, "members"),
         newTeacherId
       );
+      const teacherWithImage = newTeacherProfile as IProfile & { image?: string };
       batch.set(newTeacherMemberRef, {
         name: newTeacherProfile.displayName || "N/A",
         email: newTeacherProfile.email,
-        avatarUrl: newTeacherProfile.avatarUrl || (newTeacherProfile as any).image || "",
+        avatarUrl: newTeacherProfile.avatarUrl || teacherWithImage.image || "",
         phone: (newTeacherProfile as unknown as IStudent)?.phone || "",
         role: "teacher",
         status: "active",

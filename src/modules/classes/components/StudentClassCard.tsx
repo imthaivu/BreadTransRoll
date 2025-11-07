@@ -3,8 +3,7 @@
 import { IClass } from "@/types";
 import { Button } from "@/components/ui/Button";
 import Image from "next/image";
-import Link from "next/link";
-import { FiArrowRight } from "react-icons/fi";
+import { FiUsers } from "react-icons/fi";
 
 export function StudentClassCard({
   classItem,
@@ -17,81 +16,91 @@ export function StudentClassCard({
   const meetLink = classItem?.links?.meet;
 
   return (
-    <div className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-md hover:shadow-md transition-shadow duration-200 flex flex-col h-full">
-      <div className="p-5 flex-grow">
-        <h3 className="text-2xl font-bold text-foreground mb-2">
-          <Link
-            href={`/classes/${classItem.id}`}
-            className="hover:text-primary transition-colors"
-          >
-            {classItem.name}
-          </Link>
-        </h3>
-        <p className="text-sm">
-          <b>Giáo viên:</b> {classItem?.teacher?.name || "Không rõ"}
-        </p>
-        <p className="text-sm">
-          <b>SĐT giáo viên:</b> {classItem?.teacher?.phone || "Không rõ"}
-        </p>
-      </div>
+    <div className="bg-white border border-gray-200 rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow duration-200">
+      {/* Tên lớp */}
+      <h3 className="text-xl font-bold text-gray-900 mb-3">
+        {classItem.name}
+      </h3>
 
-      <div className="border-t border-gray-200 p-4 bg-gray-50">
-        <div className="grid grid-cols-1 gap-2">
-          {/* Links */}
-          <div className="flex items-center gap-2">
-            <span className="text-sm font-semibold">Liên kết:</span>
-            {zaloLink && (
-              <a
-                href={zaloLink}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-1.5 px-3 py-2 text-sm text-blue-600 bg-blue-100 font-semibold rounded-xl hover:bg-blue-200 transition-colors"
-                title="Mở nhóm Zalo"
-              >
-                <Image
-                  src={"/assets/images/zalo.png"}
-                  alt="Zalo"
-                  width={20}
-                  height={20}
-                  quality={100}
-                />
-                <span>Zalo</span>
-              </a>
-            )}
-            {meetLink && (
-              <a
-                href={meetLink}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-1.5 px-3 py-2 text-sm text-black bg-yellow-200 font-semibold rounded-xl hover:bg-yellow-300 transition-colors"
-                title="Mở link Google Meet"
-              >
-                <Image
-                  src={"/assets/images/meet.png"}
-                  alt="Google Meet"
-                  width={20}
-                  height={20}
-                  quality={100}
-                />
-                <span>Meet</span>
-              </a>
-            )}
+      {/* Giáo viên */}
+      <div className="flex items-center gap-3 mb-4">
+        {classItem?.teacher?.avatarUrl ? (
+          <div className="relative h-10 w-10 flex-shrink-0">
+            <Image
+              src={classItem.teacher.avatarUrl}
+              alt={classItem?.teacher?.name || "Giáo viên"}
+              fill
+              className="rounded-full object-cover"
+              unoptimized
+            />
           </div>
-
-          {/* Detail Button */}
-          <div className="flex items-center gap-2 mt-4 justify-end">
-            <Button
-              variant="primary"
-              size="sm"
-              onClick={onViewDetail}
-              className="flex items-center gap-1"
-            >
-              Xem chi tiết
-              <FiArrowRight className="ml-1" />
-            </Button>
+        ) : (
+          <div className="h-10 w-10 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center text-sm font-semibold flex-shrink-0">
+            {(classItem?.teacher?.name || "?").charAt(0).toUpperCase()}
           </div>
+        )}
+        <div className="min-w-0 flex-1">
+          <p className="text-sm font-medium text-gray-900">
+            {classItem?.teacher?.name || "Chưa có giáo viên"}
+          </p>
+          {classItem?.teacher?.phone && (
+            <p className="text-xs text-gray-500">
+              📞 {classItem.teacher.phone}
+            </p>
+          )}
         </div>
       </div>
+
+      {/* Links gộp lại */}
+      <div className="flex items-center gap-2 mb-4 flex-wrap">
+        {zaloLink && (
+          <a
+            href={zaloLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-1.5 px-3 py-1.5 text-xs text-blue-600 bg-blue-50 font-medium rounded-lg hover:bg-blue-100 transition-colors"
+            title="Mở nhóm Zalo"
+          >
+            <Image
+              src={"/assets/images/zalo.png"}
+              alt="Zalo"
+              width={16}
+              height={16}
+              quality={100}
+            />
+            <span>Zalo</span>
+          </a>
+        )}
+        {meetLink && (
+          <a
+            href={meetLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-1.5 px-3 py-1.5 text-xs text-gray-700 bg-yellow-50 font-medium rounded-lg hover:bg-yellow-100 transition-colors"
+            title="Mở link Google Meet"
+          >
+            <Image
+              src={"/assets/images/meet.png"}
+              alt="Google Meet"
+              width={16}
+              height={16}
+              quality={100}
+            />
+            <span>Meet</span>
+          </a>
+        )}
+      </div>
+
+      {/* Nút xem thành viên */}
+      <Button
+        variant="outline"
+        size="sm"
+        onClick={onViewDetail}
+        className="w-full flex items-center justify-center gap-2"
+      >
+        <FiUsers className="w-4 h-4" />
+        Xem thành viên
+      </Button>
     </div>
   );
 }

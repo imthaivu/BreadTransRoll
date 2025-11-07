@@ -103,7 +103,8 @@ export default function AdminStudents() {
         setActiveStudent(updatedStudent as StudentWithExtras);
       }
     }
-  }, [students, isDetailEditOpen]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [students, isDetailEditOpen, activeStudent?.id]);
 
   // Apply filters
   const filteredStudents = useMemo(() => {
@@ -124,7 +125,7 @@ export default function AdminStudents() {
 
       return studentMatch && phoneMatch && addressMatch;
     });
-  }, [students, studentFilter, phoneFilter, addressFilter, selectedClassId]);
+  }, [students, studentFilter, phoneFilter, addressFilter]);
 
   // Currency management
   const { createTransaction, isCreating } = useCurrencyManagement();

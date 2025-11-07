@@ -503,12 +503,15 @@ export function ClassDetailModal({
   }, [activeStudent]);
 
   const selectedTeacher: IClassTeacher | undefined = teachers
-    .map((t) => ({
-      id: t.id,
-      name: t.displayName || t.email || "N/A",
-      avatarUrl: t.avatarUrl || (t as any).image || "",
-      phone: (t as unknown as { phone?: string }).phone || "",
-    }))
+    .map((t) => {
+      const teacherWithImage = t as IProfile & { image?: string };
+      return {
+        id: t.id,
+        name: t.displayName || t.email || "N/A",
+        avatarUrl: t.avatarUrl || teacherWithImage.image || "",
+        phone: (t as unknown as { phone?: string }).phone || "",
+      };
+    })
     .find((t) => t.id === teacherId);
 
   const handleSaveClass = async () => {
