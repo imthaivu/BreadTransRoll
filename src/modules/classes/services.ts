@@ -285,12 +285,19 @@ export type CreateCurrencyRequestData = {
 export const createCurrencyRequest = async (
   requestData: CreateCurrencyRequestData
 ): Promise<void> => {
-  const requestsCol = collection(db, "currencyRequests");
-  await addDoc(requestsCol, {
-    ...requestData,
-    status: "pending",
-    createdAt: serverTimestamp(),
-  });
+  try {
+    const requestsCol = collection(db, "currencyRequests");
+    await addDoc(requestsCol, {
+      ...requestData,
+      status: "pending",
+      createdAt: serverTimestamp(),
+    });
+  } catch (error: any) {
+    console.error("Error creating currency request:", error);
+    throw new Error(
+      error?.message || "Không thể tạo yêu cầu. Vui lòng thử lại."
+    );
+  }
 };
 
 export const getLessonStudentProgress = async (

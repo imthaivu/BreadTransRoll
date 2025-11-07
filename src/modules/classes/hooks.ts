@@ -33,14 +33,29 @@ export const teacherClassKeys = {
 };
 
 export const useCreateCurrencyRequest = () => {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: createCurrencyRequest,
     onSuccess: () => {
-      toast.success("Yêu cầu đã được gửi thành công!");
+      toast.success("Yêu cầu đã được gửi thành công! Admin sẽ xem xét và duyệt yêu cầu.");
+      // Invalidate all currency requests queries so admin can see new requests immediately
+      queryClient.invalidateQueries({
+        predicate: (query) => {
+          const key = query.queryKey;
+          return (
+            Array.isArray(key) &&
+            key.length >= 2 &&
+            key[0] === "currency" &&
+            key[1] === "requests"
+          );
+        },
+      });
     },
-    onError: (error) => {
+    onError: (error: any) => {
       console.error("Error creating currency request:", error);
-      toast.error("Gửi yêu cầu thất bại. Vui lòng thử lại.");
+      const errorMessage =
+        error?.message || "Gửi yêu cầu thất bại. Vui lòng thử lại.";
+      toast.error(errorMessage);
     },
   });
 };

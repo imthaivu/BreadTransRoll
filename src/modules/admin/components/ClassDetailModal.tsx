@@ -210,26 +210,27 @@ function MemberManager({
 
       <div>
         <h4 className="text-sm sm:text-base font-medium mb-2">
-          Danh sách thành viên ({members.length})
+          Danh sách học sinh ({members.filter((m) => m.role !== "teacher").length})
         </h4>
-        {members.length === 0 ? (
-          <p className="text-sm text-gray-500">Chưa có thành viên nào</p>
-        ) : (
-          <div className="space-y-2">
-            {members.map((member: IClassMember) => (
-              <div
-                key={member.id}
-                className="flex items-center justify-between p-2 rounded-lg border border-gray-200 hover:bg-gray-50"
-              >
-                <div className="flex items-center gap-3 min-w-0 flex-1">
-                  <div className="text-sm font-medium text-gray-900 truncate">
-                    {member.name}
+        {(() => {
+          const students = members.filter((m) => m.role !== "teacher");
+          return students.length === 0 ? (
+            <p className="text-sm text-gray-500">Chưa có học sinh nào</p>
+          ) : (
+            <div className="space-y-2">
+              {students.map((member: IClassMember) => (
+                <div
+                  key={member.id}
+                  className="flex items-center justify-between p-2 rounded-lg border border-gray-200 hover:bg-gray-50"
+                >
+                  <div className="flex items-center gap-3 min-w-0 flex-1">
+                    <div className="text-sm font-medium text-gray-900 truncate">
+                      {member.name}
+                    </div>
+                    <div className="text-sm text-gray-600">
+                      {member.phone || "-"}
+                    </div>
                   </div>
-                  <div className="text-sm text-gray-600">
-                    {member.phone || "-"}
-                  </div>
-                </div>
-                {member.role !== "teacher" && (
                   <Button
                     variant="outline"
                     size="icon"
@@ -244,11 +245,11 @@ function MemberManager({
                   >
                     <FiTrash2 />
                   </Button>
-                )}
-              </div>
-            ))}
-          </div>
-        )}
+                </div>
+              ))}
+            </div>
+          );
+        })()}
         <ConfirmDialog
           isOpen={confirmOpen}
           onClose={() => setConfirmOpen(false)}
