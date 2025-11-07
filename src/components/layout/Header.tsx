@@ -2,7 +2,6 @@
 
 import BackButton from "@/components/ui/BackButton";
 import { Button } from "@/components/ui/Button";
-import ConfirmDialog from "@/components/ui/ConfirmDialog";
 import { NavigationList } from "@/constants";
 import { useAuth } from "@/lib/auth/context";
 import { translateRole } from "@/lib/auth/utils";
@@ -13,7 +12,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { FaFire } from "react-icons/fa";
-import { FiChevronDown, FiLayers, FiLogOut } from "react-icons/fi";
+import { FiChevronDown, FiLayers } from "react-icons/fi";
 
 // Animation variants for dropdown
 const MAX_VISIBLE_NAV_ITEMS = 0;
@@ -49,7 +48,6 @@ export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMoreMenuOpen, setIsMoreMenuOpen] = useState(false);
   const [showMagicDoor, setShowMagicDoor] = useState(false);
-  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
   const pathname = usePathname();
 
   const isStudent = role == "student";
@@ -67,17 +65,13 @@ export default function Header() {
         if (showMagicDoor) {
           setShowMagicDoor(false);
         }
-        if (showLogoutConfirm) {
-          setShowLogoutConfirm(false);
-        }
       }
     };
 
     if (
       isMobileMenuOpen ||
       isMoreMenuOpen ||
-      showMagicDoor ||
-      showLogoutConfirm
+      showMagicDoor
     ) {
       document.addEventListener("keydown", handleEscapeKey);
     }
@@ -85,7 +79,7 @@ export default function Header() {
     return () => {
       document.removeEventListener("keydown", handleEscapeKey);
     };
-  }, [isMobileMenuOpen, isMoreMenuOpen, showMagicDoor, showLogoutConfirm]);
+  }, [isMobileMenuOpen, isMoreMenuOpen, showMagicDoor]);
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -174,22 +168,6 @@ export default function Header() {
             </div>
           )}
 
-          {/* Mobile Logout Button - Touch-friendly */}
-          {!loading && session?.user && (
-            <button
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                setShowLogoutConfirm(true);
-              }}
-              className="md:hidden flex items-center justify-center min-w-[44px] min-h-[44px] p-2.5 rounded-lg text-gray-700 hover:text-red-600 hover:bg-red-50 active:bg-red-100 transition-colors touch-manipulation"
-              aria-label="Đăng xuất"
-              title="Đăng xuất"
-            >
-              <FiLogOut className="w-5 h-5" />
-            </button>
-          )}
-
           {!loading && !session?.user && (
             <div className="flex items-center gap-2">
               <Button onClick={() => setShowMagicDoor(true)}>Đăng nhập</Button>
@@ -200,7 +178,6 @@ export default function Header() {
           <div className="hidden md:flex items-center gap-2">
             <UserActions
               setShowMagicDoor={setShowMagicDoor}
-              setShowLogoutConfirm={setShowLogoutConfirm}
             />
           </div>
 
@@ -232,18 +209,6 @@ export default function Header() {
         }}
       />
 
-      {/* Logout Confirmation Dialog */}
-      <ConfirmDialog
-        isOpen={showLogoutConfirm}
-        onClose={() => setShowLogoutConfirm(false)}
-        onConfirm={signOutApp}
-        title="Xác nhận đăng xuất"
-        message="Bạn có chắc chắn muốn đăng xuất khỏi tài khoản? Bạn sẽ cần đăng nhập lại để tiếp tục sử dụng."
-        confirmText="Đăng xuất"
-        cancelText="Hủy"
-        confirmVariant="primary"
-        icon={<FiLogOut />}
-      />
     </header>
   );
 }
@@ -397,12 +362,10 @@ function DesktopNavigation({
 // User Actions Component
 interface UserActionsProps {
   setShowMagicDoor: (show: boolean) => void;
-  setShowLogoutConfirm: (show: boolean) => void;
 }
 
 function UserActions({
   setShowMagicDoor,
-  setShowLogoutConfirm,
 }: UserActionsProps) {
   const { session, profile, loading, role } = useAuth();
   const isStudent = role == "student";
