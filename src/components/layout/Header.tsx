@@ -174,6 +174,22 @@ export default function Header() {
             </div>
           )}
 
+          {/* Mobile Logout Button - Touch-friendly */}
+          {!loading && session?.user && (
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                setShowLogoutConfirm(true);
+              }}
+              className="md:hidden flex items-center justify-center min-w-[44px] min-h-[44px] p-2.5 rounded-lg text-gray-700 hover:text-red-600 hover:bg-red-50 active:bg-red-100 transition-colors touch-manipulation"
+              aria-label="Đăng xuất"
+              title="Đăng xuất"
+            >
+              <FiLogOut className="w-5 h-5" />
+            </button>
+          )}
+
           {!loading && !session?.user && (
             <div className="flex items-center gap-2">
               <Button onClick={() => setShowMagicDoor(true)}>Đăng nhập</Button>

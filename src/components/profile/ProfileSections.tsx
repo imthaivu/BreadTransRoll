@@ -196,7 +196,7 @@ export function AvatarCard() {
                           />
                         </div>
                         <span className="text-sm sm:text-base text-gray-700">
-                          Thắng: <span className="font-semibold">{profileWithExtras.mvpWins || 0}</span>
+                          : <span className="font-semibold">{profileWithExtras.mvpWins || 0}</span>
                         </span>
                       </div>
                     )}
@@ -212,7 +212,7 @@ export function AvatarCard() {
                           />
                         </div>
                         <span className="text-sm sm:text-base text-gray-700">
-                          Thua: <span className="font-semibold">{profileWithExtras.mvpLosses || 0}</span>
+                          : <span className="font-semibold">{profileWithExtras.mvpLosses || 0}</span>
                         </span>
                       </div>
                     )}

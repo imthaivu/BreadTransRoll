@@ -161,8 +161,17 @@ export const updateStudent = async (
 ): Promise<boolean> => {
   try {
     const studentRef = doc(db, STUDENTS_COLLECTION, studentId);
+    // Fields that should allow empty strings (to clear/delete content)
+    const textFields = ['note', 'address'];
     const cleanedEntries = Object.entries(studentData).filter(
-      ([, value]) => value !== undefined && value !== ""
+      ([key, value]) => {
+        // Always include text fields even if empty string (to allow clearing)
+        if (textFields.includes(key)) {
+          return value !== undefined;
+        }
+        // For other fields, filter out undefined and empty strings
+        return value !== undefined && value !== "";
+      }
     );
     const cleaned = Object.fromEntries(cleanedEntries);
     if (Object.keys(cleaned).length === 0) return true; // Nothing to update

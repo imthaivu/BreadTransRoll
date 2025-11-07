@@ -36,7 +36,7 @@ export default function ProfilePage() {
                     onClick={() => {
                       signOutApp();
                     }}
-                    className="mx-auto mt-4 flex items-center"
+                    className="mx-auto mt-4 flex items-center min-h-[44px] px-6 py-3 touch-manipulation"
                   >
                     <FiLogOut className="mr-2" /> Đăng xuất
                   </Button>
