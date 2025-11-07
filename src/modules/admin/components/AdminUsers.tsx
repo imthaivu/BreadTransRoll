@@ -4,26 +4,21 @@ import { Button } from "@/components/ui/Button";
 import { IProfile } from "@/types";
 import { motion } from "framer-motion";
 import { useMemo, useState } from "react";
-import { FiEdit, FiEye, FiTrash2, FiUsers } from "react-icons/fi";
+import { FiTrash2, FiUsers } from "react-icons/fi";
 import {
-  AdminForm,
-  AdminFormField,
   AdminModal,
   AdminTable,
   AdminTableColumn,
 } from "./common";
 import { useUserManagement } from "../hooks/useUserManagement";
 import { UserRole } from "@/lib/auth/types";
+import toast from "react-hot-toast";
 
 type UserWithOptionalPhone = IProfile & { phone?: string };
 
 export default function AdminUsers() {
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState<IProfile | null>(null);
-  const [isDetailEditOpen, setIsDetailEditOpen] = useState(false);
-  const [activeUser, setActiveUser] = useState<IProfile | null>(null);
 
   // Filters
   const [userFilter, setUserFilter] = useState("");
@@ -61,25 +56,6 @@ export default function AdminUsers() {
     });
   }, [users, userFilter, phoneFilter, roleFilter]);
 
-  const handleUpdateUser = async (userData: {
-    displayName: string;
-    email: string;
-    role: UserRole;
-    phone?: string;
-  }) => {
-    if (!(activeUser || selectedUser)) return;
-
-    try {
-      const target = activeUser || selectedUser!;
-      await updateUser(target.id, userData);
-      setIsDetailEditOpen(false);
-      setIsEditModalOpen(false);
-      setSelectedUser(null);
-      setActiveUser(null);
-    } catch (error) {
-      console.error("Error updating user:", error);
-    }
-  };
 
   const handleDeleteUser = async () => {
     if (!selectedUser) return;
@@ -91,11 +67,6 @@ export default function AdminUsers() {
     } catch (error) {
       console.error("Error deleting user:", error);
     }
-  };
-
-  const openDetailEditModal = (user: IProfile) => {
-    setActiveUser(user);
-    setIsDetailEditOpen(true);
   };
 
   const openDeleteModal = (user: IProfile) => {
@@ -178,19 +149,32 @@ export default function AdminUsers() {
       key: "actions",
       title: "Thao tác",
       render: (_, user) => (
-        <div className="flex space-x-2">
-          <Button
-            variant="outline"
-            size="sm"
-            className="flex items-center gap-1"
-            onClick={(e) => {
-              e.stopPropagation();
-              openDetailEditModal(user);
+        <div className="flex items-center gap-2">
+          <select
+            value={user.role}
+            onChange={async (e) => {
+              const newRole = e.target.value as UserRole;
+              try {
+                await updateUser(user.id, {
+                  displayName: user.displayName || "",
+                  email: user.email || "",
+                  role: newRole,
+                  phone: (user as UserWithOptionalPhone).phone,
+                });
+                toast.success(`Đã chuyển ${user.displayName || user.email} sang ${newRole === "admin" ? "Admin" : newRole === "teacher" ? "Giáo viên" : newRole === "student" ? "Học sinh" : "Vãng lai"}`);
+              } catch (error) {
+                console.error("Error updating user role:", error);
+                toast.error("Chuyển vai trò thất bại. Vui lòng thử lại.");
+              }
             }}
+            className="px-2 py-1 text-xs border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+            onClick={(e) => e.stopPropagation()}
           >
-            <FiEye className="w-3 h-3" />
-            Chi tiết/Sửa
-          </Button>
+            <option value="admin">Admin</option>
+            <option value="teacher">Giáo viên</option>
+            <option value="student">Học sinh</option>
+            <option value="guest">Vãng lai</option>
+          </select>
           <Button
             variant="outline"
             size="sm"
@@ -208,64 +192,6 @@ export default function AdminUsers() {
     },
   ];
 
-  // Form fields configuration
-  const editFormFields: AdminFormField[] = [
-    {
-      name: "displayName",
-      label: "Tên hiển thị",
-      type: "text",
-      required: true,
-      validation: {
-        required: "Tên hiển thị là bắt buộc",
-        minLength: {
-          value: 2,
-          message: "Tên hiển thị phải có ít nhất 2 ký tự",
-        },
-      },
-    },
-    {
-      name: "email",
-      label: "Email",
-      type: "email",
-      required: true,
-      validation: {
-        required: "Email là bắt buộc",
-        pattern: {
-          value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-          message: "Email không hợp lệ",
-        },
-      },
-    },
-    {
-      name: "phone",
-      label: "Số điện thoại",
-      type: "text",
-      validation: {
-        pattern: {
-          value: /^[0-9]{10}$/,
-          message: "Số điện thoại phải có 10 chữ số",
-        },
-      },
-    },
-    {
-      name: "role",
-      label: "Vai trò",
-      type: "select",
-      required: true,
-      validation: {
-        required: "Vai trò là bắt buộc",
-      },
-      options: [
-        { value: "admin", label: "Admin" },
-        { value: "teacher", label: "Giáo viên" },
-        { value: "student", label: "Học sinh" },
-        {
-          value: "guest",
-          label: "Vãng lai",
-        },
-      ],
-    },
-  ];
 
   return (
     <div className="space-y-6">
@@ -336,72 +262,6 @@ export default function AdminUsers() {
         emptyMessage="Không có người dùng nào"
         showCheckbox={false}
       />
-
-      {/* Unified Detail/Edit Modal */}
-      {activeUser && (
-        <AdminModal
-          isOpen={isDetailEditOpen}
-          onClose={() => {
-            setIsDetailEditOpen(false);
-            setActiveUser(null);
-          }}
-          title="Chi tiết / Sửa người dùng"
-          size="lg"
-        >
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Details */}
-            <div className="space-y-3 p-4 rounded-lg border border-gray-200 bg-white">
-              <h4 className="font-semibold mb-1">Thông tin chi tiết</h4>
-              <div className="text-sm space-y-2">
-                <div className="text-gray-700">
-                  <span className="font-medium">Tên:</span>{" "}
-                  {activeUser.displayName || "(Chưa có tên)"}
-                </div>
-                <div className="text-gray-700">
-                  <span className="font-medium">Email:</span> {activeUser.email}
-                </div>
-                <div className="text-gray-700">
-                  <span className="font-medium">Số điện thoại:</span>{" "}
-                  {(activeUser as UserWithOptionalPhone).phone || "(chưa có)"}
-                </div>
-                <div className="text-gray-700">
-                  <span className="font-medium">Vai trò:</span>{" "}
-                  {activeUser.role}
-                </div>
-              </div>
-            </div>
-
-            {/* Edit form */}
-            <div className="p-4 rounded-lg border border-gray-200 bg-white">
-              <h4 className="font-semibold mb-2">Sửa thông tin</h4>
-              <AdminForm
-                fields={editFormFields}
-                defaultValues={{
-                  displayName: activeUser?.displayName || "",
-                  email: activeUser?.email || "",
-                  phone: (activeUser as UserWithOptionalPhone)?.phone || "",
-                  role: activeUser?.role || "",
-                }}
-                onSubmit={async (data) => {
-                  await handleUpdateUser(
-                    data as {
-                      displayName: string;
-                      email: string;
-                      role: UserRole;
-                      phone?: string;
-                    }
-                  );
-                }}
-                isLoading={isUpdating}
-                onCancel={() => {
-                  setIsDetailEditOpen(false);
-                  setActiveUser(null);
-                }}
-              />
-            </div>
-          </div>
-        </AdminModal>
-      )}
 
       {/* Delete Confirmation Modal */}
       {selectedUser && (

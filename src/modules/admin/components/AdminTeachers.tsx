@@ -4,6 +4,7 @@ import { IProfile } from "@/types";
 import { motion } from "framer-motion";
 import { useMemo, useState } from "react";
 import { FiEdit, FiUsers } from "react-icons/fi";
+import { Button } from "@/components/ui/Button";
 import { useTeacherManagement } from "../hooks/useTeacherManagement";
 import {
   AdminForm,
@@ -32,9 +33,8 @@ export default function AdminTeachers() {
   const [avatarUploading, setAvatarUploading] = useState<string | null>(null);
 
   // Filters
-  const [nameFilter, setNameFilter] = useState("");
-  const [emailFilter, setEmailFilter] = useState("");
-  const [phoneFilter, setPhoneFilter] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [activeSearchQuery, setActiveSearchQuery] = useState("");
 
   // Use the teacher management hook
   const {
@@ -45,23 +45,34 @@ export default function AdminTeachers() {
     isUpdating,
   } = useTeacherManagement();
 
-  // Apply filters
+  // Apply search filter
   const filteredTeachers = useMemo(() => {
+    if (!activeSearchQuery.trim()) {
+      return teachers;
+    }
+    
+    const query = activeSearchQuery.toLowerCase().trim();
     return teachers.filter((teacher) => {
-      const nameMatch =
-        !nameFilter ||
-        teacher.displayName?.toLowerCase().includes(nameFilter.toLowerCase());
+      const nameMatch = teacher.displayName
+        ?.toLowerCase()
+        .includes(query) || false;
+      
+      const emailMatch = teacher.email?.toLowerCase().includes(query) || false;
+      
+      const phoneMatch = teacher.phone?.toLowerCase().includes(query) || false;
 
-      const emailMatch =
-        !emailFilter ||
-        teacher.email?.toLowerCase().includes(emailFilter.toLowerCase());
-
-      const phoneMatch =
-        !phoneFilter || (teacher.phone && teacher.phone.includes(phoneFilter));
-
-      return nameMatch && emailMatch && phoneMatch;
+      return nameMatch || emailMatch || phoneMatch;
     });
-  }, [teachers, nameFilter, emailFilter, phoneFilter]);
+  }, [teachers, activeSearchQuery]);
+
+  const handleSearch = () => {
+    setActiveSearchQuery(searchQuery);
+  };
+
+  const handleClearSearch = () => {
+    setSearchQuery("");
+    setActiveSearchQuery("");
+  };
 
   const handleUpdateTeacher = async (teacherData: {
     displayName?: string;
@@ -272,28 +283,37 @@ export default function AdminTeachers() {
       </motion.div>
 
       {/* Filters */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-3">
         <input
           type="text"
-          placeholder="Lọc theo tên..."
-          value={nameFilter}
-          onChange={(e) => setNameFilter(e.target.value)}
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm"
+          placeholder="Tìm theo tên, email hoặc SĐT..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              handleSearch();
+            }
+          }}
+          className="w-full px-3 sm:px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm col-span-1 sm:col-span-2"
         />
-        <input
-          type="text"
-          placeholder="Lọc theo email..."
-          value={emailFilter}
-          onChange={(e) => setEmailFilter(e.target.value)}
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm"
-        />
-        <input
-          type="text"
-          placeholder="Lọc theo số điện thoại..."
-          value={phoneFilter}
-          onChange={(e) => setPhoneFilter(e.target.value)}
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm"
-        />
+        <div className="flex items-center gap-2">
+          <Button
+            onClick={handleSearch}
+            variant="primary"
+            className="flex-1"
+          >
+            Tìm
+          </Button>
+          {activeSearchQuery && (
+            <Button
+              onClick={handleClearSearch}
+              variant="outline"
+              size="sm"
+            >
+          Reset
+            </Button>
+          )}
+        </div>
       </div>
 
       {/* Error State */}

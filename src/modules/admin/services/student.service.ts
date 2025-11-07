@@ -1,5 +1,5 @@
 import { db } from "@/lib/firebase/client";
-import { IProfile, IStudent } from "@/types";
+import { IProfile, IStudent, IPaginatedResponse } from "@/types";
 import {
   addDoc,
   collection,
@@ -51,9 +51,23 @@ export interface UpdateStudentData {
   mvpLosses?: number;
 }
 
-// Get all students
-export const getStudents = async (count?: number, classId?: string): Promise<IStudent[]> => {
+// Get all students with pagination and search
+export const getStudents = async (
+  options?: {
+    page?: number;
+    limit?: number;
+    classId?: string;
+    searchKeyword?: string;
+  }
+): Promise<IPaginatedResponse<IStudent>> => {
   try {
+    const {
+      page = 1,
+      limit: pageLimit = 10,
+      classId,
+      searchKeyword,
+    } = options || {};
+
     const studentsRef = collection(db, STUDENTS_COLLECTION);
     const queryConstraints: QueryConstraint[] = [
       where("role", "==", "student"),
@@ -69,14 +83,11 @@ export const getStudents = async (count?: number, classId?: string): Promise<ISt
       queryConstraints.push(orderBy("createdAt", "desc"));
     }
 
-    if (count) {
-      queryConstraints.push(limit(count));
-    }
-
+    // Fetch all matching students (for search and total count)
     const q = query(studentsRef, ...queryConstraints);
     const querySnapshot = await getDocs(q);
 
-    let students = querySnapshot.docs.map((doc) => ({
+    let allStudents = querySnapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
       createdAt: doc.data().createdAt?.toDate(),
@@ -85,19 +96,46 @@ export const getStudents = async (count?: number, classId?: string): Promise<ISt
 
     // Sort by createdAt desc on client side when filtering by classId
     if (classId) {
-      students = students.sort((a, b) => {
+      allStudents = allStudents.sort((a, b) => {
         const aDate = a.createdAt?.getTime() || 0;
         const bDate = b.createdAt?.getTime() || 0;
         return bDate - aDate; // desc order
       });
-      
-      // Apply limit after sorting if needed
-      if (count && students.length > count) {
-        students = students.slice(0, count);
-      }
     }
 
-    return students;
+    // Apply search filter on server side
+    let filteredStudents = allStudents;
+    if (searchKeyword && searchKeyword.trim()) {
+      const keyword = searchKeyword.toLowerCase().trim();
+      filteredStudents = allStudents.filter((student) => {
+        const nameMatch = student.displayName
+          ?.toLowerCase()
+          .includes(keyword) || false;
+        
+        const emailMatch = student.email?.toLowerCase().includes(keyword) || false;
+        
+        const phoneMatch = student.phone?.toLowerCase().includes(keyword) || false;
+
+        return nameMatch || emailMatch || phoneMatch;
+      });
+    }
+
+    // Calculate pagination
+    const total = filteredStudents.length;
+    const totalPages = Math.ceil(total / pageLimit);
+    const startIndex = (page - 1) * pageLimit;
+    const endIndex = startIndex + pageLimit;
+    const paginatedStudents = filteredStudents.slice(startIndex, endIndex);
+
+    return {
+      data: paginatedStudents,
+      pagination: {
+        page,
+        limit: pageLimit,
+        total,
+        totalPages,
+      },
+    };
   } catch (error) {
     console.error("Error getting students:", error);
     throw error;

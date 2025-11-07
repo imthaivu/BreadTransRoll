@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/Button";
 import { Modal } from "@/components/ui/Modal";
 import { useAuth } from "@/lib/auth/context";
 import { IClass, IClassMember } from "@/types";
-import Image from "next/image";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { FiMinusCircle, FiPlusCircle, FiUser } from "react-icons/fi";
@@ -165,17 +164,9 @@ export function MembersList({
         >
           {/* Info */}
           <div className="flex items-center gap-3">
-            <div className="relative w-10 h-10">
-              <Image
-                src={member.avatarUrl || "/assets/images/doraemon-1.png"}
-                alt={member.name}
-                fill
-                className="rounded-full object-cover"
-              />
-            </div>
             <div>
               <p className="font-semibold text-foreground">{member.name}</p>
-              <p className="text-xs text-muted">{member.email}</p>
+              <p className="text-xs text-muted">{member.phone || "-"}</p>
             </div>
           </div>
 

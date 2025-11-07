@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/Button";
+import Pagination from "@/components/ui/Pagination";
 import { IProfile } from "@/types";
 import { motion } from "framer-motion";
 import { useState } from "react";
@@ -63,14 +64,12 @@ export default function AdminStudents() {
   const [isCreateTicketModalOpen, setIsCreateTicketModalOpen] = useState(false);
   const [selectedStudentForTicket, setSelectedStudentForTicket] = useState<StudentWithExtras | null>(null);
 
-  // Server-side limit
-  const [limit, setLimit] = useState<number | undefined>(10);
-
-  // Filters
-  const [studentFilter, setStudentFilter] = useState("");
-  const [phoneFilter, setPhoneFilter] = useState("");
-  const [addressFilter, setAddressFilter] = useState("");
+  // Filters and pagination
+  const [searchQuery, setSearchQuery] = useState("");
+  const [activeSearchQuery, setActiveSearchQuery] = useState("");
   const [selectedClassId, setSelectedClassId] = useState<string>("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageLimit] = useState(10);
 
   // Auth and roles
   const { session, profile } = useAuth();
@@ -83,16 +82,27 @@ export default function AdminStudents() {
   // Get classes for filter
   const { data: classes = [], isLoading: classesLoading } = useClasses();
 
-  // Use the student management hook - only fetch when class is selected
+  // Use the student management hook with pagination and search
   const {
     students,
+    pagination,
     isLoading,
     error,
     updateStudent,
     deleteStudent,
     isUpdating,
     isDeleting,
-  } = useStudentManagement(limit, selectedClassId ? selectedClassId : undefined);
+  } = useStudentManagement({
+    page: currentPage,
+    limit: pageLimit,
+    classId: selectedClassId || undefined,
+    searchKeyword: activeSearchQuery || undefined,
+  });
+
+  // Reset to page 1 when search or classId changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [activeSearchQuery, selectedClassId]);
 
   // Sync activeStudent with students list when it updates
   // But don't sync when modal is open to preserve local edits (badges, etc.)
@@ -106,26 +116,22 @@ export default function AdminStudents() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [students, isDetailEditOpen, activeStudent?.id]);
 
-  // Apply filters
-  const filteredStudents = useMemo(() => {
-    return students.filter((student) => {
-      const studentMatch =
-        !studentFilter ||
-        student.displayName
-          ?.toLowerCase()
-          .includes(studentFilter.toLowerCase()) ||
-        student.email?.toLowerCase().includes(studentFilter.toLowerCase());
+  const handleSearch = () => {
+    setActiveSearchQuery(searchQuery);
+    setCurrentPage(1); // Reset to first page on new search
+  };
 
-      const phoneMatch =
-        !phoneFilter || (student.phone && student.phone.includes(phoneFilter));
+  const handleClearSearch = () => {
+    setSearchQuery("");
+    setActiveSearchQuery("");
+    setCurrentPage(1);
+  };
 
-      const addressMatch =
-        !addressFilter ||
-        student.address?.toLowerCase().includes(addressFilter.toLowerCase());
-
-      return studentMatch && phoneMatch && addressMatch;
-    });
-  }, [students, studentFilter, phoneFilter, addressFilter]);
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    // Scroll to top of table
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   // Currency management
   const { createTransaction, isCreating } = useCurrencyManagement();
@@ -711,35 +717,10 @@ export default function AdminStudents() {
         <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900">
           Quản lý học sinh
         </h1>
-        {/* Query Limit */}
-        <div className="flex items-center gap-2 sm:gap-3">
-          <label
-            htmlFor="limit-select"
-            className="text-xs sm:text-sm font-medium text-gray-700 whitespace-nowrap"
-          >
-            <span className="hidden sm:inline">Số lượng hiển thị: </span>
-            <span className="sm:hidden">Hiển thị: </span>
-          </label>
-          <select
-            id="limit-select"
-            value={limit || "all"}
-            onChange={(e) =>
-              setLimit(
-                e.target.value === "all" ? undefined : Number(e.target.value)
-              )
-            }
-            className="px-2 sm:px-3 py-1.5 sm:py-2 border border-gray-300 rounded-lg bg-gray-50 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-xs sm:text-sm"
-          >
-            <option value={10}>10</option>
-            <option value={50}>50</option>
-            <option value={100}>100</option>
-            <option value="all">Tất cả</option>
-          </select>
-        </div>
       </motion.div>
 
       {/* Filters */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-3">
         <select
           value={selectedClassId}
           onChange={(e) => setSelectedClassId(e.target.value)}
@@ -754,25 +735,34 @@ export default function AdminStudents() {
         </select>
         <input
           type="text"
-          placeholder="Tên/Email..."
-          value={studentFilter}
-          onChange={(e) => setStudentFilter(e.target.value)}
+          placeholder="Tìm theo tên, email hoặc SĐT..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              handleSearch();
+            }
+          }}
           className="w-full px-3 sm:px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm"
         />
-        <input
-          type="text"
-          placeholder="SĐT..."
-          value={phoneFilter}
-          onChange={(e) => setPhoneFilter(e.target.value)}
-          className="w-full px-3 sm:px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm"
-        />
-        <input
-          type="text"
-          placeholder="Địa chỉ..."
-          value={addressFilter}
-          onChange={(e) => setAddressFilter(e.target.value)}
-          className="w-full px-3 sm:px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm"
-        />
+        <div className="flex items-center gap-2">
+          <Button
+            onClick={handleSearch}
+            variant="primary"
+            className="flex-1"
+          >
+            Tìm
+          </Button>
+          {activeSearchQuery && (
+            <Button
+              onClick={handleClearSearch}
+              variant="outline"
+              size="sm"
+            >
+              Reset
+            </Button>
+          )}
+        </div>
       </div>
 
       {/* Error State */}
@@ -787,24 +777,45 @@ export default function AdminStudents() {
         </div>
       )}
 
-      {/* No Class Selected State */}
-      {!selectedClassId && (
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 sm:p-6 text-center">
-          <p className="text-sm sm:text-base text-blue-800">
-            Vui lòng chọn lớp để xem danh sách học sinh
-          </p>
-        </div>
-      )}
-
       {/* Students Table */}
-      {selectedClassId && (
-        <AdminTable
-          columns={columns}
-          data={filteredStudents as unknown as StudentWithExtras[]}
-          loading={isLoading}
-          emptyMessage="Không có học sinh nào"
-          showCheckbox={false}
-        />
+      <AdminTable
+        columns={columns}
+        data={students as unknown as StudentWithExtras[]}
+        loading={isLoading}
+        emptyMessage={
+          activeSearchQuery
+            ? "Không tìm thấy học sinh phù hợp"
+            : selectedClassId
+            ? "Lớp này chưa có học sinh nào"
+            : "Vui lòng chọn lớp hoặc tìm kiếm học sinh"
+        }
+        showCheckbox={false}
+      />
+
+      {/* Pagination */}
+      {pagination && pagination.totalPages > 0 && (
+        <div className="mt-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="text-sm text-gray-600">
+            Hiển thị{" "}
+            <span className="font-medium">
+              {(pagination.page - 1) * pagination.limit + 1}
+            </span>{" "}
+            đến{" "}
+            <span className="font-medium">
+              {Math.min(
+                pagination.page * pagination.limit,
+                pagination.total
+              )}
+            </span>{" "}
+            trong tổng số <span className="font-medium">{pagination.total}</span>{" "}
+            học sinh
+          </div>
+          <Pagination
+            currentPage={pagination.page}
+            totalPages={pagination.totalPages}
+            onPageChange={handlePageChange}
+          />
+        </div>
       )}
 
       {/* Edit Modal */}

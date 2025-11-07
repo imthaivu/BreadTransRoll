@@ -14,16 +14,22 @@ import toast from "react-hot-toast";
 export const studentKeys = {
   all: ["students"] as const,
   lists: () => [...studentKeys.all, "list"] as const,
-  list: (limit?: number, classId?: string) => [...studentKeys.lists(), { limit, classId }] as const,
+  list: (options?: { page?: number; limit?: number; classId?: string; searchKeyword?: string }) => 
+    [...studentKeys.lists(), options] as const,
   detail: (id: string) => [...studentKeys.all, "detail", id] as const,
 };
 
-// Get all students
-export const useStudents = (limit?: number, classId?: string) => {
+// Get all students with pagination and search
+export const useStudents = (options?: {
+  page?: number;
+  limit?: number;
+  classId?: string;
+  searchKeyword?: string;
+}) => {
   return useQuery({
-    queryKey: studentKeys.list(limit, classId),
-    queryFn: () => getStudents(limit, classId),
-    enabled: classId !== undefined && classId !== "", // Only fetch when classId is provided and not empty
+    queryKey: studentKeys.list(options),
+    queryFn: () => getStudents(options),
+    enabled: true, // Always fetch students
     staleTime: 5 * 60 * 1000, // 5 minutes
   });
 };
@@ -116,9 +122,16 @@ export const useDeleteStudent = () => {
 };
 
 // Custom hook for student management
-export const useStudentManagement = (limit?: number, classId?: string) => {
-  // Get students
-  const { data: students = [], isLoading, error } = useStudents(limit, classId);
+export const useStudentManagement = (options?: {
+  page?: number;
+  limit?: number;
+  classId?: string;
+  searchKeyword?: string;
+}) => {
+  // Get students with pagination
+  const { data, isLoading, error } = useStudents(options);
+  const students = data?.data || [];
+  const pagination = data?.pagination;
 
   // Mutations
   const createStudentMutation = useCreateStudent();
@@ -144,6 +157,7 @@ export const useStudentManagement = (limit?: number, classId?: string) => {
   return {
     // Data
     students,
+    pagination,
     isLoading,
     error,
 
