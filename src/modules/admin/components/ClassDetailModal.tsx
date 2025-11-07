@@ -506,7 +506,8 @@ export function ClassDetailModal({
     .map((t) => ({
       id: t.id,
       name: t.displayName || t.email || "N/A",
-      avatarUrl: t.avatarUrl || "",
+      avatarUrl: t.avatarUrl || (t as any).image || "",
+      phone: (t as unknown as { phone?: string }).phone || "",
     }))
     .find((t) => t.id === teacherId);
 
@@ -515,6 +516,12 @@ export function ClassDetailModal({
       toast.error("Vui lòng nhập đủ Tên lớp và chọn Giáo viên");
       return;
     }
+    
+    if (!selectedTeacher) {
+      toast.error("Vui lòng chọn giáo viên hợp lệ");
+      return;
+    }
+    
     await updateClass({
       classId: classItem.id as unknown as string,
       classData: {

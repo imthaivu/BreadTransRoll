@@ -157,20 +157,104 @@ export const updateClass = async (
   classId: string,
   classData: UpdateClassData
 ): Promise<void> => {
+  const batch = writeBatch(db);
+  const now = serverTimestamp();
   const classRef = doc(db, CLASSES_COLLECTION, classId);
+  
+  // Get current class data to check if teacher is changing
+  const classSnap = await getDoc(classRef);
+  if (!classSnap.exists()) {
+    throw new Error("Class not found");
+  }
+  const currentClassData = classSnap.data() as IClass;
+  const oldTeacherId = currentClassData.teacher?.id;
+  const newTeacherId = classData.teacher?.id;
+
   // Build update object with only defined fields
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const dataToUpdate: any = { updatedAt: serverTimestamp() };
+  const dataToUpdate: any = { updatedAt: now };
 
   if (classData.name !== undefined) dataToUpdate.name = classData.name;
   if (classData.status !== undefined) dataToUpdate.status = classData.status;
-  if (classData.teacher !== undefined) dataToUpdate.teacher = classData.teacher;
-  if (classData.zaloLink !== undefined)
-    dataToUpdate["links.zalo"] = classData.zaloLink;
-  if (classData.meetLink !== undefined)
-    dataToUpdate["links.meet"] = classData.meetLink;
+  if (classData.teacher !== undefined) {
+    dataToUpdate.teacher = classData.teacher;
+    
+    // If teacher is changing, handle the transition
+    if (newTeacherId && oldTeacherId && newTeacherId !== oldTeacherId) {
+      // 1. Remove old teacher from members subcollection
+      const oldTeacherMemberRef = doc(
+        collection(db, CLASSES_COLLECTION, classId, "members"),
+        oldTeacherId
+      );
+      batch.delete(oldTeacherMemberRef);
 
-  await updateDoc(classRef, dataToUpdate);
+      // 2. Remove classId from old teacher's user document
+      const oldTeacherUserRef = doc(db, USERS_COLLECTION, oldTeacherId);
+      batch.update(oldTeacherUserRef, { classIds: arrayRemove(classId) });
+
+      // 3. Get new teacher profile
+      const newTeacherProfile = (await getUserById(newTeacherId)) as IProfile | null;
+      if (!newTeacherProfile) {
+        throw new Error("New teacher not found");
+      }
+
+      // 4. Add new teacher to members subcollection
+      const newTeacherMemberRef = doc(
+        collection(db, CLASSES_COLLECTION, classId, "members"),
+        newTeacherId
+      );
+      batch.set(newTeacherMemberRef, {
+        name: newTeacherProfile.displayName || "N/A",
+        email: newTeacherProfile.email,
+        avatarUrl: newTeacherProfile.avatarUrl || (newTeacherProfile as any).image || "",
+        phone: (newTeacherProfile as unknown as IStudent)?.phone || "",
+        role: "teacher",
+        status: "active",
+        joinedAt: now,
+      });
+
+      // 5. Add classId to new teacher's user document
+      const newTeacherUserRef = doc(db, USERS_COLLECTION, newTeacherId);
+      batch.update(newTeacherUserRef, { classIds: arrayUnion(classId) });
+    } else if (newTeacherId && !oldTeacherId) {
+      // If there was no teacher before, just add the new one
+      const newTeacherProfile = (await getUserById(newTeacherId)) as IProfile | null;
+      if (!newTeacherProfile) {
+        throw new Error("New teacher not found");
+      }
+
+      const newTeacherMemberRef = doc(
+        collection(db, CLASSES_COLLECTION, classId, "members"),
+        newTeacherId
+      );
+      batch.set(newTeacherMemberRef, {
+        name: newTeacherProfile.displayName || "N/A",
+        email: newTeacherProfile.email,
+        avatarUrl: newTeacherProfile.avatarUrl || (newTeacherProfile as any).image || "",
+        phone: (newTeacherProfile as unknown as IStudent)?.phone || "",
+        role: "teacher",
+        status: "active",
+        joinedAt: now,
+      });
+
+      const newTeacherUserRef = doc(db, USERS_COLLECTION, newTeacherId);
+      batch.update(newTeacherUserRef, { classIds: arrayUnion(classId) });
+    }
+  }
+  
+  // Handle links update (Firestore doesn't support nested field updates with dot notation in batch)
+  if (classData.zaloLink !== undefined || classData.meetLink !== undefined) {
+    const currentLinks = currentClassData.links || { zalo: "", meet: "" };
+    dataToUpdate.links = {
+      zalo: classData.zaloLink !== undefined ? classData.zaloLink : currentLinks.zalo,
+      meet: classData.meetLink !== undefined ? classData.meetLink : currentLinks.meet,
+    };
+  }
+
+  // Update class document
+  batch.update(classRef, dataToUpdate);
+
+  await batch.commit();
 };
 
 // Delete class (complex operation, requires deleting subcollections)
