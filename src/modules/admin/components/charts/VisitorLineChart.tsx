@@ -64,14 +64,14 @@ export default function VisitorLineChart({
           <Line
             type="monotone"
             dataKey="anonymous"
-            name="Vãng lai (Chưa đăng nhập)"
+            name="Vãng lai (Chưa tham gia)"
             stroke="#8884d8"
             strokeWidth={2}
           />
           <Line
             type="monotone"
             dataKey="guest"
-            name="Khách (Đã đăng nhập)"
+            name="Khách (Đã tham gia)"
             stroke="#82ca9d"
             strokeWidth={2}
           />

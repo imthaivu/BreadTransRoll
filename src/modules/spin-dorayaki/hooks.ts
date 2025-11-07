@@ -21,7 +21,7 @@ export function useSpin({ onSuccess, onError }: UseSpinOptions = {}) {
   } = useMutation({
     mutationFn: async (ticketId: string) => {
       if (!studentId) {
-        throw new Error("Bạn cần đăng nhập để quay bánh mì");
+        throw new Error("Bạn cần tham gia để quay bánh mì");
       }
 
       // Tạo device fingerprint
@@ -59,7 +59,7 @@ export function useSpin({ onSuccess, onError }: UseSpinOptions = {}) {
         toast.error(`⏱️ ${error.message}`);
       } else if (error.message.includes("Phát hiện nhiều phiên")) {
         toast.error(
-          "🔐 Phát hiện nhiều phiên đăng nhập. Vui lòng đăng xuất khỏi thiết bị khác."
+          "🔐 Phát hiện nhiều phiên tham gia. Vui lòng đăng xuất khỏi thiết bị khác."
         );
       } else if (error.message.includes("Vé quay đã được sử dụng")) {
         toast.error(

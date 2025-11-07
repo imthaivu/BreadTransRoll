@@ -283,7 +283,7 @@ export default function AdminStudents() {
 
     // Check authentication and admin role
     if (!session?.user?.id) {
-      toast.error("Bạn cần đăng nhập để upload ảnh.");
+      toast.error("Bạn cần tham gia để upload ảnh.");
       return;
     }
 
@@ -346,7 +346,7 @@ export default function AdminStudents() {
         } else if (error.message.includes("storage/quota-exceeded")) {
           errorMessage = "Storage quota đã hết. Vui lòng liên hệ admin.";
         } else if (error.message.includes("storage/unauthenticated")) {
-          errorMessage = "Bạn cần đăng nhập để upload ảnh.";
+          errorMessage = "Bạn cần tham gia để upload ảnh.";
         } else if (error.message.includes("network")) {
           errorMessage = "Lỗi kết nối mạng. Vui lòng thử lại.";
         } else {

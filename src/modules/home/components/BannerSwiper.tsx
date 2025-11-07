@@ -38,32 +38,45 @@ export default function BannerSwiper() {
             disableOnInteraction: false,
           }}
           loop={true}
-          className={cn("banner-swiper h-[240px] md:h-[400px]", {
-            "h-[240px]": !session?.user,
+          className={cn("banner-swiper h-[250px] md:h-[350px]", {
+            "h-[250px]": !session?.user,
           })}
         >
           {bannerSlides.map((slide) => (
             <SwiperSlide key={slide.id}>
               <div
-                className={`relative w-full h-full md:p-5 ${slide.bgColor} overflow-hidden`}
+                className={`relative w-full h-full p-1 md:p-1 ${slide.bgColor} overflow-hidden`}
               >
                 <div className="absolute inset-0 "></div>
-                <div className="relative max-w-6xl mx-auto px-4 h-full flex md:items-center py-4 md:py-8">
-                  <div className="flex items-center gap-2 md:gap-4 w-full h-full flex-col sm:flex-row justify-center sm:justify-between">
+                <div className="relative max-w-6xl mx-auto px-1 sm:px-4 h-full flex md:items-center py-2 sm:py-4 md:py-6">
+                  <div className="flex items-center gap-1 md:gap-2 w-full h-full flex-col sm:flex-row justify-center sm:justify-between">
+                    {/* Image */}
+                    <div className="flex-1 order-1 md:order-2 h-full flex flex-col justify-center sm:max-w-1/2 min-h-[100px]">
+                      <div className="relative h-full aspect-16/9 mx-auto rounded-xl overflow-hidden">
+                        <Image
+                          src={slide.image}
+                          alt={slide.title}
+                          fill
+                          quality={100}
+                          className="object-cover sm:object-contain md:object-cover"
+                        />
+                      </div>
+                    </div>
+
                     {/* Content */}
-                    <div className="md:flex-1 text-center md:text-left order-2 md:order-1 h-fit flex flex-col sm:justify-center">
+                    <div className="md:flex-1 text-center md:text-left order-2 md:order-1 h-fit flex flex-col sm:justify-center w-full">
                       <h1
-                        className={`text-lg sm:text-2xl md:text-4xl font-black ${slide.textColor} drop-shadow-2xl mb-1 md:mb-4`}
+                        className={`text-lg sm:text-2xl md:text-4xl font-black ${slide.textColor} drop-shadow-2xl mb-1 md:mb-2`}
                       >
                         {slide.title}
                       </h1>
                       <h2
-                        className={`text-sm hidden sm:inline-block md:text-base sm:text-base lg:text-2xl ${slide.textColor}/90 font-semibold mb-1 md:mb-4`}
+                        className={`text-sm sm:text-base md:text-base lg:text-2xl ${slide.textColor}/90 font-semibold mb-1 md:mb-2`}
                       >
                         {slide.subtitle}
                       </h2>
                       <p
-                        className={`hidden md:inline-block sm:text-sm md:text-base ${slide.textColor}/80 mb-2 md:mb-6 max-w-2xl mx-auto md:mx-0`}
+                        className={`text-xs sm:text-sm md:text-base ${slide.textColor}/80 mb-2 md:mb-6 max-w-2xl mx-auto md:mx-0`}
                       >
                         {slide.description}
                       </p>
@@ -84,19 +97,6 @@ export default function BannerSwiper() {
                           </button>
                         </div>
                       )}
-                    </div>
-
-                    {/* Image */}
-                    <div className="flex-1 order-1 md:order-2 h-full flex flex-col justify-center sm:max-w-1/2 min-h-[100px]">
-                      <div className="relative h-full aspect-16/9 mx-auto rounded-xl overflow-hidden">
-                        <Image
-                          src={slide.image}
-                          alt={slide.title}
-                          fill
-                          quality={100}
-                          className="object-cover sm:object-contain md:object-cover"
-                        />
-                      </div>
                     </div>
                   </div>
                 </div>

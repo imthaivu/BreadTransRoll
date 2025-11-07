@@ -2,17 +2,15 @@
 
 import { Button } from "@/components/ui/Button";
 import { MiluLoading } from "@/components/ui/LoadingSpinner";
-import MagicDoor from "@/modules/home/components/MagicDoor";
 import { ShieldAlert, UserCircle } from "lucide-react";
 import Link from "next/link";
-import React, { useState } from "react";
+import React from "react";
 import { useAuth } from "./context";
 import type { UserRole } from "./types";
 import { translateRole } from "./utils";
 
 export function RequireAuth({ children }: { children: React.ReactNode }) {
   const { session, loading } = useAuth();
-  const [showMagicDoor, setShowMagicDoor] = useState(false);
 
   if (loading)
     return (
@@ -23,29 +21,16 @@ export function RequireAuth({ children }: { children: React.ReactNode }) {
 
   if (!session?.user) {
     return (
-      <>
-        <div className="min-h-[60vh] flex flex-col items-center justify-center text-center p-6">
-          <UserCircle className="w-16 h-16 text-slate-400 mb-4" />
-          <h1 className="text-2xl font-bold text-slate-800">
-            Yêu cầu đăng nhập
-          </h1>
-          <p className="mt-2 text-slate-600 max-w-sm">
-            Vui lòng đăng nhập để có thể truy cập vào trang này và sử dụng các
-            tính năng của hệ thống.
-          </p>
-          <div className="mt-6">
-            <Button onClick={() => setShowMagicDoor(true)}>
-              Mở Cánh Cửa Thần Kỳ
-            </Button>
-          </div>
-        </div>
-
-        <MagicDoor
-          isOpen={showMagicDoor}
-          onClose={() => setShowMagicDoor(false)}
-          onLogin={() => setShowMagicDoor(false)}
-        />
-      </>
+      <div className="min-h-[60vh] flex flex-col items-center justify-center text-center p-6">
+        <UserCircle className="w-16 h-16 text-slate-400 mb-4" />
+        <h1 className="text-2xl font-bold text-slate-800">
+          Yêu cầu tham gia
+        </h1>
+        <p className="mt-2 text-slate-600 max-w-sm">
+          Vui lòng tham gia để có thể truy cập vào trang này và sử dụng các
+          tính năng của hệ thống.
+        </p>
+      </div>
     );
   }
   return <>{children}</>;
@@ -75,7 +60,7 @@ export function RequireRole({
           <span className="font-semibold text-slate-900">
             {roles.map(translateRole).join(" hoặc ")}
           </span>
-          , nhưng bạn đang đăng nhập với vai trò{" "}
+          , nhưng bạn đang tham gia với vai trò{" "}
           <span className="font-semibold text-slate-900">
             {translateRole(userRole)}
           </span>

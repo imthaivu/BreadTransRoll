@@ -170,7 +170,7 @@ export default function Header() {
 
           {!loading && !session?.user && (
             <div className="flex items-center gap-2">
-              <Button onClick={() => setShowMagicDoor(true)}>Đăng nhập</Button>
+              <Button onClick={() => setShowMagicDoor(true)}>Tham gia</Button>
             </div>
           )}
 
@@ -541,7 +541,7 @@ function UserActions({
 //                     }}
 //                     className="w-full justify-center"
 //                   >
-//                     Đăng nhập
+//                     Tham gia
 //                   </Button>
 //                 </div>
 //               ) : (

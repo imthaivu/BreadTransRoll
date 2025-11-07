@@ -129,9 +129,9 @@ export default function GrammarModal({
           setShowLoginPrompt(false);
           setShowMagicDoor(true);
         }}
-        title="Yêu cầu đăng nhập"
-        message="Bạn cần đăng nhập để xem được nội dung này. Bạn có muốn đăng nhập ngay bây giờ không?"
-        confirmText="Đăng nhập"
+        title="Yêu cầu tham gia"
+        message="Bạn cần tham gia để xem được nội dung này. Bạn có muốn tham gia ngay bây giờ không?"
+        confirmText="Tham gia"
         cancelText="Để sau"
       />
 

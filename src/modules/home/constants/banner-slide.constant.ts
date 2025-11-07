@@ -2,8 +2,8 @@ export const bannerSlides = [
   {
     id: "slide1",
     title: "Học tiếng Anh với Milu",
-    subtitle: "Streamline & 1000 Bài luyện",
-    description: "Học nghe nói tiếng Anh chuẩn bản xứ với phương pháp hiệu quả",
+    subtitle: "1000 Bài luyện tiếng Anh",
+    description: "Học nghe nói nhại tiếng Anh chuẩn bản xứ",
     image: "https://magical-tulumba-581427.netlify.app/img-ui/streamline.png",
     bgColor: "bg-blue-100",
     textColor: "text-blue-900",
@@ -22,7 +22,7 @@ export const bannerSlides = [
     id: "slide3",
     title: "Thi đua học tập",
     subtitle: "Bảng xếp hạng & Điểm thưởng",
-    description: "Cạnh tranh lành mạnh và nhận phần thưởng hấp dẫn",
+    description: "Cạnh tranh lành mạnh và nhận phần thưởng",
     image: "https://magical-tulumba-581427.netlify.app/img-ui/rank.png",
     bgColor: "bg-blue-100",
     textColor: "text-blue-900",
@@ -31,10 +31,30 @@ export const bannerSlides = [
     id: "slide4",
     title: "Mua sắm với điểm thưởng",
     subtitle: "Milu đi Shopping",
-    description: "Sử dụng điểm thưởng để mua các vật phẩm thú vị",
+    description: "Sử dụng điểm thưởng để mua các vật phẩm",
     image:
       "https://magical-tulumba-581427.netlify.app/img-ui/nobita-shopee.png",
     bgColor: "bg-blue-100",
     textColor: "text-blue-900",
   },
+  {
+    id: "slide5",
+    title: "Học từ vựng hiệu quả",
+    subtitle: "Flashcard / Quiz",
+    description: "Học từ vựng hiệu quả",
+    image: "https://breadtrans.vercel.app/assets/images/flash-card.png",
+    bgColor: "bg-blue-100",
+    textColor: "text-blue-900",
+  },
+  // https://magical-tulumba-581427.netlify.app/img-ui/sizuka.png
+  {
+    id: "slide6",
+    title: "Trọn bộ ngữ pháp 6-12",
+    subtitle: "Hệ thống video ngữ pháp",
+    description: "Giảng chi tiết từng chủ đề từ cơ bản đến nâng cao",
+    image: "https://magical-tulumba-581427.netlify.app/img-ui/sizuka.png",
+    bgColor: "bg-blue-100",
+    textColor: "text-blue-900",
+  }
+
 ];

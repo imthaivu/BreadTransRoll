@@ -513,7 +513,7 @@ export default function MagicDoor({
                   Popup bị chặn!
                 </h4>
                 <p className="text-xs text-yellow-700">
-                  Vui lòng cho phép popup để đăng nhập
+                  Vui lòng cho phép popup để tham gia
                 </p>
               </div>
               <button
