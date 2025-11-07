@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
 import { useAuth } from "@/lib/auth/context";
 import { getDb, getStorageBucket } from "@/lib/firebase/client";
 import { doc, updateDoc } from "firebase/firestore";
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { getDownloadURL, ref, uploadBytes, deleteObject, listAll } from "firebase/storage";
 import { User, Edit3 } from "lucide-react";
 import Image from "next/image";
 import { useRef, useState } from "react";
@@ -49,7 +49,22 @@ export function AvatarCard() {
     setAvatarUploading(true);
     try {
       const storage = getStorageBucket();
-      const path = `users/${session.user.id}/avatar/${file.name}`;
+      
+      // Delete old avatar files before uploading new one
+      try {
+        const avatarFolderRef = ref(storage, `users/${session.user.id}/avatar`);
+        const oldFiles = await listAll(avatarFolderRef);
+        await Promise.all(
+          oldFiles.items.map((item) => deleteObject(item))
+        );
+      } catch (deleteError) {
+        // Ignore errors when deleting (folder might not exist or already empty)
+        console.log("No old avatar files to delete or error deleting:", deleteError);
+      }
+
+      // Use fixed path with timestamp to ensure unique filename
+      const fileExtension = file.name.split('.').pop() || 'jpg';
+      const path = `users/${session.user.id}/avatar/avatar_${Date.now()}.${fileExtension}`;
       const storageRef = ref(storage, path);
       await uploadBytes(storageRef, file);
       const url = await getDownloadURL(storageRef);

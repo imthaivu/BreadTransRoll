@@ -21,7 +21,7 @@ import toast from "react-hot-toast";
 import { useMemo, useEffect } from "react";
 import Image from "next/image";
 import { getStorageBucket } from "@/lib/firebase/client";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { ref, uploadBytes, getDownloadURL, deleteObject, listAll } from "firebase/storage";
 import { createSpinTicketByAdmin } from "@/modules/spin-dorayaki/services";
 import { UpdateStudentData } from "../services/student.service";
 
@@ -317,7 +317,21 @@ export default function AdminStudents() {
         throw new Error("Không thể kết nối với Firebase Storage. Vui lòng kiểm tra cấu hình.");
       }
 
-      const path = `users/${studentId}/avatar/${Date.now()}_${file.name}`;
+      // Delete old avatar files before uploading new one
+      try {
+        const avatarFolderRef = ref(storage, `users/${studentId}/avatar`);
+        const oldFiles = await listAll(avatarFolderRef);
+        await Promise.all(
+          oldFiles.items.map((item) => deleteObject(item))
+        );
+      } catch (deleteError) {
+        // Ignore errors when deleting (folder might not exist or already empty)
+        console.log("No old avatar files to delete or error deleting:", deleteError);
+      }
+
+      // Use fixed path with timestamp to ensure unique filename
+      const fileExtension = file.name.split('.').pop() || 'jpg';
+      const path = `users/${studentId}/avatar/avatar_${Date.now()}.${fileExtension}`;
       const storageRef = ref(storage, path);
       
       console.log("Uploading to path:", path);
