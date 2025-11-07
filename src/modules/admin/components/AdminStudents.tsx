@@ -958,7 +958,10 @@ export default function AdminStudents() {
               dateOfBirth: activeStudent?.dateOfBirth
                 ? (() => {
                     try {
-                      const date = new Date(activeStudent.dateOfBirth);
+                      // dateOfBirth should already be a Date object from the service
+                      const date = activeStudent.dateOfBirth instanceof Date 
+                        ? activeStudent.dateOfBirth 
+                        : new Date(activeStudent.dateOfBirth);
                       if (isNaN(date.getTime())) return "";
                       return date.toISOString().split("T")[0];
                     } catch {

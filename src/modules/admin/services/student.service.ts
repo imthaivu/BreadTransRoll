@@ -87,12 +87,27 @@ export const getStudents = async (
     const q = query(studentsRef, ...queryConstraints);
     const querySnapshot = await getDocs(q);
 
-    let allStudents = querySnapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-      createdAt: doc.data().createdAt?.toDate(),
-      updatedAt: doc.data().updatedAt?.toDate(),
-    })) as IStudent[];
+    let allStudents = querySnapshot.docs.map((doc) => {
+      const data = doc.data();
+      // Convert Firestore Timestamp to Date for dateOfBirth
+      let dateOfBirth: Date | undefined;
+      if (data.dateOfBirth) {
+        if (data.dateOfBirth.toDate && typeof data.dateOfBirth.toDate === 'function') {
+          // Firestore Timestamp
+          dateOfBirth = data.dateOfBirth.toDate();
+        } else if (data.dateOfBirth instanceof Date) {
+          // Already a Date object
+          dateOfBirth = data.dateOfBirth;
+        }
+      }
+      return {
+        id: doc.id,
+        ...data,
+        createdAt: data.createdAt?.toDate(),
+        updatedAt: data.updatedAt?.toDate(),
+        dateOfBirth,
+      };
+    }) as IStudent[];
 
     // Sort by createdAt desc on client side when filtering by classId
     if (classId) {
@@ -151,11 +166,24 @@ export const getStudentById = async (
     const studentSnap = await getDoc(studentRef);
 
     if (studentSnap.exists()) {
+      const data = studentSnap.data();
+      // Convert Firestore Timestamp to Date for dateOfBirth
+      let dateOfBirth: Date | undefined;
+      if (data.dateOfBirth) {
+        if (data.dateOfBirth.toDate && typeof data.dateOfBirth.toDate === 'function') {
+          // Firestore Timestamp
+          dateOfBirth = data.dateOfBirth.toDate();
+        } else if (data.dateOfBirth instanceof Date) {
+          // Already a Date object
+          dateOfBirth = data.dateOfBirth;
+        }
+      }
       return {
         id: studentSnap.id,
-        ...studentSnap.data(),
-        createdAt: studentSnap.data().createdAt?.toDate(),
-        updatedAt: studentSnap.data().updatedAt?.toDate(),
+        ...data,
+        createdAt: data.createdAt?.toDate(),
+        updatedAt: data.updatedAt?.toDate(),
+        dateOfBirth,
       } as IProfile;
     }
     return null;
