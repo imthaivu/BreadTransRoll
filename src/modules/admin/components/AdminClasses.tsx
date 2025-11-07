@@ -3,11 +3,12 @@
 import { Button } from "@/components/ui/Button";
 import ConfirmDialog from "@/components/ui/ConfirmDialog";
 import { useState } from "react";
-import { FiEye, FiPlus, FiTrash2 } from "react-icons/fi";
+import { FiEye, FiPlus, FiTrash2, FiRefreshCw } from "react-icons/fi";
 import {
   useClasses,
   useCreateClass,
   useDeleteClass,
+  useSyncClassMembersAvatars,
 } from "../hooks/useClassManagement";
 import { useTeachers } from "../hooks/useTeacherManagement";
 import { ClassStatus, IClass } from "../type";
@@ -37,6 +38,7 @@ export default function AdminClasses() {
   const { data: classes = [], isLoading, error } = useClasses();
   const { mutateAsync: createClass, isPending: isCreating } = useCreateClass();
   const { mutateAsync: deleteClass, isPending: isDeleting } = useDeleteClass();
+  const { mutateAsync: syncAvatars, isPending: isSyncing } = useSyncClassMembersAvatars();
 
   const { data: teachers = [], isLoading: isLoadingTeachers } = useTeachers();
 
@@ -83,6 +85,14 @@ export default function AdminClasses() {
   const openDetailModal = (classItem: IClass) => {
     setSelectedClass(classItem);
     setIsDetailModalOpen(true);
+  };
+
+  const handleSyncAvatars = async (classId: string) => {
+    try {
+      await syncAvatars(classId);
+    } catch (error) {
+      console.error("Error syncing avatars:", error);
+    }
   };
 
   const closeModal = () => {
@@ -174,6 +184,17 @@ export default function AdminClasses() {
           >
             <FiEye className="w-3 h-3 mr-2" />
             Chi tiết/Sửa
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => handleSyncAvatars(classItem.id)}
+            disabled={isSyncing}
+            title="Đồng bộ avatar thành viên"
+            className="text-blue-600 hover:text-blue-700"
+          >
+            <FiRefreshCw className={`w-3 h-3 mr-2 ${isSyncing ? 'animate-spin' : ''}`} />
+            Đồng bộ
           </Button>
           <Button
             className="text-red-600 hover:text-red-700"

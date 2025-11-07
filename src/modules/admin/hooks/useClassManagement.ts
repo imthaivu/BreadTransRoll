@@ -9,6 +9,7 @@ import {
   removeMemberFromClass,
   getClassMembers,
   updateClassMember,
+  syncClassMembersAvatars,
   CreateClassData,
   UpdateClassData,
 } from "../services/class.service";
@@ -160,6 +161,38 @@ export const useUpdateClassMember = () => {
     },
     onError: (error) => {
       toast.error(`Cập nhật thất bại: ${error.message}`);
+    },
+  });
+};
+
+export const useSyncClassMembersAvatars = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (classId: string) => syncClassMembersAvatars(classId),
+    onSuccess: (_, classId) => {
+      // Invalidate admin class members query
+      queryClient.invalidateQueries({ queryKey: classKeys.members(classId) });
+      
+      // Invalidate teacher/student class members query (used in ClassDetail.tsx)
+      // The query key structure is: ["teacherClasses", "detail", classId, "members"]
+      queryClient.invalidateQueries({
+        predicate: (query) => {
+          const key = query.queryKey;
+          return (
+            Array.isArray(key) &&
+            key.length >= 4 &&
+            key[0] === "teacherClasses" &&
+            key[1] === "detail" &&
+            key[2] === classId &&
+            key[3] === "members"
+          );
+        },
+      });
+      
+      toast.success("Đồng bộ avatar thành công!");
+    },
+    onError: (error) => {
+      toast.error(`Đồng bộ thất bại: ${error.message}`);
     },
   });
 };

@@ -355,6 +355,39 @@ export const removeMemberFromClass = async (
   await batch.commit();
 };
 
+// Sync all members' avatars in a class with their latest user profiles
+export const syncClassMembersAvatars = async (
+  classId: string
+): Promise<void> => {
+  const batch = writeBatch(db);
+  
+  // Get all members of the class
+  const members = await getClassMembers(classId);
+  
+  // For each member, get their latest profile and update avatarUrl
+  for (const member of members) {
+    try {
+      const userProfile = await getUserById(member.id);
+      if (userProfile) {
+        const memberRef = doc(
+          collection(db, CLASSES_COLLECTION, classId, "members"),
+          member.id
+        );
+        // Update only avatarUrl and name (in case name changed too)
+        batch.update(memberRef, {
+          avatarUrl: userProfile.avatarUrl || "",
+          name: userProfile.displayName || userProfile.email || member.name,
+        });
+      }
+    } catch (error) {
+      console.error(`Error syncing avatar for member ${member.id}:`, error);
+      // Continue with other members even if one fails
+    }
+  }
+  
+  await batch.commit();
+};
+
 // Update a member's details in a class
 export const updateClassMember = async (
   classId: string,
