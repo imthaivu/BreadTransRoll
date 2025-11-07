@@ -51,10 +51,10 @@ export const useCreateCurrencyRequest = () => {
         },
       });
     },
-    onError: (error: any) => {
+    onError: (error: Error | unknown) => {
       console.error("Error creating currency request:", error);
       const errorMessage =
-        error?.message || "Gửi yêu cầu thất bại. Vui lòng thử lại.";
+        error instanceof Error ? error.message : "Gửi yêu cầu thất bại. Vui lòng thử lại.";
       toast.error(errorMessage);
     },
   });

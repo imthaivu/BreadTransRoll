@@ -72,7 +72,7 @@ export default function AdminCurrency() {
 
   // Use students and classes hooks for dropdown
   const { data: studentsData } = useStudents();
-  const students = studentsData?.data || [];
+  const students = useMemo(() => studentsData?.data || [], [studentsData]);
   const { data: classes = [] } = useClasses();
 
   // Server-side filtered transactions for a given day

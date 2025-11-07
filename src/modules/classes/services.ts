@@ -292,11 +292,11 @@ export const createCurrencyRequest = async (
       status: "pending",
       createdAt: serverTimestamp(),
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Error creating currency request:", error);
-    throw new Error(
-      error?.message || "Không thể tạo yêu cầu. Vui lòng thử lại."
-    );
+    const errorMessage =
+      error instanceof Error ? error.message : "Không thể tạo yêu cầu. Vui lòng thử lại.";
+    throw new Error(errorMessage);
   }
 };
 
