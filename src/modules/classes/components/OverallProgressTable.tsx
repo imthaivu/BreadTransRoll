@@ -8,6 +8,7 @@ import Image from "next/image";
 import { useMemo, useState } from "react";
 import { FiAward, FiCheckCircle, FiDelete, FiPlay } from "react-icons/fi";
 import { useClassMembers, useClassProgress } from "../hooks";
+import { AudioPlayerWithDuration } from "./AudioPlayerWithDuration";
 
 export function OverallProgressTable({ classId }: { classId: string }) {
   const [selectedBook, setSelectedBook] = useState<string>("");
@@ -336,13 +337,13 @@ export function OverallProgressTable({ classId }: { classId: string }) {
         maxWidth="md"
       >
         {listeningAudio?.url && (
-          <audio
-            src={listeningAudio.url}
-            controls
-            autoPlay
-            className="w-full"
-            preload="auto"
-          />
+          <div className="p-4">
+            <AudioPlayerWithDuration
+              src={listeningAudio.url}
+              autoPlay
+              className="w-full"
+            />
+          </div>
         )}
       </Modal>
     </>
