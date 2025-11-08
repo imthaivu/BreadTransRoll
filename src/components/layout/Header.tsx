@@ -153,7 +153,7 @@ export default function Header() {
           </div>
 
           {isStudent && (
-            <div className="flex md:hidden items-center bg-primary text-white text-sm md:text-base font-bold px-3 py-0.5 rounded-full h-10 ml-2">
+            <div className="flex md:hidden items-center bg-blue-100 text-white text-sm md:text-base font-bold px-3 py-0.5 rounded-full h-10 ml-2">
               <span className="mr-1 text-gray-600">Có</span>
               <span className="text-black">{profile?.totalBanhRan || 0}</span>
               <Image
