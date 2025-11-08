@@ -8,7 +8,7 @@ import {
   useClasses,
   useCreateClass,
   useDeleteClass,
-  useSyncClassMembersAvatars,
+  useSyncClassMembers,
 } from "../hooks/useClassManagement";
 import { useTeachers } from "../hooks/useTeacherManagement";
 import { ClassStatus, IClass } from "../type";
@@ -38,7 +38,7 @@ export default function AdminClasses() {
   const { data: classes = [], isLoading, error } = useClasses();
   const { mutateAsync: createClass, isPending: isCreating } = useCreateClass();
   const { mutateAsync: deleteClass, isPending: isDeleting } = useDeleteClass();
-  const { mutateAsync: syncAvatars, isPending: isSyncing } = useSyncClassMembersAvatars();
+  const { mutateAsync: syncMembers, isPending: isSyncing } = useSyncClassMembers();
 
   const { data: teachers = [], isLoading: isLoadingTeachers } = useTeachers();
 
@@ -87,11 +87,11 @@ export default function AdminClasses() {
     setIsDetailModalOpen(true);
   };
 
-  const handleSyncAvatars = async (classId: string) => {
+  const handleSyncMembers = async (classId: string) => {
     try {
-      await syncAvatars(classId);
+      await syncMembers(classId);
     } catch (error) {
-      console.error("Error syncing avatars:", error);
+      console.error("Error syncing members:", error);
     }
   };
 
@@ -188,9 +188,9 @@ export default function AdminClasses() {
           <Button
             variant="outline"
             size="sm"
-            onClick={() => handleSyncAvatars(classItem.id)}
+            onClick={() => handleSyncMembers(classItem.id)}
             disabled={isSyncing}
-            title="Đồng bộ avatar thành viên"
+            title="Đồng bộ thông tin thành viên"
             className="text-blue-600 hover:text-blue-700"
           >
             <FiRefreshCw className={`w-3 h-3 mr-2 ${isSyncing ? 'animate-spin' : ''}`} />

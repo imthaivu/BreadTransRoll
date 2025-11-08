@@ -14,11 +14,13 @@ import {
   addDoc,
   serverTimestamp,
   updateDoc,
+  deleteDoc,
 } from "firebase/firestore";
 
 import { IClassMember } from "@/types";
 import { IClass } from "../admin";
 import { ILessonStudentProgress, IStudentActivity } from "./types";
+export * from "./services-quiz";
 
 const CLASSES_COLLECTION = "classes";
 
@@ -205,6 +207,7 @@ export const getClassProgressActivities = async (
         },
         timestamp: data.submittedAt.toDate(),
         sourceUrl: data.fileURL,
+        fileDeleted: data.fileDeleted || false, // Track if file was deleted
       };
     }
   );

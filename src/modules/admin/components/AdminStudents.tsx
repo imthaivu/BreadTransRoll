@@ -24,6 +24,7 @@ import { getStorageBucket } from "@/lib/firebase/client";
 import { ref, uploadBytes, getDownloadURL, deleteObject, listAll } from "firebase/storage";
 import { createSpinTicketByAdmin } from "@/modules/spin-dorayaki/services";
 import { UpdateStudentData } from "../services/student.service";
+import { compressAndResizeImage } from "@/utils/image";
 
 type StudentWithExtras = IProfile & {
   phone?: string;
@@ -298,7 +299,7 @@ export default function AdminStudents() {
       return;
     }
 
-    const toastId = toast.loading("Đang tải ảnh lên...");
+    const toastId = toast.loading("Đang xử lý và tải ảnh lên...");
     setAvatarUploading(studentId);
     try {
       // Validate file type
@@ -306,11 +307,12 @@ export default function AdminStudents() {
         throw new Error("File phải là ảnh");
       }
 
-      // Validate file size (max 5MB)
-      const maxSize = 5 * 1024 * 1024; // 5MB
-      if (file.size > maxSize) {
-        throw new Error("Kích thước ảnh không được vượt quá 5MB");
-      }
+      // Compress and resize image before upload (400x400, quality 0.85)
+      const compressedFile = await compressAndResizeImage(file, 400, 400, 0.85);
+      
+      console.log(`Original size: ${(file.size / 1024).toFixed(2)} KB`);
+      console.log(`Compressed size: ${(compressedFile.size / 1024).toFixed(2)} KB`);
+      console.log(`Reduction: ${((1 - compressedFile.size / file.size) * 100).toFixed(1)}%`);
 
       const storage = getStorageBucket();
       if (!storage) {
@@ -337,9 +339,8 @@ export default function AdminStudents() {
         console.log("No old avatar files to delete or error:", deleteError);
       }
 
-      // Use fixed filename to ensure only one avatar exists
-      const fileExtension = file.name.split('.').pop() || 'jpg';
-      const path = `users/${studentId}/avatar/avatar.${fileExtension}`;
+      // Use fixed filename to ensure only one avatar exists (always jpg after compression)
+      const path = `users/${studentId}/avatar/avatar.jpg`;
       const storageRef = ref(storage, path);
       
       console.log("Uploading to path:", path);
@@ -347,7 +348,7 @@ export default function AdminStudents() {
       console.log("User ID:", session.user.id);
       console.log("User role:", profile.role);
       
-      await uploadBytes(storageRef, file);
+      await uploadBytes(storageRef, compressedFile);
       const url = await getDownloadURL(storageRef);
       
       console.log("Upload successful, URL:", url);

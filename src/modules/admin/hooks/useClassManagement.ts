@@ -9,7 +9,7 @@ import {
   removeMemberFromClass,
   getClassMembers,
   updateClassMember,
-  syncClassMembersAvatars,
+  syncClassMembers,
   CreateClassData,
   UpdateClassData,
 } from "../services/class.service";
@@ -165,10 +165,10 @@ export const useUpdateClassMember = () => {
   });
 };
 
-export const useSyncClassMembersAvatars = () => {
+export const useSyncClassMembers = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (classId: string) => syncClassMembersAvatars(classId),
+    mutationFn: (classId: string) => syncClassMembers(classId),
     onSuccess: (_, classId) => {
       // Invalidate admin class members query
       queryClient.invalidateQueries({ queryKey: classKeys.members(classId) });
@@ -189,7 +189,7 @@ export const useSyncClassMembersAvatars = () => {
         },
       });
       
-      toast.success("Đồng bộ avatar thành công!");
+      toast.success("Đồng bộ thông tin thành viên thành công!");
     },
     onError: (error) => {
       toast.error(`Đồng bộ thất bại: ${error.message}`);

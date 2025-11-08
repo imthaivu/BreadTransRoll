@@ -10,6 +10,9 @@ import {
   getStudentClasses,
   getTeacherClasses,
   updateClassLinks,
+  getClassQuizResults,
+  deleteQuizResults,
+  deleteClassQuizResultsByBook,
 } from "./services";
 import toast from "react-hot-toast";
 
@@ -139,5 +142,79 @@ export const useLessonStudentProgress = (
     queryKey: teacherClassKeys.progress(classId, bookId, lessonId),
     queryFn: () => getLessonStudentProgress(classId, bookId, lessonId),
     enabled: !!classId && !!bookId && !!lessonId,
+  });
+};
+
+/**
+ * Hook to fetch quiz results for a class in a specific book
+ */
+export const useClassQuizResults = (classId: string, bookId: string) => {
+  return useQuery({
+    queryKey: ["classQuizResults", classId, bookId],
+    queryFn: () => getClassQuizResults(classId, bookId),
+    enabled: !!classId && !!bookId,
+  });
+};
+
+/**
+ * Hook to delete quiz results
+ */
+export const useDeleteQuizResults = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: deleteQuizResults,
+    onSuccess: (_, quizResultIds) => {
+      toast.success(`Đã xóa ${quizResultIds.length} bài quiz thành công!`);
+      // Invalidate all related queries
+      queryClient.invalidateQueries({
+        predicate: (query) => {
+          const key = query.queryKey;
+          return (
+            Array.isArray(key) &&
+            (key[0] === "classQuizResults" ||
+              key[0] === "classProgress" ||
+              key.includes("progress"))
+          );
+        },
+      });
+    },
+    onError: (error) => {
+      console.error("Error deleting quiz results:", error);
+      toast.error("Xóa bài quiz thất bại. Vui lòng thử lại.");
+    },
+  });
+};
+
+/**
+ * Hook to delete all quiz results for a class in a specific book
+ */
+export const useDeleteClassQuizResultsByBook = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ classId, bookId }: { classId: string; bookId: string }) =>
+      deleteClassQuizResultsByBook(classId, bookId),
+    onSuccess: (_, { classId, bookId }) => {
+      toast.success("Đã xóa tất cả bài quiz trong sách này thành công!");
+      // Invalidate all related queries
+      queryClient.invalidateQueries({
+        predicate: (query) => {
+          const key = query.queryKey;
+          return (
+            Array.isArray(key) &&
+            (key[0] === "classQuizResults" ||
+              (key[0] === "classProgress" && key[2] === bookId) ||
+              key.includes("progress"))
+          );
+        },
+      });
+      // Invalidate specific query
+      queryClient.invalidateQueries({
+        queryKey: ["classQuizResults", classId, bookId],
+      });
+    },
+    onError: (error) => {
+      console.error("Error deleting quiz results by book:", error);
+      toast.error("Xóa bài quiz thất bại. Vui lòng thử lại.");
+    },
   });
 };

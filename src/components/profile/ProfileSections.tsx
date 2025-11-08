@@ -11,6 +11,7 @@ import Image from "next/image";
 import { useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { Flame } from "lucide-react";
+import { compressAndResizeImage } from "@/utils/image";
 // ...existing code...
 // Combined Avatar and Achievements Card
 export function AvatarCard() {
@@ -45,9 +46,12 @@ export function AvatarCard() {
   async function handleAvatarChange(file: File | null) {
     if (!session?.user || !file) return;
 
-    const toastId = toast.loading("Đang tải ảnh lên...");
+    const toastId = toast.loading("Đang xử lý và tải ảnh lên...");
     setAvatarUploading(true);
     try {
+      // Compress and resize image before upload (400x400, quality 0.85)
+      const compressedFile = await compressAndResizeImage(file, 400, 400, 0.85);
+      
       const storage = getStorageBucket();
       
       // Delete all old avatar files in the folder before uploading new one
@@ -70,11 +74,10 @@ export function AvatarCard() {
         console.log("No old avatar files to delete or error:", deleteError);
       }
 
-      // Use fixed filename to ensure only one avatar exists
-      const fileExtension = file.name.split('.').pop() || 'jpg';
-      const path = `users/${session.user.id}/avatar/avatar.${fileExtension}`;
+      // Use fixed filename to ensure only one avatar exists (always jpg after compression)
+      const path = `users/${session.user.id}/avatar/avatar.jpg`;
       const storageRef = ref(storage, path);
-      await uploadBytes(storageRef, file);
+      await uploadBytes(storageRef, compressedFile);
       const url = await getDownloadURL(storageRef);
       await updateDoc(doc(getDb(), "users", session.user.id), {
         avatarUrl: url,

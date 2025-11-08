@@ -12,6 +12,7 @@ import {
 import { MembersList } from "./MembersList";
 import { StudentProgressModal } from "./StudentProgressModal";
 import { OverallProgressTable } from "./OverallProgressTable";
+import { QuizResultManager } from "./QuizResultManager";
 
 type Tab = "members" | "listening" | "quiz" | "speaking" | "lookup" | "overall";
 
@@ -31,6 +32,8 @@ function TabContent({
       );
     case "overall":
       return <OverallProgressTable classId={classId} />;
+    case "quiz":
+      return <QuizResultManager classId={classId} />;
     default:
       return (
         <p className="p-4 text-muted">
@@ -49,6 +52,7 @@ export function ClassDetail({ classId }: { classId: string }) {
   const tabs: { id: Tab; label: string; icon: React.ReactElement }[] = [
     { id: "members", label: "Thành viên", icon: <FiUsers /> },
     { id: "overall", label: "Bảng tổng hợp", icon: <FiBarChart2 /> },
+    { id: "quiz", label: "Quản lý Quiz", icon: <FiBookOpen /> },
   ];
 
   return (

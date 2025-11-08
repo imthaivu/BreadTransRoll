@@ -8,20 +8,41 @@ import {
   FiShield,
   FiEye,
   FiUserCheck,
+  FiMic,
+  FiTrash2,
 } from "react-icons/fi";
 import { useDashboardStats } from "../hooks/useDashboardStats";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import VisitorLineChart from "./charts/VisitorLineChart";
 import { useState } from "react";
 import ActivityLineChart from "./charts/ActivityLineChart";
+import {
+  useTotalSpeakingSubmissions,
+  useDeleteAllSpeakingAudio,
+} from "../hooks/useSpeakingManagement";
+import ConfirmDialog from "@/components/ui/ConfirmDialog";
+import { Button } from "@/components/ui/Button";
 
 export default function AdminDashboard() {
   const [visitorRange, setVisitorRange] = useState<"week" | "month">("week");
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const {
     data: statsData,
     isLoading,
     isError,
   } = useDashboardStats(visitorRange);
+  const { data: totalSpeakingSubmissions = 0, isLoading: isLoadingSpeaking } =
+    useTotalSpeakingSubmissions();
+  const { mutate: deleteAllAudio, isPending: isDeleting } = useDeleteAllSpeakingAudio();
+
+  const handleDeleteAllAudio = () => {
+    setShowDeleteConfirm(true);
+  };
+
+  const confirmDeleteAll = () => {
+    setShowDeleteConfirm(false);
+    deleteAllAudio();
+  };
 
   const stats = [
     {
@@ -90,14 +111,42 @@ export default function AdminDashboard() {
       {/* Header */}
       <div>
         <h1 className="text-3xl font-bold text-gray-900">Dashboard Admin</h1>
-        
       </div>
+
+      {/* Speaking Submissions Card */}
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <div className="p-3 rounded-lg bg-red-100 text-red-600">
+              <FiMic className="w-6 h-6" />
+            </div>
+            <div>
+              <p className="text-sm md:text-base font-medium text-gray-600">
+                Tổng số bài audio nói đã nộp
+              </p>
+              <p className="text-2xl font-bold text-gray-900 mt-1">
+                {isLoadingSpeaking ? "..." : totalSpeakingSubmissions}
+              </p>
+            </div>
+          </div>
+          <Button
+            variant="outline"
+            onClick={handleDeleteAllAudio}
+            disabled={totalSpeakingSubmissions === 0 || isDeleting || isLoadingSpeaking}
+            className="text-red-600 hover:text-red-700 border-red-300 hover:border-red-400"
+          >
+            <FiTrash2 className="w-4 h-4 mr-2" />
+            {isDeleting ? "Đang xóa..." : `Xóa tất cả (${totalSpeakingSubmissions})`}
+          </Button>
+        </div>
+      </div>
+
       <ActivityLineChart
-          speakingData={statsData?.speakingSubmissionsLast7Days ?? []}
-          userData={statsData?.newUsersLast7Days ?? []}
-          listeningData={statsData?.listeningProgressLast7Days ?? []}
-          quizData={statsData?.quizResultsLast7Days ?? []}
-        />
+        speakingData={statsData?.speakingSubmissionsLast7Days ?? []}
+        userData={statsData?.newUsersLast7Days ?? []}
+        listeningData={statsData?.listeningProgressLast7Days ?? []}
+        quizData={statsData?.quizResultsLast7Days ?? []}
+      />
 
       {/* Stats - Mobile: merge 4 cards into one, Desktop: original grid */}
       {/* Mobile merged card */}
@@ -192,7 +241,18 @@ export default function AdminDashboard() {
               onRangeChange={setVisitorRange}
             />
           )}
-        
+
+      {/* Delete Confirmation Dialog */}
+      <ConfirmDialog
+        isOpen={showDeleteConfirm}
+        onClose={() => setShowDeleteConfirm(false)}
+        onConfirm={confirmDeleteAll}
+        title="Xác nhận xóa tất cả file audio"
+        message={`Bạn có chắc chắn muốn xóa tất cả ${totalSpeakingSubmissions} file audio đã nộp không? Lưu ý: Trạng thái nộp bài sẽ được giữ lại, chỉ file audio trong storage sẽ bị xóa. Hành động này không thể hoàn tác.`}
+        confirmText="Xóa tất cả"
+        cancelText="Hủy"
+        confirmVariant="destructive"
+      />
     </div>
   );
 }

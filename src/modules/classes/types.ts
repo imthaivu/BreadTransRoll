@@ -18,6 +18,7 @@ export interface IStudentActivity {
   timestamp: Date;
   sourceUrl?: string; // For listening to speaking submissions
   listenCount?: number; // For listening activities
+  fileDeleted?: boolean; // Track if audio file was deleted from storage
 }
 
 export interface ILessonStudentProgress {

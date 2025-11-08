@@ -61,8 +61,11 @@ export function OverallProgressTable({ classId }: { classId: string }) {
         listenCount: listeningActivity?.listenCount ?? 0,
         hasSpeakingSubmission: !!speakingActivity,
         speakingSubmissionUrl: speakingActivity?.sourceUrl ?? null,
+        speakingFileDeleted: speakingActivity?.fileDeleted ?? false,
+        speakingTimestamp: speakingActivity?.timestamp ?? null,
         quizScore: quizActivity?.score,
         isQuizCompleted: quizActivity?.isCompleted,
+        quizTimestamp: quizActivity?.timestamp ?? null,
         timestamp: latestTimestamp === new Date(0) ? null : latestTimestamp,
       };
     });
@@ -184,8 +187,11 @@ export function OverallProgressTable({ classId }: { classId: string }) {
                   <th className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase min-w-[100px]">
                     Quiz Accuracy
                   </th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase min-w-[120px]">
-                    Ngày nộp bài
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase min-w-[150px]">
+                    Ngày nộp Quiz
+                  </th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase min-w-[150px]">
+                    Ngày nộp Audio
                   </th>
                   {/* Audio */}
                   <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase min-w-[80px]">
@@ -241,25 +247,48 @@ export function OverallProgressTable({ classId }: { classId: string }) {
                       )}
                     </td>
                     <td className="px-4 py-3 text-sm">
-                      {progress.timestamp
-                        ? progress.timestamp.toLocaleDateString()
+                      {progress.quizTimestamp
+                        ? progress.quizTimestamp.toLocaleString("vi-VN", {
+                            year: "numeric",
+                            month: "2-digit",
+                            day: "2-digit",
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          })
+                        : "Chưa nộp"}
+                    </td>
+                    <td className="px-4 py-3 text-sm">
+                      {progress.speakingTimestamp
+                        ? progress.speakingTimestamp.toLocaleString("vi-VN", {
+                            year: "numeric",
+                            month: "2-digit",
+                            day: "2-digit",
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          })
                         : "Chưa nộp"}
                     </td>
                     <td className="px-4 py-3 text-center">
                       {progress?.speakingSubmissionUrl ? (
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() =>
-                            setListeningAudio({
-                              url: progress.speakingSubmissionUrl!,
-                              studentName: progress.student.name,
-                            })
-                          }
-                          aria-label={`Nghe bài nói của ${progress.student.name}`}
-                        >
-                          <FiPlay className="h-5 w-5" />
-                        </Button>
+                        progress.speakingFileDeleted ? (
+                          <span className="text-xs text-gray-500 italic">
+                            File đã xóa
+                          </span>
+                        ) : (
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() =>
+                              setListeningAudio({
+                                url: progress.speakingSubmissionUrl!,
+                                studentName: progress.student.name,
+                              })
+                            }
+                            aria-label={`Nghe bài nói của ${progress.student.name}`}
+                          >
+                            <FiPlay className="h-5 w-5" />
+                          </Button>
+                        )
                       ) : (
                         "—"
                       )}

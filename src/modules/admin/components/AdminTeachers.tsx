@@ -15,8 +15,9 @@ import {
 } from "./common";
 import Image from "next/image";
 import { getStorageBucket } from "@/lib/firebase/client";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { ref, uploadBytes, getDownloadURL, deleteObject, listAll } from "firebase/storage";
 import toast from "react-hot-toast";
+import { compressAndResizeImage } from "@/utils/image";
 
 // Extended interface for Teacher
 interface ITeacher extends IProfile {
@@ -96,13 +97,31 @@ export default function AdminTeachers() {
   const handleAvatarUpload = async (file: File | null, teacherId: string) => {
     if (!file || !teacherId) return;
 
-    const toastId = toast.loading("Đang tải ảnh lên...");
+    const toastId = toast.loading("Đang xử lý và tải ảnh lên...");
     setAvatarUploading(teacherId);
     try {
+      // Compress and resize image before upload
+      const compressedFile = await compressAndResizeImage(file, 400, 400, 0.85);
+      
       const storage = getStorageBucket();
-      const path = `users/${teacherId}/avatar/${Date.now()}_${file.name}`;
+      
+      // Delete all old avatar files in the folder before uploading new one
+      const avatarFolderRef = ref(storage, `users/${teacherId}/avatar`);
+      try {
+        const oldFiles = await listAll(avatarFolderRef);
+        if (oldFiles.items.length > 0) {
+          const deletePromises = oldFiles.items.map((item) => deleteObject(item));
+          await Promise.all(deletePromises);
+        }
+      } catch (deleteError: unknown) {
+        // Ignore errors - folder might not exist or already empty
+        console.log("No old avatar files to delete or error:", deleteError);
+      }
+      
+      // Use fixed filename to ensure only one avatar exists (always jpg after compression)
+      const path = `users/${teacherId}/avatar/avatar.jpg`;
       const storageRef = ref(storage, path);
-      await uploadBytes(storageRef, file);
+      await uploadBytes(storageRef, compressedFile);
       const url = await getDownloadURL(storageRef);
       
       // Use updateTeacher from hook to ensure data refresh

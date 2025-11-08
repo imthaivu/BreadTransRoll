@@ -355,8 +355,8 @@ export const removeMemberFromClass = async (
   await batch.commit();
 };
 
-// Sync all members' avatars in a class with their latest user profiles
-export const syncClassMembersAvatars = async (
+// Sync all members' information in a class with their latest user profiles
+export const syncClassMembers = async (
   classId: string
 ): Promise<void> => {
   const batch = writeBatch(db);
@@ -364,7 +364,7 @@ export const syncClassMembersAvatars = async (
   // Get all members of the class
   const members = await getClassMembers(classId);
   
-  // For each member, get their latest profile and update avatarUrl
+  // For each member, get their latest profile and update all fields
   for (const member of members) {
     try {
       const userProfile = await getUserById(member.id);
@@ -373,14 +373,34 @@ export const syncClassMembersAvatars = async (
           collection(db, CLASSES_COLLECTION, classId, "members"),
           member.id
         );
-        // Update only avatarUrl and name (in case name changed too)
-        batch.update(memberRef, {
-          avatarUrl: userProfile.avatarUrl || "",
+        
+        // Prepare update data with all fields from user profile
+        const updateData: Partial<IClassMember> = {
           name: userProfile.displayName || userProfile.email || member.name,
-        });
+          email: userProfile.email || member.email,
+          avatarUrl: userProfile.avatarUrl || "",
+          phone: userProfile.phone || "",
+        };
+
+        // If it's a student, sync additional student fields
+        if (userProfile.role === "student") {
+          const studentProfile = userProfile as IStudent;
+          updateData.parentEmail = studentProfile.parentEmail || "";
+          updateData.parentPhone = studentProfile.parentPhone || "";
+          updateData.grade = studentProfile.grade || "";
+          updateData.school = studentProfile.school || "";
+          updateData.dateOfBirth = studentProfile.dateOfBirth || null;
+          updateData.address = studentProfile.address || "";
+          updateData.totalBanhRan = studentProfile.totalBanhRan || 0;
+        }
+
+        // Update role if it changed (shouldn't happen but just in case)
+        updateData.role = userProfile.role === "student" ? "student" : "teacher";
+        
+        batch.update(memberRef, updateData);
       }
     } catch (error) {
-      console.error(`Error syncing avatar for member ${member.id}:`, error);
+      console.error(`Error syncing member ${member.id}:`, error);
       // Continue with other members even if one fails
     }
   }
