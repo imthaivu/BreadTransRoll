@@ -375,7 +375,15 @@ export const syncClassMembers = async (
         );
         
         // Prepare update data with all fields from user profile
-        const updateData: Partial<IClassMember> = {
+        const updateData: Partial<IClassMember> & {
+          parentEmail?: string;
+          parentPhone?: string;
+          grade?: string;
+          school?: string;
+          dateOfBirth?: Date | null;
+          address?: string;
+          totalBanhRan?: number;
+        } = {
           name: userProfile.displayName || userProfile.email || member.name,
           email: userProfile.email || member.email,
           avatarUrl: userProfile.avatarUrl || "",
