@@ -48,3 +48,13 @@ body {
   color: var(--color-foreground);
   font-family: var(--font-sans);
 }
+
+/* Fast blinking animation for ticket badge */
+@keyframes blink-fast {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
