@@ -91,9 +91,10 @@ export const deleteSpeakingAudioFile = async (
     try {
       await deleteObject(storageRef);
       console.log(`Đã xóa file: ${storagePath}`);
-    } catch (deleteError: any) {
+    } catch (deleteError: unknown) {
       // If file doesn't exist, that's okay - it might have been deleted already
-      if (deleteError?.code !== "storage/object-not-found") {
+      const error = deleteError as { code?: string };
+      if (error?.code !== "storage/object-not-found") {
         throw deleteError;
       }
       console.log(`File không tồn tại (có thể đã bị xóa): ${storagePath}`);
