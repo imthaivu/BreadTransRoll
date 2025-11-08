@@ -6,6 +6,7 @@ import {
   query,
   where,
   writeBatch,
+  Timestamp,
 } from "firebase/firestore";
 import { getClassMembers } from "./services";
 
@@ -124,5 +125,66 @@ export const deleteClassQuizResultsByBook = async (
 
   // Delete all results
   await deleteQuizResults(resultIds);
+};
+
+/**
+ * Get quiz result counts by date for students in a class
+ * Returns a map of studentId -> count of quiz results submitted on the specified date
+ */
+export const getStudentQuizCountsByDate = async (
+  classId: string,
+  targetDate: Date
+): Promise<Map<string, number>> => {
+  if (!classId) return new Map();
+
+  // Get all student members of the class
+  const members = await getClassMembers(classId);
+  const students = members.filter((m) => m.role === "student");
+  if (students.length === 0) return new Map();
+
+  const studentIds = students.map((s) => s.id);
+  const countsMap = new Map<string, number>();
+
+  // Set up date range (start and end of the target date)
+  const startOfDay = new Date(targetDate);
+  startOfDay.setHours(0, 0, 0, 0);
+  const endOfDay = new Date(targetDate);
+  endOfDay.setHours(23, 59, 59, 999);
+
+  const startTimestamp = Timestamp.fromDate(startOfDay);
+  const endTimestamp = Timestamp.fromDate(endOfDay);
+
+  // Query quiz results for these students within the date range
+  // Note: Firestore "in" query limit is 10, so we need to batch if more than 10 students
+  const batchSize = 10;
+
+  for (let i = 0; i < studentIds.length; i += batchSize) {
+    const batch = studentIds.slice(i, i + batchSize);
+    const quizQuery = query(
+      collection(db, "quizResults"),
+      where("userId", "in", batch),
+      where("lastAttempt", ">=", startTimestamp),
+      where("lastAttempt", "<=", endTimestamp)
+    );
+
+    const snapshot = await getDocs(quizQuery);
+    snapshot.docs.forEach((doc) => {
+      const data = doc.data();
+      const userId = data.userId;
+      if (userId) {
+        const currentCount = countsMap.get(userId) || 0;
+        countsMap.set(userId, currentCount + 1);
+      }
+    });
+  }
+
+  // Initialize all students with 0 if they don't have any results
+  studentIds.forEach((studentId) => {
+    if (!countsMap.has(studentId)) {
+      countsMap.set(studentId, 0);
+    }
+  });
+
+  return countsMap;
 };
 

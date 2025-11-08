@@ -14,6 +14,7 @@ import {
   deleteQuizResults,
   deleteClassQuizResultsByBook,
 } from "./services";
+import { getStudentQuizCountsByDate } from "./services-quiz";
 import toast from "react-hot-toast";
 
 export const teacherClassKeys = {
@@ -216,5 +217,21 @@ export const useDeleteClassQuizResultsByBook = () => {
       console.error("Error deleting quiz results by book:", error);
       toast.error("Xóa bài quiz thất bại. Vui lòng thử lại.");
     },
+  });
+};
+
+/**
+ * Hook to get quiz result counts by date for students in a class
+ * Returns a Map of studentId -> count of quiz results submitted on the specified date
+ */
+export const useStudentQuizCountsByDate = (
+  classId: string,
+  targetDate: Date
+) => {
+  return useQuery({
+    queryKey: ["studentQuizCountsByDate", classId, targetDate.toISOString().split("T")[0]],
+    queryFn: () => getStudentQuizCountsByDate(classId, targetDate),
+    enabled: !!classId,
+    staleTime: 1 * 60 * 1000, // 1 minute
   });
 };
