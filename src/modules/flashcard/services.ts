@@ -210,7 +210,8 @@ export async function decreaseReviewCount(userId: string, word: Word) {
 const lessonStatusCol = collection(db, "userLessonStatus");
 
 /**
- * Cập nhật trạng thái mới nhất của một lesson (ghi đè)
+ * Cập nhật trạng thái lesson với điểm mới nhất.
+ * Luôn cập nhật với điểm mới nhất, không cần điểm cao hơn mới cập nhật.
  */
 export async function updateLessonStatus(
   statusData: Omit<LessonStatus, "lastAttempt">
@@ -221,6 +222,7 @@ export async function updateLessonStatus(
   const docId = `${userId}_${bookId}_${lessonId}`;
   const docRef = doc(lessonStatusCol, docId);
 
+  // Always update with the latest status, regardless of previous accuracy
   await setDoc(docRef, {
     ...statusData,
     lastAttempt: serverTimestamp(),
@@ -254,8 +256,9 @@ export async function getCompletedLessons(
 const quizResultsCol = collection(db, "quizResults");
 
 /**
- * Lưu kết quả (lần gần nhất) của một lesson.
- * Sẽ ghi đè nếu đã có kết quả cũ.
+ * Lưu kết quả quiz mới nhất của một lesson.
+ * Luôn cập nhật với điểm mới nhất, không cần điểm cao hơn mới cập nhật.
+ * Sẽ ghi đè kết quả cũ nếu đã có.
  */
 export async function saveQuizResult(
   resultData: Omit<QuizResult, "lastAttempt">
@@ -267,6 +270,7 @@ export async function saveQuizResult(
   const docId = `${userId}_${bookId}_${lessonId}`;
   const docRef = doc(quizResultsCol, docId);
 
+  // Always update with the latest result, regardless of score
   await setDoc(docRef, {
     ...resultData,
     lastAttempt: serverTimestamp(),

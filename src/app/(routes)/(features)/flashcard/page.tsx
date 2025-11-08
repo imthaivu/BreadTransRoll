@@ -49,6 +49,7 @@ export default function FlashcardPage() {
     isLoading,
     booksError,
     lessonWordsError,
+    hiddenWordIndices,
     setSelectedBook,
     setSelectedLessons,
     setSelectedMode,
@@ -224,10 +225,7 @@ export default function FlashcardPage() {
           title={`Kết quả `}
           overlayClassName="bg-black/60"
         >
-          <h5 className="text-lg font-semibold">{`Sách ${
-            books.find((b) => b.id.toString() === selectedBook)?.name || ""
-          } - ${selectedLessons.length} Lessons (${selectedLessons.join(", ")})`}</h5>
-          <div className="overflow-x-hidden max-w-screen min-h-[80vh]">
+          <div className="overflow-x-hidden max-w-screen ">
             {/* Learning Interface */}
             {isPlaying && deck.length > 0 && currentIndex < deck.length && (
               <StaggerItem>
@@ -239,6 +237,7 @@ export default function FlashcardPage() {
                   wrongWordsCount={wrongWords.length}
                   onAnswer={handleAnswerWithSound}
                   onSpeak={speak}
+                  hiddenWordIndices={hiddenWordIndices}
                 />
               </StaggerItem>
             )}
@@ -266,6 +265,8 @@ export default function FlashcardPage() {
                   wrongWords={wrongWords}
                   onRestart={handleStart}
                   onClose={handleCloseLearningModal}
+                  bookName={books.find((b) => b.id.toString() === selectedBook)?.name || ""}
+                  selectedLessons={selectedLessons}
                 />
               </StaggerItem>
             )}

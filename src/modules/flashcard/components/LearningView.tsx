@@ -13,6 +13,7 @@ interface LearningViewProps {
   wrongWordsCount: number;
   onAnswer: (isCorrect: boolean, word?: Word) => void;
   onSpeak: (text: string) => void;
+  hiddenWordIndices?: Set<number>; // Indices of words that should hide text in quiz mode
 }
 
 export const LearningView = ({
@@ -23,8 +24,10 @@ export const LearningView = ({
   wrongWordsCount,
   onAnswer,
   onSpeak,
+  hiddenWordIndices = new Set(),
 }: LearningViewProps) => {
   const currentWord = deck[currentIndex];
+  const hideWord = mode === "quiz" && hiddenWordIndices.has(currentIndex);
   const accuracy =
     currentIndex > 0 ? Math.round((score / currentIndex) * 100) : 0;
   const progressPercent = ((currentIndex + 1) / deck.length) * 100;
@@ -48,6 +51,7 @@ export const LearningView = ({
             timer={3}
             onSpeak={onSpeak}
             playSound={playSound}
+            hideWord={hideWord}
           />
         )}
       </div>

@@ -166,6 +166,9 @@ export function useFlashcard() {
     setIsPlaying(false);
   }, []);
 
+  // Set to track which words should hide text in quiz mode (20% random)
+  const [hiddenWordIndices, setHiddenWordIndices] = useState<Set<number>>(new Set());
+
   // Bắt đầu học
   const startLearning = useCallback(() => {
     if (selectedLessons.length === 0 || lessonWords.length === 0) {
@@ -181,6 +184,21 @@ export function useFlashcard() {
 
     const finalDeck = isGuest ? shuffledDeck.slice(0, 10) : shuffledDeck;
 
+    // In quiz mode, randomly select 20% of words to hide text (listen-only)
+    if (selectedMode === "quiz" && finalDeck.length > 0) {
+      const hiddenCount = Math.max(1, Math.floor(finalDeck.length * 0.2)); // At least 1 word
+      const indices = Array.from({ length: finalDeck.length }, (_, i) => i);
+      // Shuffle indices and take first hiddenCount
+      for (let i = indices.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [indices[i], indices[j]] = [indices[j], indices[i]];
+      }
+      const hiddenIndices = new Set(indices.slice(0, hiddenCount));
+      setHiddenWordIndices(hiddenIndices);
+    } else {
+      setHiddenWordIndices(new Set());
+    }
+
     setDeck(finalDeck);
     setCurrentIndex(0);
     setScore(0);
@@ -188,7 +206,7 @@ export function useFlashcard() {
     setSessionAnswers([]); // Reset session answers
     setIsPlaying(true);
     return true;
-  }, [lessonWords, selectedLessons, isGuest, reviewWords]);
+  }, [lessonWords, selectedLessons, isGuest, reviewWords, selectedMode]);
 
   // Xử lý câu trả lời
   const handleAnswer = useCallback(
@@ -408,6 +426,7 @@ export function useFlashcard() {
     wrongWords,
     isPlaying,
     quizTimer,
+    hiddenWordIndices, // Track which words should hide text in quiz mode
 
     // Loading states
     isLoading: booksLoading || lessonsLoading || lessonWordsLoading,

@@ -8,6 +8,8 @@ interface CompletionScreenProps {
   wrongWords: Word[];
   onRestart: () => void;
   onClose: () => void;
+  bookName?: string;
+  selectedLessons?: number[];
 }
 
 export const CompletionScreen = ({
@@ -16,19 +18,25 @@ export const CompletionScreen = ({
   wrongWords,
   onRestart,
   onClose,
+  bookName,
+  selectedLessons,
 }: CompletionScreenProps) => {
   const accuracy = deckLength > 0 ? Math.round((score / deckLength) * 100) : 0;
 
   return (
     <Card className="p-2 sm:p-4 mb-4 border-green-200 bg-green-50 shadow-none">
       <div className="text-center">
-        <div className="text-green-600 text-4xl mb-2">🎉</div>
         <h3 className="text-lg font-semibold text-green-800 mb-2">
-          Hoàn thành!
+        🎉 Hoàn thành! 🎉
         </h3>
-        <p className="text-green-600 mb-4">
+        <p className="text-green-600 mb-2">
           Bạn đã hoàn thành {deckLength} từ vựng
         </p>
+        {bookName && selectedLessons && selectedLessons.length > 0 && (
+          <p className="text-sm md:text-base text-gray-600 mb-4">
+            {`Sách ${bookName} - ${selectedLessons.length} Lessons (${selectedLessons.join(", ")})`}
+          </p>
+        )}
         <div className="flex justify-center gap-4 mb-4">
           <div className="text-center">
             <div className="text-2xl font-bold text-green-600">{score}</div>
