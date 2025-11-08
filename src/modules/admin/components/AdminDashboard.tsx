@@ -20,8 +20,11 @@ import {
   useTotalSpeakingSubmissions,
   useDeleteAllSpeakingAudio,
 } from "../hooks/useSpeakingManagement";
+import { useUpcomingBirthdays } from "../hooks/useBirthdays";
 import ConfirmDialog from "@/components/ui/ConfirmDialog";
 import { Button } from "@/components/ui/Button";
+import { FiGift } from "react-icons/fi";
+import Image from "next/image";
 
 export default function AdminDashboard() {
   const [visitorRange, setVisitorRange] = useState<"week" | "month">("week");
@@ -34,6 +37,8 @@ export default function AdminDashboard() {
   const { data: totalSpeakingSubmissions = 0, isLoading: isLoadingSpeaking } =
     useTotalSpeakingSubmissions();
   const { mutate: deleteAllAudio, isPending: isDeleting } = useDeleteAllSpeakingAudio();
+  const { data: upcomingBirthdays = [], isLoading: isLoadingBirthdays } =
+    useUpcomingBirthdays(10);
 
   const handleDeleteAllAudio = () => {
     setShowDeleteConfirm(true);
@@ -112,6 +117,71 @@ export default function AdminDashboard() {
       <div>
         <h1 className="text-3xl font-bold text-gray-900">Dashboard Admin</h1>
       </div>
+
+      {/* Upcoming Birthdays Card */}
+      {upcomingBirthdays.length > 0 && (
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="p-2 rounded-lg bg-pink-100 text-pink-600">
+              <FiGift className="w-5 h-5" />
+            </div>
+            <h2 className="text-lg font-semibold text-gray-900">
+              Sinh nhật sắp tới (10 ngày)
+            </h2>
+          </div>
+          {isLoadingBirthdays ? (
+            <div className="text-center py-4 text-gray-500">Đang tải...</div>
+          ) : (
+            <div className="space-y-2">
+              {upcomingBirthdays.map((user) => (
+                <div
+                  key={user.id}
+                  className="flex items-center gap-3 p-3 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors"
+                >
+                  {user.avatarUrl ? (
+                    <Image
+                      src={user.avatarUrl}
+                      alt={user.displayName || ""}
+                      width={40}
+                      height={40}
+                      className="rounded-full object-cover flex-shrink-0"
+                    />
+                  ) : (
+                    <div className="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center flex-shrink-0">
+                      <span className="text-gray-600 font-medium">
+                        {(user.displayName || user.email || "U")[0].toUpperCase()}
+                      </span>
+                    </div>
+                  )}
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium text-gray-900 truncate">
+                      {user.displayName || user.email}
+                    </p>
+                    <p className="text-xs text-gray-500">
+                      {user.role === "student" ? "Học sinh" : "Giáo viên"} •{" "}
+                      {user.birthdayDate.toLocaleDateString("vi-VN", {
+                        day: "2-digit",
+                        month: "2-digit",
+                      })}
+                      {user.daysUntilBirthday === 0 && (
+                        <span className="ml-2 text-pink-600 font-semibold">🎉 Hôm nay!</span>
+                      )}
+                      {user.daysUntilBirthday === 1 && (
+                        <span className="ml-2 text-orange-600 font-semibold">Ngày mai</span>
+                      )}
+                      {user.daysUntilBirthday > 1 && (
+                        <span className="ml-2 text-gray-600">
+                          Còn {user.daysUntilBirthday} ngày
+                        </span>
+                      )}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Speaking Submissions Card */}
       <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">

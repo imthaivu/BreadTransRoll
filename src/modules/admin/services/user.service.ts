@@ -139,3 +139,82 @@ export const deleteUser = async (userId: string): Promise<boolean> => {
     throw error;
   }
 };
+
+// Get users with birthdays in the next N days
+export interface UserWithBirthday extends IProfile {
+  dateOfBirth?: Date;
+  birthdayDate: Date; // The actual birthday date this year
+  daysUntilBirthday: number;
+}
+
+export const getUsersWithUpcomingBirthdays = async (
+  daysAhead: number = 10
+): Promise<UserWithBirthday[]> => {
+  try {
+    const usersRef = collection(db, USERS_COLLECTION);
+    const querySnapshot = await getDocs(usersRef);
+    const today = new Date();
+    const targetDate = new Date(today);
+    targetDate.setDate(today.getDate() + daysAhead);
+
+    const usersWithBirthdays: UserWithBirthday[] = [];
+
+    querySnapshot.docs.forEach((doc) => {
+      const data = doc.data();
+      
+      // Convert Firestore Timestamp to Date for dateOfBirth
+      let dateOfBirth: Date | undefined;
+      if (data.dateOfBirth) {
+        if (data.dateOfBirth.toDate && typeof data.dateOfBirth.toDate === 'function') {
+          dateOfBirth = data.dateOfBirth.toDate();
+        } else if (data.dateOfBirth instanceof Date) {
+          dateOfBirth = data.dateOfBirth;
+        }
+      }
+
+      if (!dateOfBirth) return;
+
+      // Calculate birthday this year
+      const birthdayThisYear = new Date(
+        today.getFullYear(),
+        dateOfBirth.getMonth(),
+        dateOfBirth.getDate()
+      );
+
+      // If birthday has passed this year, calculate for next year
+      const birthdayDate = birthdayThisYear < today
+        ? new Date(
+            today.getFullYear() + 1,
+            dateOfBirth.getMonth(),
+            dateOfBirth.getDate()
+          )
+        : birthdayThisYear;
+
+      // Calculate days until birthday
+      const daysUntilBirthday = Math.ceil(
+        (birthdayDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24)
+      );
+
+      // Only include if birthday is within the next N days
+      if (daysUntilBirthday >= 0 && daysUntilBirthday <= daysAhead) {
+        usersWithBirthdays.push({
+          id: doc.id,
+          ...data,
+          createdAt: data.createdAt?.toDate(),
+          updatedAt: data.updatedAt?.toDate(),
+          dateOfBirth,
+          birthdayDate,
+          daysUntilBirthday,
+        } as UserWithBirthday);
+      }
+    });
+
+    // Sort by days until birthday (ascending)
+    usersWithBirthdays.sort((a, b) => a.daysUntilBirthday - b.daysUntilBirthday);
+
+    return usersWithBirthdays;
+  } catch (error) {
+    console.error("Error getting users with upcoming birthdays:", error);
+    throw error;
+  }
+};
