@@ -306,7 +306,7 @@ export function MembersList({
               <div className="flex items-center gap-2">
                 <p className="font-semibold text-foreground">{member.name}</p>
                 {quizCountsMap.has(member.id) && (quizCountsMap.get(member.id) || 0) > 0 && (
-                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 text-xs font-medium">
+                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full  bg-primary/10 dark: bg-primary/20 text-primary dark:text-primary text-xs font-medium">
                     <FiBookOpen className="w-3 h-3" />
                     {quizCountsMap.get(member.id)} bài quiz
                   </span>
@@ -354,7 +354,7 @@ export function MembersList({
                       title="Gọi điện"
                       className="p-2"
                     >
-                      <FiPhone className="h-5 w-5 text-blue-500" />
+                      <FiPhone className="h-5 w-5 text-primary" />
                     </Button>
                   )}
                 </>
@@ -496,7 +496,7 @@ function ContactModal({ isOpen, onClose, member, type }: ContactModalProps) {
               onClick={() => handleSelectContact("student")}
               className={`w-full p-3 rounded-lg border-2 transition-all ${
                 selectedContact === "student"
-                  ? "border-blue-500 bg-blue-50"
+                  ? "border-primary  bg-primary/10"
                   : "border-gray-200 hover:border-gray-300"
               }`}
             >
@@ -506,7 +506,7 @@ function ContactModal({ isOpen, onClose, member, type }: ContactModalProps) {
                   <p className="text-sm text-gray-600">{member.phone}</p>
                 </div>
                 {selectedContact === "student" && (
-                  <div className="w-5 h-5 rounded-full bg-blue-500 flex items-center justify-center">
+                  <div className="w-5 h-5 rounded-full  bg-primary flex items-center justify-center">
                     <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                     </svg>
@@ -521,7 +521,7 @@ function ContactModal({ isOpen, onClose, member, type }: ContactModalProps) {
               onClick={() => handleSelectContact("parent")}
               className={`w-full p-3 rounded-lg border-2 transition-all ${
                 selectedContact === "parent"
-                  ? "border-blue-500 bg-blue-50"
+                  ? "border-primary  bg-primary/10"
                   : "border-gray-200 hover:border-gray-300"
               }`}
             >
@@ -531,7 +531,7 @@ function ContactModal({ isOpen, onClose, member, type }: ContactModalProps) {
                   <p className="text-sm text-gray-600">{member.parentPhone}</p>
                 </div>
                 {selectedContact === "parent" && (
-                  <div className="w-5 h-5 rounded-full bg-blue-500 flex items-center justify-center">
+                  <div className="w-5 h-5 rounded-full  bg-primary flex items-center justify-center">
                     <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                     </svg>

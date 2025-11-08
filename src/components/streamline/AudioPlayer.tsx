@@ -260,7 +260,7 @@ export default function AudioPlayer({
 
             <Button
               onClick={handlePlayPause}
-              className="w-12 h-10 rounded-full bg-primary text-white shadow-lg hover:scale-105 transform transition-transform duration-300"
+              className="w-12 h-10 rounded-full  bg-primary text-white shadow-lg hover:scale-105 transform transition-transform duration-300"
             >
               {isPlaying ? (
                 <Pause className="w-6 h-6 fill-white" />
@@ -291,7 +291,7 @@ export default function AudioPlayer({
                   size="sm"
                   className={`w-10 h-7 rounded-lg text-sm md:text-base font-bold flex items-center justify-center gap-1 ${
                     playbackRate === speed
-                      ? "bg-blue-600 text-white"
+                      ? " bg-primary text-white"
                       : "bg-gray-100 text-gray-700"
                   }`}
                 >
@@ -322,7 +322,7 @@ export default function AudioPlayer({
                   size="sm"
                   className={`aspect-square w-full h-auto rounded-xl text-lg font-bold transition-all duration-200 ${
                     selectedLesson === index
-                      ? "bg-blue-600 text-white shadow-md scale-105"
+                      ? " bg-primary text-white shadow-md scale-105"
                       : "bg-white text-gray-700 hover:bg-blue-100 hover:text-blue-700 border border-gray-200"
                   }`}
                 >

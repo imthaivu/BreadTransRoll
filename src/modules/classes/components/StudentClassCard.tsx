@@ -35,7 +35,7 @@ export function StudentClassCard({
             />
           </div>
         ) : (
-          <div className="h-10 w-10 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center text-sm font-semibold flex-shrink-0">
+          <div className="h-10 w-10 rounded-full bg-primary text-blue-700 flex items-center justify-center text-sm font-semibold flex-shrink-0">
             {(classItem?.teacher?.name || "?").charAt(0).toUpperCase()}
           </div>
         )}

@@ -499,7 +499,7 @@ export default function AdminStudents() {
         <Button
           variant="outline"
           size="sm"
-          className="flex items-center gap-1 text-blue-600 hover:text-blue-700"
+          className="flex items-center gap-1 text-primary hover:text-primary/80"
           onClick={(e) => {
             e.stopPropagation();
             setSelectedStudentForTicket(student);
@@ -700,7 +700,7 @@ export default function AdminStudents() {
                   type="button"
                   className={`px-2 sm:px-2.5 py-1 rounded-md border text-xs sm:text-sm transition-colors ${
                     Number(amount) === n
-                      ? "bg-blue-600 text-white border-blue-600"
+                      ? " bg-primary text-white border-primary"
                       : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50"
                   }`}
                   onClick={() => setValue("amount", n)}
@@ -747,7 +747,7 @@ export default function AdminStudents() {
         <select
           value={selectedClassId}
           onChange={(e) => setSelectedClassId(e.target.value)}
-          className="w-full px-3 sm:px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm"
+          className="w-full px-3 sm:px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 focus:ring-2 focus:ring-primary focus:border-primary text-sm"
         >
           <option value="">Tất cả lớp</option>
           {classes.map((classItem) => (
@@ -766,7 +766,7 @@ export default function AdminStudents() {
               handleSearch();
             }
           }}
-          className="w-full px-3 sm:px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm"
+          className="w-full px-3 sm:px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 focus:ring-2 focus:ring-primary focus:border-primary text-sm"
         />
         <div className="flex items-center gap-2">
           <Button
@@ -918,7 +918,7 @@ export default function AdminStudents() {
                     key={badge}
                     className={`flex items-center gap-2 p-2 rounded-lg border cursor-pointer transition-colors ${
                       isSelected
-                        ? "bg-blue-50 border-blue-300"
+                        ? " bg-primary/10 border-primary/30"
                         : "bg-white border-gray-300 hover:bg-gray-50"
                     }`}
                   >
@@ -952,7 +952,7 @@ export default function AdminStudents() {
                         // Prevent event bubbling
                         e.stopPropagation();
                       }}
-                      className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                      className="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary"
                     />
                     <div className="relative w-5 h-5 sm:w-6 sm:h-6 flex-shrink-0">
                       <Image

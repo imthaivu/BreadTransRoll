@@ -119,8 +119,8 @@ export default function Header() {
               href={NavigationList.admin[0].href}
               className={`inline-flex items-center gap-1 transition-all duration-200 px-3 py-1.5 rounded-lg ${
                 pathname === NavigationList.admin[0].href
-                  ? "text-primary bg-primary/10 font-medium"
-                  : "hover:text-primary hover:bg-primary/5"
+                  ? "text-primary  bg-primary/10 font-medium"
+                  : "hover:text-primary hover: bg-primary/5"
               }`}
             >
               {NavigationList.admin[0].icon} {NavigationList.admin[0].label}
@@ -153,7 +153,7 @@ export default function Header() {
           </div>
 
           {isStudent && (
-            <div className="flex md:hidden items-center bg-blue-100 text-white text-sm md:text-base font-bold px-3 py-0.5 rounded-full h-10 ml-2">
+            <div className="flex md:hidden items-center bg-primary text-white text-sm md:text-base font-bold px-3 py-0.5 rounded-full h-10 ml-2">
               <span className="mr-1 text-gray-600">Có</span>
               <span className="text-black">{profile?.totalBanhRan || 0}</span>
               <Image
@@ -293,8 +293,8 @@ function DesktopNavigation({
             href={item.href}
             className={`inline-flex items-center gap-1 transition-all duration-200 px-3 py-1.5 rounded-lg ${
               isActive
-                ? "text-primary bg-primary/10 font-medium"
-                : "hover:text-primary hover:bg-primary/5"
+                ? "text-primary  bg-primary/10 font-medium"
+                : "hover:text-primary hover: bg-primary/5"
             }`}
           >
             {item.icon} {item.label}
@@ -309,8 +309,8 @@ function DesktopNavigation({
             onClick={() => setIsMoreMenuOpen(!isMoreMenuOpen)}
             className={`inline-flex items-center gap-1 transition-all duration-200 px-3 py-1.5 rounded-lg ${
               isMoreMenuOpen
-                ? "text-primary bg-primary/10 font-medium"
-                : "hover:text-primary hover:bg-primary/5"
+                ? "text-primary  bg-primary/10 font-medium"
+                : "hover:text-primary hover: bg-primary/5"
             }`}
           >
             <FiLayers />
@@ -341,7 +341,7 @@ function DesktopNavigation({
                       onClick={() => setIsMoreMenuOpen(false)}
                       className={`flex items-center gap-3 px-4 py-2 text-sm md:text-base transition-colors ${
                         isActive
-                          ? "text-primary bg-primary/10 font-medium"
+                          ? "text-primary  bg-primary/10 font-medium"
                           : "text-gray-700 hover:bg-gray-50 hover:text-primary"
                       }`}
                     >
@@ -519,7 +519,7 @@ function UserActions({
 //                     onClick={closeMobileMenu}
 //                     className={`flex items-center gap-3 px-3 py-2 text-sm md:text-base rounded-md transition-colors duration-200 ${
 //                       isActive
-//                         ? "text-primary bg-primary/10 font-medium"
+//                         ? "text-primary  bg-primary/10 font-medium"
 //                         : "text-foreground hover:text-primary hover:bg-border"
 //                     }`}
 //                   >
@@ -565,7 +565,7 @@ function UserActions({
 
 //                     {/* Total bánh mì */}
 //                     {role == "student" && (
-//                       <div className="flex items-center bg-blue-100 text-white text-sm md:text-base font-bold px-3 py-0.5 rounded-full h-10">
+//                       <div className="flex items-center bg-primary text-white text-sm md:text-base font-bold px-3 py-0.5 rounded-full h-10">
 //                         <span className="mr-1 text-gray-600">Có</span>
 //                         <span className="text-black">
 //                           {profile?.totalBanhRan || 0}{" "}

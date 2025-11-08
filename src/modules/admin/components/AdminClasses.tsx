@@ -191,7 +191,7 @@ export default function AdminClasses() {
             onClick={() => handleSyncMembers(classItem.id)}
             disabled={isSyncing}
             title="Đồng bộ thông tin thành viên"
-            className="text-blue-600 hover:text-blue-700"
+            className="text-primary hover:text-primary/80"
           >
             <FiRefreshCw className={`w-3 h-3 mr-2 ${isSyncing ? 'animate-spin' : ''}`} />
             Đồng bộ
@@ -260,21 +260,21 @@ export default function AdminClasses() {
           placeholder="Lọc theo tên lớp..."
           value={classNameFilter}
           onChange={(e) => setClassNameFilter(e.target.value)}
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm"
+          className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 focus:ring-2 focus:ring-primary focus:border-primary text-sm"
         />
         <input
           type="text"
           placeholder="Lọc theo tên giáo viên..."
           value={teacherNameFilter}
           onChange={(e) => setTeacherNameFilter(e.target.value)}
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm"
+          className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 focus:ring-2 focus:ring-primary focus:border-primary text-sm"
         />
         <select
           value={statusFilter}
           onChange={(e) =>
             setStatusFilter(e.target.value as "all" | ClassStatus)
           }
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm"
+          className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 focus:ring-2 focus:ring-primary focus:border-primary text-sm"
         >
           <option value="all">Tất cả trạng thái</option>
           <option value="active">Hoạt động</option>

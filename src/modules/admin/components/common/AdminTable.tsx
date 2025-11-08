@@ -91,7 +91,7 @@ export default function AdminTable<T = any>({
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   <input
                     type="checkbox"
-                    className="rounded border-gray-300 text-blue-600 shadow-sm focus:ring-blue-500"
+                    className="rounded border-gray-300 text-primary shadow-sm focus:ring-primary"
                     checked={isAllSelected()}
                     ref={(input) => {
                       if (input) input.indeterminate = isIndeterminate();
@@ -119,7 +119,7 @@ export default function AdminTable<T = any>({
                   className="px-6 py-12 text-center"
                 >
                   <div className="flex items-center justify-center">
-                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
                     <span className="ml-2 text-gray-600">Đang tải...</span>
                   </div>
                 </td>
@@ -149,7 +149,7 @@ export default function AdminTable<T = any>({
                     <td className="px-6 py-4 whitespace-nowrap">
                       <input
                         type="checkbox"
-                        className="rounded border-gray-300 text-blue-600 shadow-sm focus:ring-blue-500"
+                        className="rounded border-gray-300 text-primary shadow-sm focus:ring-primary"
                         checked={isRowSelected(record)}
                         onChange={(e) => {
                           e.stopPropagation();

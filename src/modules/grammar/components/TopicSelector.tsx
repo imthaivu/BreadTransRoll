@@ -48,7 +48,7 @@ export default function TopicSelector({
           >
             <div className="relative h-[100px] overflow-hidden rounded-lg p-2 shadow-sm group-hover:shadow-md transition-all duration-200 border-2 border-gray-200 bg-white">
               {/* Topic icon */}
-              <div className="flex items-center justify-center w-8 h-8 bg-primary rounded-lg mb-3 mx-auto">
+              <div className="flex items-center justify-center w-8 h-8  bg-primary rounded-lg mb-3 mx-auto">
                 <BookOpen className="w-4 h-4 text-white" />
               </div>
 
@@ -58,7 +58,7 @@ export default function TopicSelector({
               </h4>
 
               {/* Hover overlay */}
-              <div className="absolute inset-0 bg-primary/5 group-hover:to-purple-600/5 transition-all duration-200" />
+              <div className="absolute inset-0  bg-primary/5 group-hover:to-purple-600/5 transition-all duration-200" />
             </div>
           </motion.div>
         ))}

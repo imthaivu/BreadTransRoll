@@ -26,7 +26,7 @@ export function Button({
   const base =
     "inline-flex items-center justify-center rounded-md font-medium transition-colors focus:outline-none disabled:opacity-50 disabled:pointer-events-none cursor-pointer min-w-fit";
   const variants = {
-    primary: "bg-primary text-primary-foreground hover:bg-primary/90",
+    primary: " bg-primary text-primary-foreground hover: bg-primary/90",
     secondary:
       "bg-secondary text-secondary-foreground border border-border hover:bg-secondary/90",
     ghost: "bg-transparent text-foreground hover:bg-border/50",
@@ -34,7 +34,7 @@ export function Button({
     destructive:
       "bg-destructive text-destructive-foreground hover:bg-destructive/90",
     warning: "bg-red-400 text-white hover:bg-red-500",
-    info: "bg-blue-500 text-white hover:bg-blue-600",
+    info: " bg-primary text-white hover: bg-primary/90",
     success: "bg-green-500 text-white hover:bg-green-600",
   } as const;
   const sizes = {

@@ -310,7 +310,7 @@ export function PhoneRequiredModal({
             <Button
               type="submit"
               disabled={isLoading || !dateOfBirth || !address.trim() || !parentPhone.trim() || !preferences.trim()}
-              className="bg-primary text-white text-sm sm:text-base px-4 sm:px-6"
+              className=" bg-primary text-white text-sm sm:text-base px-4 sm:px-6"
             >
               {isLoading ? "Đang cập nhật..." : "Hoàn tất"}
             </Button>

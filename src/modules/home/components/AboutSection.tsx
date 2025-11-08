@@ -51,7 +51,7 @@ export default function AboutSection() {
               </div>
             </div>
 
-            <div className="flex-col flex items-center justify-center w-full text-center h-full bg-primary rounded-lg p-6 shadow-sm">
+            <div className="flex-col flex items-center justify-center w-full text-center h-full  bg-primary rounded-lg p-6 shadow-sm">
               <h4 className="text-4xl text-primary-foreground mb-1">
                 Học phí hơn <b>50k</b>/ngày
               </h4>

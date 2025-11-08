@@ -55,7 +55,7 @@ export function LoadingDots({ text }: { text?: string }) {
         {[0, 1, 2].map((i) => (
           <motion.div
             key={i}
-            className="w-2 h-2 bg-primary rounded-full"
+            className="w-2 h-2  bg-primary rounded-full"
             animate={{
               scale: [1, 1.2, 1],
               opacity: [0.5, 1, 0.5],
@@ -177,7 +177,7 @@ export function MiluLoading({ text = "Đang tải..." }: { text?: string }) {
         {[0, 1, 2].map((i) => (
           <motion.div
             key={i}
-            className="w-2 h-2 bg-primary rounded-full"
+            className="w-2 h-2  bg-primary rounded-full"
             animate={{
               scale: [1, 1.2, 1],
               opacity: [0.5, 1, 0.5],

@@ -256,7 +256,7 @@ export function AvatarCard() {
                       return (
                         <div
                           key={badge}
-                          className="flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg flex-shrink-0 max-w-full"
+                          className="flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5  bg-primary/10 border border-primary/30 rounded-lg flex-shrink-0 max-w-full"
                         >
                           {badgeImage && (
                             <div className="relative w-8 h-8 sm:w-10 sm:h-10 flex-shrink-0">
@@ -269,7 +269,7 @@ export function AvatarCard() {
                               />
                             </div>
                           )}
-                          <span className="text-sm sm:text-base font-medium text-blue-700 whitespace-nowrap">
+                          <span className="text-sm sm:text-base font-medium text-primary whitespace-nowrap">
                             {badge}
                           </span>
                         </div>
@@ -328,7 +328,7 @@ export function PersonalInfoCard() {
               type="text"
               value={displayName}
               onChange={(e) => setDisplayName(e.target.value)}
-              className="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 px-4 py-2"
+              className="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-primary focus:ring-primary px-4 py-2"
               placeholder="Nhập tên của bạn"
             />
           </div>
@@ -340,7 +340,7 @@ export function PersonalInfoCard() {
               type="text"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
-              className="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 px-4 py-2"
+              className="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-primary focus:ring-primary px-4 py-2"
               placeholder="Nhập số điện thoại"
             />
           </div>

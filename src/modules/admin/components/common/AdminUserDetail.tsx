@@ -24,7 +24,7 @@ export default function AdminUserDetail({
       case "admin":
         return "bg-red-100 text-red-800";
       case "teacher":
-        return "bg-blue-100 text-blue-800";
+        return " bg-primary/10 text-primary";
       case "student":
         return "bg-green-100 text-green-800";
       default:
@@ -72,8 +72,8 @@ export default function AdminUserDetail({
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-gray-200">
           <div className="flex items-center gap-3">
-            <div className="h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center">
-              <FiUser className="w-6 h-6 text-blue-600" />
+            <div className="h-12 w-12 rounded-full  bg-primary/10 flex items-center justify-center">
+              <FiUser className="w-6 h-6 text-primary" />
             </div>
             <div>
               <h2 className="text-xl font-semibold text-gray-900">
@@ -188,7 +188,7 @@ export default function AdminUserDetail({
                     href={user.avatarUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-sm md:text-base text-blue-600 hover:text-blue-800"
+                    className="text-sm md:text-base text-primary hover:text-primary/80"
                   >
                     Xem ảnh gốc
                   </a>

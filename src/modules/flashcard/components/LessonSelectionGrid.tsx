@@ -32,7 +32,7 @@ export const LessonSelectionGrid = ({
             "p-2 w-full text-center rounded-md border text-sm font-medium transition-all ";
 
           if (isSelected) {
-            buttonClass += "bg-blue-600 text-white border-blue-600";
+            buttonClass += " bg-primary text-white border-blue-600";
           } else if (isCompleted) {
             buttonClass += "bg-green-100 text-green-800 border-green-300";
           } else {

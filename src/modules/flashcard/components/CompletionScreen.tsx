@@ -43,7 +43,7 @@ export const CompletionScreen = ({
             <div className="text-sm md:text-base text-gray-600">Từ đúng</div>
           </div>
           <div className="text-center">
-            <div className="text-2xl font-bold text-blue-600">{accuracy}%</div>
+            <div className="text-2xl font-bold text-primary">{accuracy}%</div>
             <div className="text-sm md:text-base text-gray-600">
               Độ chính xác
             </div>
@@ -52,7 +52,7 @@ export const CompletionScreen = ({
 
         {/* Wrong Words */}
         {wrongWords.length > 0 && (
-          <div className="mt-2 sm:mt-4 p-2 sm:p-4 bg-primary rounded-lg">
+          <div className="mt-2 sm:mt-4 p-2 sm:p-4  bg-primary rounded-lg">
             <h4 className="font-semibold text-black mb-2">{`Cần ôn ${wrongWords.length} từ:`}</h4>
             <div className="text-sm md:text-base text-black">
               {wrongWords.map((word, index) => (

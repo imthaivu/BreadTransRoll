@@ -145,11 +145,11 @@ function MemberManager({
                       {({ active }) => (
                         <div
                           className={`px-3 py-2 flex items-center justify-between ${
-                            active ? "bg-blue-50" : ""
+                            active ? " bg-primary/10" : ""
                           }`}
                         >
                           <div className="flex items-center gap-3 min-w-0">
-                            <div className="h-8 w-8 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center text-xs font-semibold flex-shrink-0">
+                            <div className="h-8 w-8 rounded-full  bg-primary/10 text-primary flex items-center justify-center text-xs font-semibold flex-shrink-0">
                               {(student.displayName || student.email || "?")
                                 .charAt(0)
                                 .toUpperCase()}
@@ -411,7 +411,7 @@ export function ClassDetailModal({
               </label>
               <input
                 type="text"
-                className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Nhập tên lớp"
@@ -425,7 +425,7 @@ export function ClassDetailModal({
                   Trạng thái
                 </label>
                 <select
-                  className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                  className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
                   value={status}
                   onChange={(e) => setStatus(e.target.value as ClassStatus)}
                 >
@@ -464,7 +464,7 @@ export function ClassDetailModal({
                 </label>
                 <input
                   type="url"
-                  className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                  className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
                   value={zaloLink}
                   onChange={(e) => setZaloLink(e.target.value)}
                   placeholder="https://zalo.me/..."
@@ -477,7 +477,7 @@ export function ClassDetailModal({
                 </label>
                 <input
                   type="url"
-                  className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                  className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
                   value={meetLink}
                   onChange={(e) => setMeetLink(e.target.value)}
                   placeholder="https://meet.google.com/..."
@@ -542,7 +542,7 @@ export function ClassDetailModal({
                   fill
                 />
               )) || (
-                <div className="h-12 w-12 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center text-sm font-semibold">
+                <div className="h-12 w-12 rounded-full  bg-primary/10 text-primary flex items-center justify-center text-sm font-semibold">
                   {(activeStudent.name || activeStudent.email || "?")
                     .charAt(0)
                     .toUpperCase()}

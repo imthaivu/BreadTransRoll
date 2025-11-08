@@ -66,7 +66,7 @@ export default function AdminSidebar({
                 className={cn(
                   "flex items-center px-3 py-2 text-sm md:text-base font-medium rounded-lg transition-colors mb-1",
                   isActive
-                    ? "bg-blue-50 text-blue-700 border-r-2 border-blue-700"
+                    ? " bg-primary/10 text-primary border-r-2 border-primary"
                     : "text-gray-700 hover:bg-gray-100 hover:text-gray-900"
                 )}
                 key={item.id}
@@ -76,7 +76,7 @@ export default function AdminSidebar({
                   <IconComponent
                     className={cn(
                       "w-4 h-4",
-                      isActive ? "text-blue-700" : "text-gray-500"
+                      isActive ? "text-primary" : "text-gray-500"
                     )}
                   />
                 </span>

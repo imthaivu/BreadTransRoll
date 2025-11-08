@@ -422,7 +422,7 @@ export default function AdminCurrency() {
                 type="date"
                 value={dateStr}
                 onChange={(e) => setDateStr(e.target.value)}
-                className="px-3 py-2 border border-blue-300 rounded-md text-sm bg-blue-50 text-blue-900 placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="px-3 py-2 border border-primary/30 rounded-md text-sm  bg-primary/10 text-primary placeholder-gray-500 focus:ring-2 focus:ring-primary focus:border-primary"
                 aria-label="Ngày"
               />
               <Button
@@ -449,7 +449,7 @@ export default function AdminCurrency() {
                 placeholder="Tìm theo tên/ID"
                 value={studentQuery}
                 onChange={(e) => setStudentQuery(e.target.value)}
-                className="w-full px-3 py-2 border border-blue-300 rounded-md text-sm bg-blue-50 text-blue-900 placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full px-3 py-2 border border-primary/30 rounded-md text-sm  bg-primary/10 text-primary placeholder-gray-500 focus:ring-2 focus:ring-primary focus:border-primary"
               />
             </div>
             <div>
@@ -551,7 +551,7 @@ export default function AdminCurrency() {
           <div className="mb-4">
             <p className="text-sm text-gray-600">
               Tổng số giao dịch:{" "}
-              <span className="font-bold text-blue-600">
+              <span className="font-bold text-primary">
                 {filteredTransactions.length}
               </span>
             </p>
@@ -686,7 +686,7 @@ export default function AdminCurrency() {
 const StatCard = ({ title, value }: { title: string; value: number }) => (
   <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
     <div className="flex items-center">
-      <div className="p-3 rounded-lg bg-indigo-100 text-indigo-600">
+      <div className="p-3 rounded-lg  bg-primary/10 text-primary">
         <FiBarChart2 className="w-5 h-5" />
       </div>
       <div className="ml-4">

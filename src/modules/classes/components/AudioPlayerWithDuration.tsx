@@ -145,7 +145,7 @@ export function AudioPlayerWithDuration({
         <button
           onClick={togglePlayPause}
           disabled={isLoading}
-          className="flex items-center justify-center w-10 h-10 rounded-full bg-blue-500 text-white hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          className="flex items-center justify-center w-10 h-10 rounded-full bg-primary text-white hover: bg-primary disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           aria-label={isPlaying ? "Pause" : "Play"}
         >
           {isLoading ? (

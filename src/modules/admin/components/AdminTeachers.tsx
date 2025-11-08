@@ -165,8 +165,8 @@ export default function AdminTeachers() {
                 className="h-8 w-8 sm:h-10 sm:w-10 rounded-full object-cover"
               />
             ) : (
-              <div className="h-8 w-8 sm:h-10 sm:w-10 rounded-full bg-blue-100 flex items-center justify-center">
-                <FiUsers className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600" />
+              <div className="h-8 w-8 sm:h-10 sm:w-10 rounded-full  bg-primary/10 flex items-center justify-center">
+                <FiUsers className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
               </div>
             )}
             <button
@@ -313,7 +313,7 @@ export default function AdminTeachers() {
               handleSearch();
             }
           }}
-          className="w-full px-3 sm:px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm col-span-1 sm:col-span-2"
+          className="w-full px-3 sm:px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 focus:ring-2 focus:ring-primary focus:border-primary text-sm col-span-1 sm:col-span-2"
         />
         <div className="flex items-center gap-2">
           <Button
@@ -383,8 +383,8 @@ export default function AdminTeachers() {
                   className="w-24 h-24 rounded-full object-cover"
                 />
               ) : (
-                <div className="w-24 h-24 rounded-full bg-blue-100 flex items-center justify-center">
-                  <FiUsers className="w-12 h-12 text-blue-600" />
+                <div className="w-24 h-24 rounded-full  bg-primary/10 flex items-center justify-center">
+                  <FiUsers className="w-12 h-12 text-primary" />
                 </div>
               )}
               <button

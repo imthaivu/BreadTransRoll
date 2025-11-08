@@ -44,7 +44,7 @@ export function ClassCard({
                 href={zaloLink}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-1.5 px-3 py-2 text-sm text-blue-600 bg-blue-100 font-semibold rounded-xl hover:bg-blue-200 transition-colors"
+                className="flex items-center gap-1.5 px-3 py-2 text-sm text-blue-600 bg-primary font-semibold rounded-xl hover:bg-blue-200 transition-colors"
                 title="Mở nhóm Zalo"
               >
                 <Image

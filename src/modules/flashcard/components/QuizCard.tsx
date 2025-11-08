@@ -209,7 +209,7 @@ export default function QuizCard({
                 }
               } else {
                 buttonClass +=
-                  "bg-white border-gray-300 hover:border-blue-500 hover:bg-blue-50";
+                  "bg-white border-gray-300 hover:border-primary hover: bg-primary/10";
               }
 
               return (

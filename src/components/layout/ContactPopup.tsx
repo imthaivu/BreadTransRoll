@@ -41,7 +41,7 @@ export default function ContactPopup() {
           <button
             ref={zaloRef}
             onClick={openZaloChat}
-            className="bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 flex items-center justify-center group relative"
+            className="bg-blue-500 hover: bg-primary text-white p-2 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 flex items-center justify-center group relative"
           >
             <Image
               src="/assets/images/zalo.png"
@@ -51,7 +51,7 @@ export default function ContactPopup() {
               className="rounded-lg"
             />
             {/* Pulse animation */}
-            <div className="absolute inset-0 rounded-full bg-blue-500 animate-ping opacity-30"></div>
+            <div className="absolute inset-0 rounded-full bg-primary animate-ping opacity-30"></div>
           </button>
         </motion.div>
 
