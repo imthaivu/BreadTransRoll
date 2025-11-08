@@ -9,7 +9,7 @@ interface ConfirmDialogProps {
   onClose: () => void;
   onConfirm: () => void;
   title: string;
-  message: string;
+  message: string | ReactNode;
   confirmText?: string;
   cancelText?: string;
   confirmVariant?:
@@ -104,9 +104,9 @@ export default function ConfirmDialog({
               </div>
 
               {/* Message */}
-              <p className="text-sm md:text-base text-muted mb-6 leading-relaxed">
-                {message}
-              </p>
+              <div className="text-sm md:text-base text-muted mb-6 leading-relaxed">
+                {typeof message === "string" ? <p>{message}</p> : message}
+              </div>
 
               {/* Actions */}
               <div className="flex gap-3 justify-end">

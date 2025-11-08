@@ -6,8 +6,6 @@ import { useBooks, useLessons } from "@/modules/flashcard/hooks";
 import { useMutation } from "@tanstack/react-query";
 import {
   collection,
-  doc,
-  getDoc,
   getDocs,
   query,
   where,
@@ -17,7 +15,7 @@ import { uploadSpeakingSubmission } from "./services";
 import { SPEAKING_MAX_FILE_BYTES } from "./types";
 
 const NODE_ENV = process.env.NODE_ENV;
-const MAX_LISTEN_COUNT = 2; // Minimum listens required before submission
+const MIN_LISTEN_COUNT = 3; // Minimum listens required before submission
 const MIN_AUDIO_DURATION = NODE_ENV === "development" ? 0 : 30; // Minimum audio duration in seconds
 
 export function useSpeakingUpload() {
@@ -31,8 +29,6 @@ export function useSpeakingUpload() {
   const [uploadProgress, setUploadProgress] = useState(0);
   const [recorderResetToken, setRecorderResetToken] = useState(0);
   const [lastSubmissionId, setLastSubmissionId] = useState<string | null>(null);
-  const [isAIAnalyzing, setIsAIAnalyzing] = useState(false);
-  const [aiError, setAiError] = useState<string | null>(null);
 
   const { data: books = [], isLoading: booksLoading } = useBooks();
   const { data: lessons = [], isLoading: lessonsLoading } = useLessons(
@@ -51,12 +47,11 @@ export function useSpeakingUpload() {
     );
 
     const snapshot = await getDocs(q);
-    if (snapshot.empty) return null;
+    if (snapshot.empty) return false;
 
     const doc = snapshot.docs[0];
-
     const listenCount = doc.data().listenCount || 0;
-    return listenCount >= MAX_LISTEN_COUNT;
+    return listenCount >= MIN_LISTEN_COUNT;
   };
 
   // Kiểm tra độ dài audio
@@ -75,50 +70,33 @@ export function useSpeakingUpload() {
 
 
   const handleSubmit = async () => {
-    try {
-      setAiError(null);
-      setIsAIAnalyzing(true);
-      await new Promise((resolve) => setTimeout(resolve, 3000));
-
-      if (!selectedFile || !studentId || !selectedBook || !selectedLesson) {
-        throw new Error("Dữ liệu nộp bài không đầy đủ.");
-      }
-      if (selectedFile.size > SPEAKING_MAX_FILE_BYTES) {
-        throw new Error("File nộp vượt quá 15MB, vui lòng thử lại.");
-      }
-
-      const duration = await checkAudioDuration(selectedFile);
-      if (duration < MIN_AUDIO_DURATION) {
-        throw new Error("Thời lượng audio quá ngắn, vui lòng thử lại.");
-      }
-
-      const isListenEnough = await checkHasListenedEnough();
-
-      if (!isListenEnough) {
-        throw new Error(
-          `Công nghệ AI phát hiện bài nói của bạn chưa khớp với mẫu.
-            👉 Bước 1: Đọc chậm và đánh vần chuẩn từng từ.
-            👉 Bước 2: Nghe lại, gạch chân từ/cụm từ khó, chú ý nối âm và nuốt âm như người bản xứ.`
-        );
-      }
-
-      setAiError(null);
-      setIsAIAnalyzing(false);
-
-      return uploadSpeakingSubmission(
-        selectedFile,
-        studentId,
-        session?.user?.name || "Chưa đặt tên",
-        selectedBook,
-        selectedLesson,
-        setUploadProgress
-      );
-    } catch (error) {
-      // Deplay log err
-      throw error;
-    } finally {
-      setIsAIAnalyzing(false);
+    if (!selectedFile || !studentId || !selectedBook || !selectedLesson) {
+      throw new Error("Dữ liệu nộp bài không đầy đủ.");
     }
+    if (selectedFile.size > SPEAKING_MAX_FILE_BYTES) {
+      throw new Error("File nộp vượt quá 15MB, vui lòng thử lại.");
+    }
+
+    const duration = await checkAudioDuration(selectedFile);
+    if (duration < MIN_AUDIO_DURATION) {
+      throw new Error("Thời lượng audio quá ngắn, vui lòng thử lại.");
+    }
+
+    const isListenEnough = await checkHasListenedEnough();
+    if (!isListenEnough) {
+      throw new Error(
+        `Bạn cần nghe ít nhất ${MIN_LISTEN_COUNT} lần trước khi nộp bài. Vui lòng nghe lại bài học trước khi nộp bài nói.`
+      );
+    }
+
+    return uploadSpeakingSubmission(
+      selectedFile,
+      studentId,
+      session?.user?.name || "Chưa đặt tên",
+      selectedBook,
+      selectedLesson,
+      setUploadProgress
+    );
   };
 
   const handleBookChange = (bookId: string) => {
@@ -142,8 +120,8 @@ export function useSpeakingUpload() {
       const docId = `${studentId}_${selectedBook}_${selectedLesson}`;
       setLastSubmissionId(docId);
     },
-    onError: (error) => {
-      setAiError(error.message || "Lỗi không xác định, vui lòng thử lại.");
+    onError: () => {
+      // Error handling is done by the mutation state
     },
   });
 
@@ -155,8 +133,6 @@ export function useSpeakingUpload() {
   useEffect(() => {
     setSelectedFile(null);
     setRecorderResetToken((x) => x + 1);
-    setAiError(null);
-    setIsAIAnalyzing(false);
   }, [selectedLesson]);
 
   return {
@@ -178,9 +154,6 @@ export function useSpeakingUpload() {
     recorderResetToken,
     lastSubmissionId,
     canSubmit,
-    isAIAnalyzing,
-    aiError,
-    setAiError,
 
     // Actions
     handleBookChange,
