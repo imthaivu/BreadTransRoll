@@ -31,17 +31,20 @@ function ClassMemberList({ classId }: { classId: string }) {
     );
   }
 
-  if (members.length === 0) {
+  // Filter to only show students (not teachers)
+  const students = members.filter((member) => member.role === "student");
+
+  if (students.length === 0) {
     return (
       <p className="text-center text-gray-500 py-8">
-        Lớp học chưa có thành viên nào.
+        Lớp học chưa có học sinh nào.
       </p>
     );
   }
 
   return (
     <div className="space-y-2">
-      {members.map((member: IClassMember) => (
+      {students.map((member: IClassMember) => (
         <div
           key={member.id}
           className="flex items-center justify-between p-2 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors"
@@ -50,9 +53,7 @@ function ClassMemberList({ classId }: { classId: string }) {
             <div className="text-sm font-medium text-gray-900 truncate">
               {member.name}
             </div>
-            <div className="text-sm text-gray-600">
-              {member.phone || "-"}
-            </div>
+            
           </div>
         </div>
       ))}

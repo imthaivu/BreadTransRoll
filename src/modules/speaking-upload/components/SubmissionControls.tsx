@@ -31,13 +31,7 @@ export const SubmissionControls = ({
   return (
     <>
       <div className="flex flex-wrap flex-row gap-4 w-full items-center mx-auto justify-center">
-        <div className="min-w-[200px] flex items-center gap-4">
-          <label
-            htmlFor="book-select"
-            className="block text-sm font-medium text-gray-700 mb-1"
-          >
-            Chọn sách
-          </label>
+          
 
           <select
             id="book-select"
@@ -55,17 +49,11 @@ export const SubmissionControls = ({
               </option>
             ))}
           </select>
-        </div>
 
-        <div className="flex items-center gap-4 flex-1 min-w-[200px]">
-          <label
-            htmlFor="lesson-select"
-            className="block text-sm font-medium text-gray-700 mb-1"
-          >
-            Chọn bài học
-          </label>
+          
 
           <Button
+            variant="outline"
             className="h-10 w-[100px]"
             onClick={() => {
               if (lessons.length > 0) {
@@ -82,7 +70,6 @@ export const SubmissionControls = ({
             {selectedLesson ? `Bài ${selectedLesson}` : "Chọn bài học"}
           </Button>
         </div>
-      </div>
 
       <Modal
         open={showModal}
@@ -93,6 +80,7 @@ export const SubmissionControls = ({
           {lessons.map((lesson) => (
             <Button
               key={lesson}
+              variant={selectedLesson === lesson ? "primary" : "outline"}
               className="w-full h-10"
               onClick={() => {
                 onLessonChange(lesson);
