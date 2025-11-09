@@ -184,18 +184,18 @@ export default function AdminDashboard() {
       )}
 
       {/* Speaking Submissions Card */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <div className="p-3 rounded-lg bg-red-100 text-red-600">
-              <FiMic className="w-6 h-6" />
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 sm:p-6">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div className="flex items-center gap-3 sm:gap-4">
+            <div className="p-2 sm:p-3 rounded-lg bg-red-100 text-red-600 flex-shrink-0">
+              <FiMic className="w-5 h-5 sm:w-6 sm:h-6" />
             </div>
-            <div>
-              <p className="text-sm md:text-base font-medium text-gray-600">
+            <div className="min-w-0 flex-1">
+              <p className="text-xs sm:text-sm md:text-base font-medium text-gray-600">
                 Tổng số bài audio nói đã nộp
               </p>
-              <p className="text-2xl font-bold text-gray-900 mt-1">
-                {isLoadingSpeaking ? "..." : totalSpeakingSubmissions}
+              <p className="text-xl sm:text-2xl font-bold text-gray-900 mt-1">
+                {isLoadingSpeaking ? "..." : totalSpeakingSubmissions.toLocaleString("vi-VN")}
               </p>
             </div>
           </div>
@@ -203,10 +203,16 @@ export default function AdminDashboard() {
             variant="outline"
             onClick={handleDeleteAllAudio}
             disabled={totalSpeakingSubmissions === 0 || isDeleting || isLoadingSpeaking}
-            className="text-red-600 hover:text-red-700 border-red-300 hover:border-red-400"
+            className="text-red-600 hover:text-red-700 border-red-300 hover:border-red-400 w-full sm:w-auto text-xs sm:text-sm px-3 sm:px-4 py-2 flex-shrink-0"
+            size="sm"
           >
-            <FiTrash2 className="w-4 h-4 mr-2" />
-            {isDeleting ? "Đang xóa..." : `Xóa tất cả (${totalSpeakingSubmissions})`}
+            <FiTrash2 className="w-3 h-3 sm:w-4 sm:h-4 sm:mr-2" />
+            <span className="hidden sm:inline">
+              {isDeleting ? "Đang xóa..." : `Xóa tất cả (${totalSpeakingSubmissions.toLocaleString("vi-VN")})`}
+            </span>
+            <span className="sm:hidden">
+              {isDeleting ? "Đang xóa..." : `Xóa tất cả`}
+            </span>
           </Button>
         </div>
       </div>

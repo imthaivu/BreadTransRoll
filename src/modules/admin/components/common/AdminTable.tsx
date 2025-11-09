@@ -88,7 +88,7 @@ export default function AdminTable<T = any>({
           <thead className="bg-gray-50">
             <tr>
               {showCheckbox && (
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-3 sm:px-4 md:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   <input
                     type="checkbox"
                     className="rounded border-gray-300 text-primary shadow-sm focus:ring-primary"
@@ -103,7 +103,7 @@ export default function AdminTable<T = any>({
               {columns.map((column) => (
                 <th
                   key={column.key}
-                  className={`px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider ${column.className || ""}`}
+                  className={`px-3 sm:px-4 md:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider ${column.className || ""}`}
                   style={{ width: column.width }}
                 >
                   {column.title}
@@ -116,11 +116,11 @@ export default function AdminTable<T = any>({
               <tr>
                 <td
                   colSpan={columns.length + (showCheckbox ? 1 : 0)}
-                  className="px-6 py-12 text-center"
+                  className="px-3 sm:px-4 md:px-6 py-8 sm:py-12 text-center"
                 >
                   <div className="flex items-center justify-center">
                     <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-                    <span className="ml-2 text-gray-600">Đang tải...</span>
+                    <span className="ml-2 text-xs sm:text-sm text-gray-600">Đang tải...</span>
                   </div>
                 </td>
               </tr>
@@ -128,7 +128,7 @@ export default function AdminTable<T = any>({
               <tr>
                 <td
                   colSpan={columns.length + (showCheckbox ? 1 : 0)}
-                  className="px-6 py-12 text-center text-gray-500"
+                  className="px-3 sm:px-4 md:px-6 py-8 sm:py-12 text-center text-xs sm:text-sm text-gray-500"
                 >
                   {emptyMessage}
                 </td>
@@ -146,7 +146,7 @@ export default function AdminTable<T = any>({
                   onClick={() => handleRowClick(record, index)}
                 >
                   {showCheckbox && (
-                    <td className="px-6 py-4 whitespace-nowrap">
+                    <td className="px-3 sm:px-4 md:px-6 py-3 sm:py-4 whitespace-nowrap">
                       <input
                         type="checkbox"
                         className="rounded border-gray-300 text-primary shadow-sm focus:ring-primary"
@@ -161,7 +161,7 @@ export default function AdminTable<T = any>({
                   {columns.map((column) => (
                     <td
                       key={column.key}
-                      className={`px-6 py-4 whitespace-nowrap text-sm md:text-base text-gray-900 ${column.className || ""}`}
+                      className={`px-3 sm:px-4 md:px-6 py-3 sm:py-4 whitespace-nowrap text-sm md:text-base text-gray-900 ${column.className || ""}`}
                     >
                       {column.render
                         ? column.render(

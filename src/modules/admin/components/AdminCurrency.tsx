@@ -207,18 +207,30 @@ export default function AdminCurrency() {
       key: "student",
       title: "Học sinh",
       render: (_, transaction) => (
-        <div className="flex items-center">
-          <div className="flex-shrink-0 h-10 w-10">
-            <div className="h-10 w-10 rounded-full bg-green-100 flex items-center justify-center">
-              <FiDollarSign className="w-5 h-5 text-green-600" />
+        <div className="flex items-center min-w-0">
+          <div className="flex-shrink-0 h-8 w-8 sm:h-10 sm:w-10">
+            <div className="h-8 w-8 sm:h-10 sm:w-10 rounded-full bg-green-100 flex items-center justify-center">
+              <FiDollarSign className="w-4 h-4 sm:w-5 sm:h-5 text-green-600" />
             </div>
           </div>
-          <div className="ml-4">
-            <div className="text-sm md:text-base font-medium text-gray-900">
+          <div className="ml-2 sm:ml-4 min-w-0 flex-1">
+            <div className="text-xs sm:text-sm md:text-base font-medium text-gray-900 truncate">
               {transaction.studentName}
             </div>
-            <div className="text-sm md:text-base text-gray-500">
+            <div className="text-xs sm:text-sm md:text-base text-gray-500 truncate">
               ID: {transaction.studentId}
+            </div>
+            {/* Show admin info on mobile in student column */}
+            <div className="md:hidden mt-1 text-xs text-gray-400">
+              {transaction.userName || "Không rõ"}
+            </div>
+            {/* Show date on mobile */}
+            <div className="md:hidden mt-0.5 text-xs text-gray-400">
+              {transaction.createdAt.toLocaleDateString("vi-VN")}
+            </div>
+            {/* Show reason on mobile */}
+            <div className="sm:hidden mt-1 text-xs text-gray-600 truncate">
+              {transaction.reason}
             </div>
           </div>
         </div>
@@ -227,6 +239,7 @@ export default function AdminCurrency() {
     {
       key: "admin",
       title: "Người thực hiện",
+      className: "hidden md:table-cell",
       render: (_, transaction) => (
         <div>
           <div className="text-sm md:text-base font-medium text-gray-900">
@@ -244,12 +257,12 @@ export default function AdminCurrency() {
       render: (_, transaction) => (
         <div className="flex items-center">
           {transaction.type === "add" ? (
-            <FiPlus className="w-4 h-4 text-green-600 mr-2" />
+            <FiPlus className="w-4 h-4 text-green-600 mr-1 sm:mr-2" />
           ) : (
-            <FiMinus className="w-4 h-4 text-red-600 mr-2" />
+            <FiMinus className="w-4 h-4 text-red-600 mr-1 sm:mr-2" />
           )}
           <span
-            className={`text-sm md:text-base font-medium ${
+            className={`text-xs sm:text-sm md:text-base font-medium ${
               transaction.type === "add" ? "text-green-600" : "text-red-600"
             }`}
           >
@@ -262,16 +275,21 @@ export default function AdminCurrency() {
       key: "amount",
       title: "Số lượng",
       render: (_, transaction) => (
-        <span className="text-sm md:text-base font-medium text-gray-900">
-          {transaction.amount} bánh mì
-        </span>
+        <div className="flex flex-col">
+          <span className="text-xs sm:text-sm md:text-base font-medium text-gray-900">
+            {transaction.amount}
+          </span>
+          <span className="text-xs text-gray-500 md:hidden">bánh mì</span>
+          <span className="hidden md:inline text-sm text-gray-500">bánh mì</span>
+        </div>
       ),
     },
     {
       key: "reason",
       title: "Lý do",
+      className: "hidden sm:table-cell",
       render: (_, transaction) => (
-        <span className="text-sm md:text-base text-gray-900">
+        <span className="text-sm md:text-base text-gray-900 truncate max-w-xs">
           {transaction.reason}
         </span>
       ),
@@ -279,6 +297,7 @@ export default function AdminCurrency() {
     {
       key: "date",
       title: "Ngày",
+      className: "hidden md:table-cell",
       render: (_, transaction) => (
         <span className="text-sm md:text-base text-gray-500">
           {transaction.createdAt.toLocaleDateString("vi-VN")}
@@ -289,18 +308,18 @@ export default function AdminCurrency() {
       key: "actions",
       title: "Thao tác",
       render: (_, transaction) => (
-        <div className="flex space-x-2">
+        <div className="flex space-x-1 sm:space-x-2">
           <Button
             variant="outline"
             size="sm"
-            className="flex items-center gap-1 text-red-600 hover:text-red-700"
+            className="flex items-center gap-1 text-red-600 hover:text-red-700 px-2 sm:px-3"
             onClick={(e) => {
               e.stopPropagation();
               openDeleteModal(transaction);
             }}
           >
-            <FiTrash2 className="w-3 h-3" />
-            Xóa
+            <FiTrash2 className="w-3 h-3 sm:w-4 sm:h-4" />
+            <span className="hidden sm:inline">Xóa</span>
           </Button>
         </div>
       ),
@@ -368,13 +387,13 @@ export default function AdminCurrency() {
   ];
 
   return (
-    <div className="space-y-6">
-      <h1 className="text-2xl font-bold mb-6">Quản lý Bánh mì</h1>
+    <div className="space-y-4 sm:space-y-6 px-2 sm:px-0">
+      <h1 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6">Quản lý Bánh mì</h1>
 
       {/* Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
         {isLoadingStats ? (
-          <div className="md:col-span-3 flex justify-center p-8">
+          <div className="sm:col-span-2 md:col-span-3 flex justify-center p-6 sm:p-8">
             <LoadingSpinner />
           </div>
         ) : (
@@ -389,10 +408,83 @@ export default function AdminCurrency() {
         )}
       </div>
 
-      <div className="flex border-b border-border mb-4">
+      {/* Shared Filters - Above tabs */}
+      <div className="space-y-3 sm:space-y-4">
+        {/* Filter by day */}
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-0">
+          <div className="text-xs sm:text-sm text-gray-600">Lọc theo ngày</div>
+          <div className="flex items-center gap-2">
+            <input
+              type="date"
+              value={dateStr}
+              onChange={(e) => setDateStr(e.target.value)}
+              className="flex-1 sm:flex-none px-3 py-2 border border-primary/30 rounded-md text-xs sm:text-sm bg-primary/10 text-primary placeholder-gray-500 focus:ring-2 focus:ring-primary focus:border-primary min-w-0"
+              aria-label="Ngày"
+            />
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => refetch()}
+              aria-label="Làm mới"
+              className="flex-shrink-0"
+            >
+              <FiRefreshCw
+                className={`h-4 w-4 sm:h-5 sm:w-5 ${isLoading ? "animate-spin" : ""}`}
+              />
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              className="text-xs sm:text-sm text-red-600 border-red-300 hover:bg-red-50 hover:text-red-700 hover:border-red-400 flex-shrink-0"
+              onClick={() => {
+                setStudentQuery("");
+                setDorayakiFilter("all");
+                setSelectedClassId("");
+              }}
+            >
+              Xóa bộ lọc
+            </Button>
+          </div>
+        </div>
+
+        {/* Frontend Filters */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
+          <div>
+            <label className="block text-xs text-gray-600 mb-1">
+              Học sinh
+            </label>
+            <input
+              type="text"
+              placeholder="Tìm theo tên/ID"
+              value={studentQuery}
+              onChange={(e) => setStudentQuery(e.target.value)}
+              className="w-full px-3 py-2 border border-primary/30 rounded-md text-xs sm:text-sm bg-primary/10 text-primary placeholder-gray-500 focus:ring-2 focus:ring-primary focus:border-primary"
+            />
+          </div>
+          <div>
+            <label className="block text-xs text-gray-600 mb-1">
+              Lớp học
+            </label>
+            <select
+              className="w-full px-3 py-2 border border-blue-300 rounded-md text-xs sm:text-sm bg-blue-50 text-blue-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              value={selectedClassId}
+              onChange={(e) => setSelectedClassId(e.target.value)}
+            >
+              <option value="">Tất cả lớp</option>
+              {classes.map((classItem) => (
+                <option key={classItem.id} value={classItem.id}>
+                  {classItem.name}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div className="flex border-b border-border mb-3 sm:mb-4 overflow-x-auto">
         <button
           onClick={() => setActiveTab("transactions")}
-          className={`px-4 py-2 text-sm font-medium transition-colors ${
+          className={`px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium transition-colors whitespace-nowrap flex-shrink-0 ${
             activeTab === "transactions"
               ? "border-b-2 border-primary text-primary"
               : "text-muted hover:text-foreground"
@@ -402,7 +494,7 @@ export default function AdminCurrency() {
         </button>
         <button
           onClick={() => setActiveTab("requests")}
-          className={`px-4 py-2 text-sm font-medium transition-colors ${
+          className={`px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium transition-colors whitespace-nowrap flex-shrink-0 ${
             activeTab === "requests"
               ? "border-b-2 border-primary text-primary"
               : "text-muted hover:text-foreground"
@@ -413,90 +505,23 @@ export default function AdminCurrency() {
       </div>
 
       {activeTab === "transactions" && (
-        <div className="gap-8">
-          {/* Filter by day */}
-          <div className="flex items-center justify-between mb-3">
-            <div className="text-sm text-gray-600">Lọc theo ngày giao dịch</div>
-            <div className="flex items-center gap-2">
-              <input
-                type="date"
-                value={dateStr}
-                onChange={(e) => setDateStr(e.target.value)}
-                className="px-3 py-2 border border-primary/30 rounded-md text-sm  bg-primary/10 text-primary placeholder-gray-500 focus:ring-2 focus:ring-primary focus:border-primary"
-                aria-label="Ngày"
-              />
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => refetch()}
-                aria-label="Làm mới"
-              >
-                <FiRefreshCw
-                  className={`h-4 w-4 ${isLoading ? "animate-spin" : ""}`}
-                />
-              </Button>
-            </div>
-          </div>
-
-          {/* Frontend Filters */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-2 md:gap-3 mb-4">
-            <div>
-              <label className="block text-xs text-gray-600 mb-1">
-                Học sinh
-              </label>
-              <input
-                type="text"
-                placeholder="Tìm theo tên/ID"
-                value={studentQuery}
-                onChange={(e) => setStudentQuery(e.target.value)}
-                className="w-full px-3 py-2 border border-primary/30 rounded-md text-sm  bg-primary/10 text-primary placeholder-gray-500 focus:ring-2 focus:ring-primary focus:border-primary"
-              />
-            </div>
-            <div>
-              <label className="block text-xs text-gray-600 mb-1">
-                Quay Dorayaki
-              </label>
-              <select
-                className="w-full px-3 py-2 border border-blue-300 rounded-md text-sm bg-blue-50 text-blue-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                value={dorayakiFilter}
-                onChange={(e) =>
-                  setDorayakiFilter(e.target.value as typeof dorayakiFilter)
-                }
-              >
-                <option value="all">Tất cả</option>
-                <option value="dorayaki">Chỉ quay dorayaki</option>
-                <option value="non-dorayaki">Không phải quay dorayaki</option>
-              </select>
-            </div>
-            <div>
-              <label className="block text-xs text-gray-600 mb-1">
-                Lớp học
-              </label>
-              <select
-                className="w-full px-3 py-2 border border-blue-300 rounded-md text-sm bg-blue-50 text-blue-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                value={selectedClassId}
-                onChange={(e) => setSelectedClassId(e.target.value)}
-              >
-                <option value="">Tất cả lớp</option>
-                {classes.map((classItem) => (
-                  <option key={classItem.id} value={classItem.id}>
-                    {classItem.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-          <div className="flex justify-end mb-2">
-            <Button
-              variant="outline"
-              onClick={() => {
-                setStudentQuery("");
-                setDorayakiFilter("all");
-                setSelectedClassId("");
-              }}
+        <div className="gap-4 sm:gap-8">
+          {/* Dorayaki Filter - Only in transactions tab */}
+          <div className="mb-3 sm:mb-4">
+            <label className="block text-xs text-gray-600 mb-1">
+              Quay Dorayaki
+            </label>
+            <select
+              className="w-full sm:w-auto px-3 py-2 border border-blue-300 rounded-md text-xs sm:text-sm bg-blue-50 text-blue-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              value={dorayakiFilter}
+              onChange={(e) =>
+                setDorayakiFilter(e.target.value as typeof dorayakiFilter)
+              }
             >
-              Xóa bộ lọc
-            </Button>
+              <option value="all">Tất cả</option>
+              <option value="dorayaki">Chỉ quay dorayaki</option>
+              <option value="non-dorayaki">Không phải quay dorayaki</option>
+            </select>
           </div>
 
           {/* Student Balance Display */}
@@ -504,27 +529,27 @@ export default function AdminCurrency() {
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="bg-gradient-to-r from-orange-50 to-yellow-50 border border-orange-200 rounded-lg p-4"
+              className="bg-gradient-to-r from-orange-50 to-yellow-50 border border-orange-200 rounded-lg p-3 sm:p-4"
             >
-              <div className="flex items-center justify-between">
-                <div>
-                  <h3 className="text-lg font-semibold text-orange-800">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-0">
+                <div className="min-w-0 flex-1">
+                  <h3 className="text-base sm:text-lg font-semibold text-orange-800 truncate">
                     {selectedStudent.displayName || selectedStudent.email}
                   </h3>
-                  <p className="text-orange-600 text-sm md:text-base">
+                  <p className="text-orange-600 text-xs sm:text-sm md:text-base">
                     Tổng bánh mì hiện tại
                   </p>
                 </div>
-                <div className="text-right">
-                  <div className="text-3xl font-bold text-orange-600">
-                    {selectedStudent.totalBanhRan || 0}{" "}
+                <div className="text-left sm:text-right flex-shrink-0">
+                  <div className="text-2xl sm:text-3xl font-bold text-orange-600 flex items-center gap-1">
+                    <span>{selectedStudent.totalBanhRan || 0}</span>
                     <Image
-  src="https://magical-tulumba-581427.netlify.app/img-ui/dorayaki.png"
-  alt="bánh mì"
-  width={20}  // tương đương w-5
-  height={20} // tương đương h-5
-  className="inline-block sm:w-5 sm:h-5 w-4 h-4"
-/>
+                      src="https://magical-tulumba-581427.netlify.app/img-ui/dorayaki.png"
+                      alt="bánh mì"
+                      width={20}
+                      height={20}
+                      className="inline-block sm:w-5 sm:h-5 w-4 h-4"
+                    />
                   </div>
                 </div>
               </div>
@@ -533,13 +558,13 @@ export default function AdminCurrency() {
 
           {/* Error State */}
           {error && (
-            <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+            <div className="bg-red-50 border border-red-200 rounded-lg p-3 sm:p-4">
               <div className="flex">
                 <div className="ml-3">
-                  <h3 className="text-sm md:text-base font-medium text-red-800">
+                  <h3 className="text-xs sm:text-sm md:text-base font-medium text-red-800">
                     Có lỗi xảy ra khi tải dữ liệu
                   </h3>
-                  <div className="mt-2 text-sm md:text-base text-red-700">
+                  <div className="mt-2 text-xs sm:text-sm md:text-base text-red-700">
                     <p>{error.message || "Vui lòng thử lại sau"}</p>
                   </div>
                 </div>
@@ -548,21 +573,25 @@ export default function AdminCurrency() {
           )}
 
           {/* Currency Transactions Table */}
-          <div className="mb-4">
-            <p className="text-sm text-gray-600">
+          <div className="mb-3 sm:mb-4">
+            <p className="text-xs sm:text-sm text-gray-600">
               Tổng số giao dịch:{" "}
               <span className="font-bold text-primary">
                 {filteredTransactions.length}
               </span>
             </p>
           </div>
-          <AdminTable
-            columns={columns}
-            data={filteredTransactions}
-            loading={isLoading}
-            emptyMessage="Không có giao dịch bánh mì nào"
-            showCheckbox={false}
-          />
+          <div className="overflow-x-auto -mx-2 sm:mx-0">
+            <div className="px-2 sm:px-0">
+              <AdminTable
+                columns={columns}
+                data={filteredTransactions}
+                loading={isLoading}
+                emptyMessage="Không có giao dịch bánh mì nào"
+                showCheckbox={false}
+              />
+            </div>
+          </div>
 
           {/* Create Transaction Modal */}
           <AdminModal
@@ -572,14 +601,14 @@ export default function AdminCurrency() {
             subtitle="Nhập thông tin để thêm/trừ bánh mì cho học sinh"
             size="lg"
           >
-            <div className="space-y-4">
+            <div className="space-y-3 sm:space-y-4">
               {/* Student Selection with Balance Display */}
               <div>
-                <label className="block text-sm md:text-base font-medium text-gray-700 mb-2">
+                <label className="block text-xs sm:text-sm md:text-base font-medium text-gray-700 mb-2">
                   Chọn học sinh
                 </label>
                 <select
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 text-xs sm:text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   value={selectedStudentId}
                   onChange={(e) => setSelectedStudentId(e.target.value)}
                 >
@@ -587,14 +616,7 @@ export default function AdminCurrency() {
                   {students.map((student) => (
                     <option key={student.id} value={student.id}>
                       {student.displayName || "Chưa có tên"} ({student.email}) -{" "}
-                      {student.totalBanhRan || 0}{" "}
-                      <Image
-  src="https://magical-tulumba-581427.netlify.app/img-ui/dorayaki.png"
-  alt="bánh mì"
-  width={20}  // tương đương w-5
-  height={20} // tương đương h-5
-  className="inline-block sm:w-5 sm:h-5 w-4 h-4"
-/>
+                      {student.totalBanhRan || 0} 🍞
                     </option>
                   ))}
                 </select>
@@ -603,19 +625,19 @@ export default function AdminCurrency() {
               {/* Current Balance Display */}
               {selectedStudentId && selectedStudent && (
                 <div className="bg-orange-50 border border-orange-200 rounded-lg p-3">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm md:text-base font-medium text-orange-800">
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                    <span className="text-xs sm:text-sm md:text-base font-medium text-orange-800">
                       Tổng bánh mì hiện tại:
                     </span>
-                    <span className="text-lg font-bold text-orange-600">
+                    <span className="text-base sm:text-lg font-bold text-orange-600 flex items-center gap-1">
                       {selectedStudent.totalBanhRan || 0}{" "}
                       <Image
-  src="https://magical-tulumba-581427.netlify.app/img-ui/dorayaki.png"
-  alt="bánh mì"
-  width={20}  // tương đương w-5
-  height={20} // tương đương h-5
-  className="inline-block sm:w-5 sm:h-5 w-4 h-4"
-/>
+                        src="https://magical-tulumba-581427.netlify.app/img-ui/dorayaki.png"
+                        alt="bánh mì"
+                        width={20}
+                        height={20}
+                        className="inline-block sm:w-5 sm:h-5 w-4 h-4"
+                      />
                     </span>
                   </div>
                 </div>
@@ -678,21 +700,29 @@ export default function AdminCurrency() {
         </div>
       )}
 
-      {activeTab === "requests" && <AdminCurrencyRequests />}
+      {activeTab === "requests" && (
+        <AdminCurrencyRequests
+          dateStr={dateStr}
+          studentQuery={studentQuery}
+          selectedClassId={selectedClassId}
+          students={students}
+          onRefetch={refetch}
+        />
+      )}
     </div>
   );
 }
 
 const StatCard = ({ title, value }: { title: string; value: number }) => (
-  <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+  <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-3 sm:p-4">
     <div className="flex items-center">
-      <div className="p-3 rounded-lg  bg-primary/10 text-primary">
-        <FiBarChart2 className="w-5 h-5" />
+      <div className="p-2 sm:p-3 rounded-lg bg-primary/10 text-primary flex-shrink-0">
+        <FiBarChart2 className="w-4 h-4 sm:w-5 sm:h-5" />
       </div>
-      <div className="ml-4">
-        <p className="text-sm font-medium text-gray-600">{title}</p>
-        <p className="text-xl font-bold text-gray-900">
-          {value.toLocaleString("vi-VN")} giao dịch
+      <div className="ml-3 sm:ml-4 min-w-0 flex-1">
+        <p className="text-xs sm:text-sm font-medium text-gray-600 truncate">{title}</p>
+        <p className="text-lg sm:text-xl font-bold text-gray-900">
+          {value.toLocaleString("vi-VN")} <span className="text-xs sm:text-sm font-normal text-gray-500">giao dịch</span>
         </p>
       </div>
     </div>

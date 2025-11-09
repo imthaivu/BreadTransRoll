@@ -21,11 +21,8 @@ export default function AdminUsers() {
   const [selectedUser, setSelectedUser] = useState<IProfile | null>(null);
 
   // Filters
-  const [userFilter, setUserFilter] = useState("");
-  const [phoneFilter, setPhoneFilter] = useState("");
-  const [roleFilter, setRoleFilter] = useState<UserRole | "all">(
-    UserRole.GUEST
-  );
+  const [searchFilter, setSearchFilter] = useState("");
+  const [roleFilter, setRoleFilter] = useState<UserRole | "all">("all");
 
   // Use the user management hook
   const {
@@ -40,21 +37,23 @@ export default function AdminUsers() {
 
   // Apply filters
   const filteredUsers = useMemo(() => {
+    const normalize = (v?: string) => (v || "").toLowerCase();
+    const searchLower = normalize(searchFilter);
+
     return users.filter((user) => {
-      const userMatch =
-        !userFilter ||
-        user.displayName?.toLowerCase().includes(userFilter.toLowerCase()) ||
-        user.email?.toLowerCase().includes(userFilter.toLowerCase());
+      // Search filter - matches name, email, or phone
+      const searchMatch =
+        !searchFilter ||
+        normalize(user.displayName).includes(searchLower) ||
+        normalize(user.email).includes(searchLower) ||
+        (user as UserWithOptionalPhone).phone?.includes(searchFilter);
 
-      const phoneMatch =
-        !phoneFilter ||
-        (user as UserWithOptionalPhone).phone?.includes(phoneFilter);
-
+      // Role filter
       const roleMatch = roleFilter === "all" || user.role === roleFilter;
 
-      return userMatch && phoneMatch && roleMatch;
+      return searchMatch && roleMatch;
     });
-  }, [users, userFilter, phoneFilter, roleFilter]);
+  }, [users, searchFilter, roleFilter]);
 
 
   const handleDeleteUser = async () => {
@@ -210,19 +209,12 @@ export default function AdminUsers() {
       </motion.div>
 
       {/* Filters */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
         <input
           type="text"
-          placeholder="Lọc theo tên hoặc email..."
-          value={userFilter}
-          onChange={(e) => setUserFilter(e.target.value)}
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 focus:ring-2 focus:ring-primary focus:border-primary text-sm"
-        />
-        <input
-          type="text"
-          placeholder="Lọc theo số điện thoại..."
-          value={phoneFilter}
-          onChange={(e) => setPhoneFilter(e.target.value)}
+          placeholder="Tìm theo tên, email hoặc số điện thoại..."
+          value={searchFilter}
+          onChange={(e) => setSearchFilter(e.target.value)}
           className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 focus:ring-2 focus:ring-primary focus:border-primary text-sm"
         />
         <select
