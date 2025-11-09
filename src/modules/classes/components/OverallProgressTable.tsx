@@ -6,7 +6,7 @@ import { useBooks, useLessons } from "@/modules/flashcard";
 import { cn } from "@/utils";
 import Image from "next/image";
 import { useMemo, useState } from "react";
-import { FiAward, FiCheckCircle, FiDelete, FiPlay } from "react-icons/fi";
+import { FiAward, FiCheckCircle, FiDelete, FiPlay, FiUser } from "react-icons/fi";
 import { useClassMembers, useClassProgress } from "../hooks";
 import { AudioPlayerWithDuration } from "./AudioPlayerWithDuration";
 
@@ -149,15 +149,10 @@ export function OverallProgressTable({ classId }: { classId: string }) {
                 {students?.map((student) => (
                   <tr key={student.id}>
                     <td className="px-4 py-3 font-medium flex items-center gap-2">
-                      {student.avatarUrl && (
-                        <Image
-                          src={student.avatarUrl}
-                          alt={student.name}
-                          width={24}
-                          height={24}
-                          className="rounded-full"
-                        />
-                      )}
+                      {/* Avatar placeholder - no image loading for performance */}
+                      <div className="w-6 h-6 rounded-full bg-gray-300 dark:bg-gray-600 flex items-center justify-center flex-shrink-0">
+                        <FiUser className="w-3 h-3 text-gray-500" />
+                      </div>
                       {student.name}
                     </td>
                   </tr>
@@ -203,15 +198,10 @@ export function OverallProgressTable({ classId }: { classId: string }) {
                 {studentProgressData.map((progress) => (
                   <tr key={progress.student.id}>
                     <td className="px-4 py-3 font-medium flex items-center gap-2">
-                      {progress.student.avatarUrl && (
-                        <Image
-                          src={progress.student.avatarUrl}
-                          alt={progress.student.name}
-                          width={24}
-                          height={24}
-                          className="rounded-full"
-                        />
-                      )}
+                      {/* Avatar placeholder - no image loading for performance */}
+                      <div className="w-6 h-6 rounded-full bg-gray-300 dark:bg-gray-600 flex items-center justify-center flex-shrink-0">
+                        <FiUser className="w-3 h-3 text-gray-500" />
+                      </div>
                       {progress.student.name}
                     </td>
                     <td className="px-4 py-3 text-sm">

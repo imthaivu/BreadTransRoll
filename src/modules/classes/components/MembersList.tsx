@@ -246,20 +246,10 @@ export function MembersList({
           >
             {/* Info */}
             <div className="flex items-center gap-3">
-              {/* Avatar */}
-              {member.avatarUrl ? (
-                <Image
-                  src={member.avatarUrl}
-                  alt={member.name}
-                  width={40}
-                  height={40}
-                  className="rounded-full object-cover flex-shrink-0"
-                />
-              ) : (
-                <div className="w-10 h-10 rounded-full bg-gray-300 dark:bg-gray-600 flex items-center justify-center flex-shrink-0">
-                  <FiUser className="w-5 h-5 text-gray-500" />
-                </div>
-              )}
+              {/* Avatar placeholder - no image loading for performance */}
+              <div className="w-10 h-10 rounded-full bg-gray-300 dark:bg-gray-600 flex items-center justify-center flex-shrink-0">
+                <FiUser className="w-5 h-5 text-gray-500" />
+              </div>
               <div className="flex items-center gap-2">
                 <p className="font-semibold text-foreground">{member.name}</p>
               </div>

@@ -397,19 +397,9 @@ export default function AdminStudents() {
       render: (_, student) => (
         <div className="flex items-center min-w-0">
           <div className="flex-shrink-0 h-8 w-8 sm:h-10 sm:w-10 relative">
-            {student.avatarUrl ? (
-              <Image
-                src={student.avatarUrl}
-                alt={student.displayName || "Avatar"}
-                width={40}
-                height={40}
-                className="h-8 w-8 sm:h-10 sm:w-10 rounded-full object-cover"
-              />
-            ) : (
-              <div className="h-8 w-8 sm:h-10 sm:w-10 rounded-full bg-green-100 flex items-center justify-center">
-                <FiUsers className="w-4 h-4 sm:w-5 sm:h-5 text-green-600" />
-              </div>
-            )}
+            <div className="h-8 w-8 sm:h-10 sm:w-10 rounded-full bg-green-100 flex items-center justify-center">
+              <FiUsers className="w-4 h-4 sm:w-5 sm:h-5 text-green-600" />
+            </div>
             <button
               type="button"
               onClick={(e) => {
