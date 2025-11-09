@@ -310,9 +310,9 @@ export default function AdminStudents() {
       // Compress and resize image before upload (400x400, quality 0.85)
       const compressedFile = await compressAndResizeImage(file, 400, 400, 0.85);
       
-      console.log(`Original size: ${(file.size / 1024).toFixed(2)} KB`);
-      console.log(`Compressed size: ${(compressedFile.size / 1024).toFixed(2)} KB`);
-      console.log(`Reduction: ${((1 - compressedFile.size / file.size) * 100).toFixed(1)}%`);
+      // console.log(`Original size: ${(file.size / 1024).toFixed(2)} KB`);
+      // console.log(`Compressed size: ${(compressedFile.size / 1024).toFixed(2)} KB`);
+      // console.log(`Reduction: ${((1 - compressedFile.size / file.size) * 100).toFixed(1)}%`);
 
       const storage = getStorageBucket();
       if (!storage) {
@@ -323,35 +323,35 @@ export default function AdminStudents() {
       const avatarFolderRef = ref(storage, `users/${studentId}/avatar`);
       try {
         const oldFiles = await listAll(avatarFolderRef);
-        console.log(`Found ${oldFiles.items.length} old avatar file(s) to delete`);
+        // console.log(`Found ${oldFiles.items.length} old avatar file(s) to delete`);
         // Delete all files in the avatar folder
         if (oldFiles.items.length > 0) {
           const deletePromises = oldFiles.items.map((item) => {
-            console.log(`Deleting old avatar: ${item.fullPath}`);
+            // console.log(`Deleting old avatar: ${item.fullPath}`);
             return deleteObject(item);
           });
           await Promise.all(deletePromises);
-          console.log("All old avatar files deleted successfully");
+          // console.log("All old avatar files deleted successfully");
         }
       } catch (deleteError: unknown) {
         // Ignore errors - folder might not exist or already empty
         // This is expected for first-time uploads
-        console.log("No old avatar files to delete or error:", deleteError);
+        // console.log("No old avatar files to delete or error:", deleteError);
       }
 
       // Use fixed filename to ensure only one avatar exists (always jpg after compression)
       const path = `users/${studentId}/avatar/avatar.jpg`;
       const storageRef = ref(storage, path);
       
-      console.log("Uploading to path:", path);
-      console.log("Storage bucket:", process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET);
-      console.log("User ID:", session.user.id);
-      console.log("User role:", profile.role);
+      // console.log("Uploading to path:", path);
+      // console.log("Storage bucket:", process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET);
+      // console.log("User ID:", session.user.id);
+      // console.log("User role:", profile.role);
       
       await uploadBytes(storageRef, compressedFile);
       const url = await getDownloadURL(storageRef);
       
-      console.log("Upload successful, URL:", url);
+      // console.log("Upload successful, URL:", url);
       
       // Update active student state immediately (optimistic update)
       if (activeStudent?.id === studentId) {

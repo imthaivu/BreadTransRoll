@@ -115,7 +115,7 @@ export default function AdminTeachers() {
         }
       } catch (deleteError: unknown) {
         // Ignore errors - folder might not exist or already empty
-        console.log("No old avatar files to delete or error:", deleteError);
+        // console.log("No old avatar files to delete or error:", deleteError);
       }
       
       // Use fixed filename to ensure only one avatar exists (always jpg after compression)

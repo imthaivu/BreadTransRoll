@@ -8,6 +8,7 @@ interface LoadingSpinnerProps {
   size?: "sm" | "md" | "lg";
   text?: string;
   children?: ReactNode;
+  fullScreen?: boolean;
 }
 
 const sizeClasses = {
@@ -20,9 +21,10 @@ export default function LoadingSpinner({
   size = "md",
   text,
   children,
+  fullScreen = true,
 }: LoadingSpinnerProps) {
   return (
-    <div className="flex flex-col items-center justify-center gap-4">
+    <div className={`flex flex-col items-center justify-center gap-4 ${fullScreen ? "fixed inset-0 z-50 bg-white/80 backdrop-blur-sm" : "min-h-screen"}`}>
       <motion.div
         className={`${sizeClasses[size]} border-2 border-border border-t-primary rounded-full`}
         animate={{ rotate: 360 }}
@@ -48,9 +50,9 @@ export default function LoadingSpinner({
 }
 
 // Loading dots animation
-export function LoadingDots({ text }: { text?: string }) {
+export function LoadingDots({ text, fullScreen = true }: { text?: string; fullScreen?: boolean }) {
   return (
-    <div className="flex flex-col items-center justify-center gap-4">
+    <div className={`flex flex-col items-center justify-center gap-4 ${fullScreen ? "fixed inset-0 z-50 bg-white/80 backdrop-blur-sm" : "min-h-screen"}`}>
       <div className="flex gap-1">
         {[0, 1, 2].map((i) => (
           <motion.div
@@ -125,7 +127,7 @@ export function PageLoading({ children }: { children: ReactNode }) {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.3 }}
-      className="min-h-[400px] flex items-center justify-center"
+      className="fixed inset-0 z-50 bg-white/80 backdrop-blur-sm flex items-center justify-center"
     >
       {children}
     </motion.div>
@@ -139,7 +141,7 @@ export function MiluLoading({ text = "Đang tải..." }: { text?: string }) {
       initial={{ opacity: 0, scale: 0.8 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.3 }}
-      className="text-center h-full"
+      className="fixed inset-0 z-50 bg-white/80 backdrop-blur-sm flex flex-col items-center justify-center text-center"
     >
       {/* Milu Animation */}
       <motion.div

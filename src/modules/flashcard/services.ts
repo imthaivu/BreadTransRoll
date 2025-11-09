@@ -59,14 +59,14 @@ export async function getLessonWords(
 export const flashcardAPI = {
   // Lấy danh sách tất cả sách
   async getBooks(): Promise<FlashcardBook[]> {
-    // console.log("Fetching books from:", "/data/flashcard/index.json");
+    // // console.log("Fetching books from:", "/data/flashcard/index.json");
     const response = await fetch("/data/flashcard/index.json");
-    // console.log("Response status:", response.status);
+    // // console.log("Response status:", response.status);
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     const data: FlashcardIndex = await response.json();
-    // console.log("Index data:", data);
+    // // console.log("Index data:", data);
     return data.books;
   },
 
@@ -92,7 +92,7 @@ export const flashcardAPI = {
     );
     const data: FlashcardLesson = await response.json();
 
-    // console.log("Get lesson words:", data);
+    // // console.log("Get lesson words:", data);
     return data.words;
   },
 

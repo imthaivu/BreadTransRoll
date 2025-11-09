@@ -90,14 +90,14 @@ export const deleteSpeakingAudioFile = async (
     
     try {
       await deleteObject(storageRef);
-      console.log(`Đã xóa file: ${storagePath}`);
+      // console.log(`Đã xóa file: ${storagePath}`);
     } catch (deleteError: unknown) {
       // If file doesn't exist, that's okay - it might have been deleted already
       const error = deleteError as { code?: string };
       if (error?.code !== "storage/object-not-found") {
         throw deleteError;
       }
-      console.log(`File không tồn tại (có thể đã bị xóa): ${storagePath}`);
+      // console.log(`File không tồn tại (có thể đã bị xóa): ${storagePath}`);
     }
 
     // 2. Update Firestore document: keep fileURL but mark as deleted

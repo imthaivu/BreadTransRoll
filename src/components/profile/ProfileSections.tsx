@@ -58,20 +58,20 @@ export function AvatarCard() {
       const avatarFolderRef = ref(storage, `users/${session.user.id}/avatar`);
       try {
         const oldFiles = await listAll(avatarFolderRef);
-        console.log(`Found ${oldFiles.items.length} old avatar file(s) to delete`);
+        // console.log(`Found ${oldFiles.items.length} old avatar file(s) to delete`);
         // Delete all files in the avatar folder
         if (oldFiles.items.length > 0) {
           const deletePromises = oldFiles.items.map((item) => {
-            console.log(`Deleting old avatar: ${item.fullPath}`);
+            // console.log(`Deleting old avatar: ${item.fullPath}`);
             return deleteObject(item);
           });
           await Promise.all(deletePromises);
-          console.log("All old avatar files deleted successfully");
+          // console.log("All old avatar files deleted successfully");
         }
       } catch (deleteError: unknown) {
         // Ignore errors - folder might not exist or already empty
         // This is expected for first-time uploads
-        console.log("No old avatar files to delete or error:", deleteError);
+        // console.log("No old avatar files to delete or error:", deleteError);
       }
 
       // Use fixed filename to ensure only one avatar exists (always jpg after compression)

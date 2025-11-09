@@ -29,10 +29,10 @@ export async function fetchGrammarData(): Promise<GrammarTopic[]> {
   try {
     const res = await fetch(url);
     const text = await res.text();
-    console.log("text", text);
+    // console.log("text", text);
     // gỡ phần header không phải JSON
     const json = JSON.parse(text.substr(47).slice(0, -2));
-    console.log("json", json);
+    // console.log("json", json);
 
     const headers = json.table.cols.map((c: any) => c.label);
     const rows = json.table.rows.map((r: any) => {
