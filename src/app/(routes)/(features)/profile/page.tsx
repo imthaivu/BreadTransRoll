@@ -31,15 +31,17 @@ export default function ProfilePage() {
 
                 {/* Logout */}
                 {session?.user && (
-                  <Button
-                    variant="secondary"
-                    onClick={() => {
-                      signOutApp();
-                    }}
-                    className="mx-auto mt-4 flex items-center min-h-[44px] px-6 py-3 touch-manipulation"
-                  >
-                    <FiLogOut className="mr-2" /> Đăng xuất
-                  </Button>
+                  <div className="px-4 sm:px-0 mt-4 mb-8 sm:mb-6">
+                    <Button
+                      variant="secondary"
+                      onClick={() => {
+                        signOutApp();
+                      }}
+                      className="w-full sm:w-auto sm:mx-auto flex items-center justify-center min-h-[48px] sm:min-h-[44px] px-6 py-3 sm:py-2.5 text-base sm:text-sm font-medium touch-manipulation active:scale-95 transition-transform select-none"
+                    >
+                      <FiLogOut className="mr-2 w-5 h-5 sm:w-4 sm:h-4" /> Đăng xuất
+                    </Button>
+                  </div>
                 )}
               </div>
             </StaggerItem>
