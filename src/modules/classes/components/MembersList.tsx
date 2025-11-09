@@ -4,16 +4,15 @@ import { Button } from "@/components/ui/Button";
 import { Modal } from "@/components/ui/Modal";
 import { useAuth } from "@/lib/auth/context";
 import { IClass, IClassMember } from "@/types";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { FiMinusCircle, FiPlusCircle, FiUser, FiPhone, FiBookOpen } from "react-icons/fi";
+import { FiMinusCircle, FiPlusCircle, FiUser, FiPhone } from "react-icons/fi";
 import Image from "next/image";
 import toast from "react-hot-toast";
 import {
   useClassDetails,
   useClassMembers,
   useCreateCurrencyRequest,
-  useStudentQuizCountsByDate,
 } from "../hooks";
 import { useStudents } from "@/modules/admin/hooks/useStudentManagement";
 
@@ -228,22 +227,6 @@ export function MembersList({
     type: "zalo" | "phone";
   } | null>(null);
 
-  // Date filter for quiz counts (default to today)
-  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
-  const selectedDateString = useMemo(() => {
-    const date = selectedDate;
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
-    return `${year}-${month}-${day}`;
-  }, [selectedDate]);
-
-  // Get quiz counts for selected date
-  const { data: quizCountsMap = new Map() } = useStudentQuizCountsByDate(
-    classId,
-    selectedDate
-  );
-
   if (isLoading) return <p>Đang tải danh sách thành viên...</p>;
   if (error) return <p className="text-red-500">Lỗi tải danh sách.</p>;
 
@@ -252,32 +235,6 @@ export function MembersList({
 
   return (
     <div className="space-y-3">
-      {/* Date Filter */}
-      <div className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
-        <label htmlFor="quiz-date-filter" className="text-sm font-medium text-gray-700 dark:text-gray-300 whitespace-nowrap">
-          Chọn ngày:
-        </label>
-        <input
-          id="quiz-date-filter"
-          type="date"
-          value={selectedDateString}
-          onChange={(e) => {
-            if (e.target.value) {
-              setSelectedDate(new Date(e.target.value));
-            }
-          }}
-          className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
-        />
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => setSelectedDate(new Date())}
-          className="text-xs"
-        >
-          Hôm nay
-        </Button>
-      </div>
-
       {students.map((member) => {
         // Get balance for disable logic (but don't display it)
         const student = allStudents.find((s) => s.id === member.id);
@@ -305,12 +262,6 @@ export function MembersList({
               )}
               <div className="flex items-center gap-2">
                 <p className="font-semibold text-foreground">{member.name}</p>
-                {quizCountsMap.has(member.id) && (quizCountsMap.get(member.id) || 0) > 0 && (
-                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full  bg-primary/10 dark: bg-primary/20 text-primary dark:text-primary text-xs font-medium">
-                    <FiBookOpen className="w-3 h-3" />
-                    {quizCountsMap.get(member.id)} bài quiz
-                  </span>
-                )}
               </div>
             </div>
 
