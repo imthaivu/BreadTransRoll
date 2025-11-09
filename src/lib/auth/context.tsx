@@ -22,8 +22,16 @@ import React, {
   useState,
 } from "react";
 import { FaFire } from "react-icons/fa";
+import { FaStar, FaGem, FaTrophy, FaCrown } from "react-icons/fa";
 import { AppUserProfile, UserRole } from "./types";
 import { trackVisit } from "@/services/stats.service";
+
+interface StreakMessage {
+  icon: React.ReactElement;
+  title: string;
+  content: string;
+  message: string;
+}
 
 interface AuthContextValue {
   profile: AppUserProfile | null;
@@ -38,6 +46,92 @@ interface AuthContextValue {
 }
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
+
+// Milestone streak counts
+const STREAK_MILESTONES = [7, 30, 100, 180, 200, 300, 365];
+
+// Helper function to check if streak count is a milestone
+const isStreakMilestone = (count: number): boolean => {
+  return STREAK_MILESTONES.includes(count);
+};
+
+// Helper function to get streak message based on count
+// Message is determined by range (>=), but modal only shows at specific milestones
+// When count > milestone, use actual count instead of fixed number
+const getStreakMessage = (count: number): StreakMessage => {
+  if (count >= 365) {
+    return {
+      icon: <FaCrown className="mx-auto h-16 w-16 text-yellow-500" />,
+      title: "Một năm không bỏ cuộc – bạn là huyền thoại!",
+      content:
+        `${count} ngày học liên tiếp – điều này nói lên tất cả: ý chí, đam mê, và khát vọng. Bạn đã tạo nên một thành tích đáng ngưỡng mộ mà ít ai có được.`,
+      message:
+        "Đây chưa phải là đích đến – mà là khởi đầu của một hành trình vĩ đại hơn!",
+    };
+  } else if (count >= 300) {
+    return {
+      icon: <FaCrown className="mx-auto h-16 w-16 text-purple-500" />,
+      title: "300 ngày – gần đến một năm rồi!",
+      content:
+        `${count} ngày không ngừng nghỉ – bạn đang tiến gần đến cột mốc một năm! Sự kiên trì của bạn thật đáng ngưỡng mộ.`,
+      message:
+        "Chỉ còn vài tháng nữa thôi, hãy tiếp tục giữ vững tinh thần!",
+    };
+  } else if (count >= 200) {
+    return {
+      icon: <FaTrophy className="mx-auto h-16 w-16 text-indigo-500" />,
+      title: "200 ngày – hành trình vượt trội!",
+      content:
+        `${count} ngày liên tục – bạn đã vượt qua hơn nửa năm! Mỗi ngày bạn học là một bước tiến vững chắc trên con đường thành công.`,
+      message:
+        "Bạn đang chứng minh rằng sự kiên trì có thể làm nên điều kỳ diệu!",
+    };
+  } else if (count >= 180) {
+    return {
+      icon: <FaTrophy className="mx-auto h-16 w-16 text-yellow-600" />,
+      title: "Nửa năm – hành trình đáng khâm phục!",
+      content:
+        `${count} ngày kiên trì – bạn đã vượt xa 90% người học khác! Mỗi bài học bạn hoàn thành đang đưa bạn gần hơn đến sự tự tin thực sự.`,
+      message:
+        "Tiếp tục thôi, bạn đang trở thành một phiên bản mạnh mẽ hơn mỗi ngày!",
+    };
+  } else if (count >= 100) {
+    return {
+      icon: <FaGem className="mx-auto h-16 w-16 text-blue-500" />,
+      title: "Bạn là hình mẫu của sự bền bỉ!",
+      content:
+        `${count} ngày liên tục – không phải ai cũng làm được điều này! Bạn đã chứng minh rằng nỗ lực nhỏ mỗi ngày tạo nên kết quả lớn.`,
+      message:
+        "Hãy tự hào về chính mình – và đừng dừng lại nhé!",
+    };
+  } else if (count >= 30) {
+    return {
+      icon: <FaStar className="mx-auto h-16 w-16 text-yellow-400" />,
+      title: "Thói quen đang được hình thành!",
+      content:
+        `${count} ngày không bỏ cuộc – bạn đang xây dựng một thói quen vàng! Mỗi ngày học là một viên gạch trong tòa nhà thành công của bạn.`,
+      message:
+        "Tiếp tục nhé! Bạn đang dần trở thành người học tiếng Anh thật sự nghiêm túc.",
+    };
+  } else if (count >= 7) {
+    return {
+      icon: <FaFire className="mx-auto h-16 w-16 text-orange-500" />,
+      title: "Khởi đầu tuyệt vời!",
+      content:
+        `Bạn đã duy trì học suốt ${count} ngày liên tiếp – một khởi đầu đáng nể! Hành trình dài bắt đầu từ những bước kiên trì như thế này.`,
+      message:
+        "Hãy tiếp tục giữ nhịp nhé, thành công đang hình thành rồi đó!",
+    };
+  } else {
+    // Default message for streaks less than 7 days
+    return {
+      icon: <FaFire className="mx-auto h-12 w-12 text-orange-500" />,
+      title: "Chúc Mừng!",
+      content: `Bạn đã duy trì chuỗi học tập trong ${count} ngày liên tiếp.`,
+      message: "Hãy tiếp tục phát huy nhé!",
+    };
+  }
+};
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
@@ -159,7 +253,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         if (current?.role === "student") {
           updateStreak(current.uid, {
             onSuccess: (data) => {
-              if (data.updated && data.newStreakCount > 0) {
+              // Only show modal when streak count reaches a specific milestone
+              if (data.updated && isStreakMilestone(data.newStreakCount)) {
                 setStreakData({ showModal: true, count: data.newStreakCount });
               }
             },
@@ -240,36 +335,42 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   return (
     <AuthContext.Provider value={value}>
       {children}
-      {streakData.showModal && (
-        <Modal
-          open={streakData.showModal}
-          onClose={() => {
-            setStreakData({ ...streakData, showModal: false });
-            refetchProfile();
-          }}
-          title="Chúc Mừng!"
-          maxWidth="sm"
-        >
-          <div className="text-center p-4">
-            <FaFire className="mx-auto h-12 w-12 text-orange-500" />
-            <h3 className="mt-2 text-lg font-medium">Bạn thật tuyệt vời!</h3>
-            <p className="mt-2 text-md">
-              Bạn đã duy trì chuỗi học tập trong{" "}
-              <span className="font-bold text-primary">{streakData.count}</span>{" "}
-              ngày liên tiếp.
-            </p>
-            <p className="mt-1 text-sm text-muted">
-              Hãy tiếp tục phát huy nhé!
-            </p>
-            <Button
-              onClick={() => setStreakData({ ...streakData, showModal: false })}
-              className="mt-4"
-            >
-              Tiếp tục học
-            </Button>
-          </div>
-        </Modal>
-      )}
+      {streakData.showModal && (() => {
+        const streakMessage = getStreakMessage(streakData.count);
+        return (
+          <Modal
+            open={streakData.showModal}
+            onClose={() => {
+              setStreakData({ ...streakData, showModal: false });
+              refetchProfile();
+            }}
+            title={streakMessage.title}
+            maxWidth="sm"
+          >
+            <div className="text-center p-4">
+              {streakMessage.icon}
+              <p className="mt-4 text-md leading-relaxed">
+                {streakMessage.content}
+              </p>
+              <p className="mt-3 text-sm font-medium text-primary">
+                {streakMessage.message}
+              </p>
+              <div className="mt-4 text-sm text-muted">
+                <span className="font-bold text-primary">{streakData.count}</span> ngày liên tiếp
+              </div>
+              <Button
+                onClick={() => {
+                  setStreakData({ ...streakData, showModal: false });
+                  refetchProfile();
+                }}
+                className="mt-6"
+              >
+                Tiếp tục học
+              </Button>
+            </div>
+          </Modal>
+        );
+      })()}
 
       {/* Required Info Modal for Students */}
       {phoneModalData.showModal && (
