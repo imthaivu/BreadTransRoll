@@ -148,11 +148,19 @@ export const useLessonStudentProgress = (
 
 /**
  * Hook to fetch quiz results for a class in a specific book
+ * @param dateFilter - Optional date to filter results. If null/undefined, returns all results.
  */
-export const useClassQuizResults = (classId: string, bookId: string) => {
+export const useClassQuizResults = (
+  classId: string,
+  bookId: string,
+  dateFilter?: Date | null
+) => {
+  const dateKey = dateFilter
+    ? dateFilter.toISOString().split("T")[0]
+    : "all-time";
   return useQuery({
-    queryKey: ["classQuizResults", classId, bookId],
-    queryFn: () => getClassQuizResults(classId, bookId),
+    queryKey: ["classQuizResults", classId, bookId, dateKey],
+    queryFn: () => getClassQuizResults(classId, bookId, dateFilter),
     enabled: !!classId && !!bookId,
   });
 };

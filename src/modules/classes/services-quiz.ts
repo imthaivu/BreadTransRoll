@@ -27,10 +27,12 @@ export interface ClassQuizResult {
 
 /**
  * Get all quiz results for a class in a specific book (optimized - only queries by bookId and studentIds)
+ * @param dateFilter - Optional date to filter results. If provided, only returns results from that date. If null/undefined, returns all results.
  */
 export const getClassQuizResults = async (
   classId: string,
-  bookId: string
+  bookId: string,
+  dateFilter?: Date | null
 ): Promise<ClassQuizResult[]> => {
   if (!classId || !bookId) return [];
 
@@ -42,8 +44,17 @@ export const getClassQuizResults = async (
   const studentIds = students.map((s) => s.id);
   const studentMap = new Map(students.map((s) => [s.id, s]));
 
-  // 2. Query quiz results for this book and these students (optimized query)
+  // 2. Set up date range if dateFilter is provided (for client-side filtering)
+  let filterDate: Date | undefined;
+  
+  if (dateFilter) {
+    filterDate = new Date(dateFilter);
+    filterDate.setHours(0, 0, 0, 0);
+  }
+
+  // 3. Query quiz results for this book and these students (optimized query)
   // Note: Firestore "in" query limit is 10, so we need to batch if more than 10 students
+  // We query all results and filter by date client-side to avoid Firestore query limitations
   const batchSize = 10;
   const allResults: ClassQuizResult[] = [];
 
@@ -60,6 +71,30 @@ export const getClassQuizResults = async (
       const data = doc.data();
       const student = studentMap.get(data.userId);
       if (student) {
+        const lastAttempt = data.lastAttempt?.toDate() || new Date();
+        
+        // Filter by date if dateFilter is provided (client-side filtering)
+        if (filterDate) {
+          // Compare dates by year, month, and day (ignore time and timezone)
+          const resultDate = new Date(lastAttempt);
+          const resultYear = resultDate.getFullYear();
+          const resultMonth = resultDate.getMonth();
+          const resultDay = resultDate.getDate();
+          
+          const filterYear = filterDate.getFullYear();
+          const filterMonth = filterDate.getMonth();
+          const filterDay = filterDate.getDate();
+          
+          // Check if the result date matches the filter date
+          if (
+            resultYear !== filterYear ||
+            resultMonth !== filterMonth ||
+            resultDay !== filterDay
+          ) {
+            return; // Skip this result if date doesn't match
+          }
+        }
+        
         allResults.push({
           id: doc.id,
           userId: data.userId,
@@ -70,7 +105,7 @@ export const getClassQuizResults = async (
           totalWords: data.totalWords || 0,
           accuracy: data.accuracy || 0,
           isCompleted: data.isCompleted || false,
-          lastAttempt: data.lastAttempt?.toDate() || new Date(),
+          lastAttempt: lastAttempt,
         });
       }
     });

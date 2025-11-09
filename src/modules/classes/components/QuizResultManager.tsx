@@ -20,6 +20,8 @@ interface QuizResultManagerProps {
 
 export function QuizResultManager({ classId }: QuizResultManagerProps) {
   const [selectedBook, setSelectedBook] = useState<string>("");
+  const [dateFilterMode, setDateFilterMode] = useState<"all" | "today" | "custom">("today");
+  const [customDate, setCustomDate] = useState<string>("");
   const [selectedResults, setSelectedResults] = useState<Set<string>>(new Set());
   const [selectedStudents, setSelectedStudents] = useState<Set<string>>(new Set());
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
@@ -31,11 +33,34 @@ export function QuizResultManager({ classId }: QuizResultManagerProps) {
     () => members?.filter((m) => m.role === "student") || [],
     [members]
   );
+
+  // Calculate date filter
+  const dateFilter = useMemo(() => {
+    if (dateFilterMode === "all") {
+      return null;
+    } else if (dateFilterMode === "today") {
+      const today = new Date();
+      // Reset to local midnight to ensure consistent filtering
+      today.setHours(0, 0, 0, 0);
+      return today;
+    } else if (dateFilterMode === "custom" && customDate) {
+      // Parse date string and create date in local timezone
+      const [year, month, day] = customDate.split("-").map(Number);
+      const date = new Date(year, month - 1, day);
+      date.setHours(0, 0, 0, 0);
+      return date;
+    }
+    // Default to today
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return today;
+  }, [dateFilterMode, customDate]);
+
   const {
     data: quizResults = [],
     isLoading,
     error,
-  } = useClassQuizResults(classId, selectedBook);
+  } = useClassQuizResults(classId, selectedBook, dateFilter);
   const { mutate: deleteSelected, isPending: isDeletingSelected } =
     useDeleteQuizResults();
   const { mutate: deleteAllByBook, isPending: isDeletingAll } =
@@ -152,24 +177,63 @@ export function QuizResultManager({ classId }: QuizResultManagerProps) {
   return (
     <div className="space-y-4">
       {/* Book Selection */}
-      <div className="flex items-center gap-4">
-        <label className="text-sm font-medium">Chọn sách:</label>
-        <select
-          value={selectedBook}
-          onChange={(e) => {
-            setSelectedBook(e.target.value);
-            setSelectedResults(new Set());
-            setSelectedStudents(new Set());
-          }}
-          className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-        >
-          <option value="">-- Chọn sách --</option>
-          {books?.map((book) => (
-            <option key={book.id} value={book.id.toString()}>
-              {book.name}
-            </option>
-          ))}
-        </select>
+      <div className="flex items-center gap-4 flex-wrap">
+        <div className="flex items-center gap-2">
+          <label className="text-sm font-medium">Chọn sách:</label>
+          <select
+            value={selectedBook}
+            onChange={(e) => {
+              setSelectedBook(e.target.value);
+              setSelectedResults(new Set());
+              setSelectedStudents(new Set());
+            }}
+            className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="">-- Chọn sách --</option>
+            {books?.map((book) => (
+              <option key={book.id} value={book.id.toString()}>
+                {book.name}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {selectedBook && (
+          <div className="flex items-center gap-2">
+            <label className="text-sm font-medium">Lọc theo ngày:</label>
+            <select
+              value={dateFilterMode}
+              onChange={(e) => {
+                const mode = e.target.value as "all" | "today" | "custom";
+                setDateFilterMode(mode);
+                if (mode === "custom") {
+                  // Set default to today's date in YYYY-MM-DD format
+                  const today = new Date().toISOString().split("T")[0];
+                  setCustomDate(today);
+                }
+                setSelectedResults(new Set());
+                setSelectedStudents(new Set());
+              }}
+              className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="all">Tất cả thời gian</option>
+              <option value="today">Hôm nay</option>
+              <option value="custom">Chọn ngày cụ thể</option>
+            </select>
+            {dateFilterMode === "custom" && (
+              <input
+                type="date"
+                value={customDate}
+                onChange={(e) => {
+                  setCustomDate(e.target.value);
+                  setSelectedResults(new Set());
+                  setSelectedStudents(new Set());
+                }}
+                className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            )}
+          </div>
+        )}
       </div>
 
       {!selectedBook ? (
