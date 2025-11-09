@@ -14,6 +14,7 @@ interface LearningViewProps {
   onAnswer: (isCorrect: boolean, word?: Word) => void;
   onSpeak: (text: string) => void;
   hiddenWordIndices?: Set<number>; // Indices of words that should hide text in quiz mode
+  onFlip?: (word: Word) => void; // Callback when flashcard is flipped
 }
 
 export const LearningView = ({
@@ -25,6 +26,7 @@ export const LearningView = ({
   onAnswer,
   onSpeak,
   hiddenWordIndices = new Set(),
+  onFlip,
 }: LearningViewProps) => {
   const currentWord = deck[currentIndex];
   const hideWord = mode === "quiz" && hiddenWordIndices.has(currentIndex);
@@ -42,6 +44,7 @@ export const LearningView = ({
             data={currentWord}
             onAnswer={onAnswer}
             onSpeak={onSpeak}
+            onFlip={onFlip}
           />
         ) : (
           <QuizCard

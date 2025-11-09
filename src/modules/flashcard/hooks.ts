@@ -411,6 +411,16 @@ export function useFlashcard() {
     };
   }, [quizTimer]);
 
+  // Thêm từ vào review words (dùng khi lật thẻ)
+  const addToReviewWords = useCallback(
+    (word: Word) => {
+      if (!isGuest) {
+        addReviewWordMutation.mutate(word);
+      }
+    },
+    [addReviewWordMutation, isGuest]
+  );
+
   return {
     // Data
     books: books,
@@ -443,5 +453,6 @@ export function useFlashcard() {
     handleAnswer,
     speak,
     reset,
+    addToReviewWords, // Thêm từ vào review words
   };
 }

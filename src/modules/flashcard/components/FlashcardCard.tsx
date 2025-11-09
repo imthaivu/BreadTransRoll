@@ -8,13 +8,15 @@ interface FlashcardCardProps {
   data: Word;
   onAnswer: (isCorrect: boolean) => void;
   onSpeak: (text: string) => void;
+  onFlip?: (word: Word) => void;
 }
 
-function FlashcardCardComp({ data, onAnswer, onSpeak }: FlashcardCardProps) {
+function FlashcardCardComp({ data, onAnswer, onSpeak, onFlip }: FlashcardCardProps) {
   const [isFlipped, setIsFlipped] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [hasMoved, setHasMoved] = useState(false);
   const [dragOffset, setDragOffset] = useState(0);
+  const hasFlippedRef = useRef(false);
 
   const cardRef = useRef<HTMLDivElement>(null);
   const dragStartPos = useRef({ x: 0, y: 0 });
@@ -32,6 +34,7 @@ function FlashcardCardComp({ data, onAnswer, onSpeak }: FlashcardCardProps) {
     setIsFlipped(false);
     setDragOffset(0);
     setHasMoved(false);
+    hasFlippedRef.current = false;
     if (cardRef.current) {
       cardRef.current.style.transition = "none";
       cardRef.current.style.transform = "translateX(0) rotateY(0deg)";
@@ -80,7 +83,15 @@ function FlashcardCardComp({ data, onAnswer, onSpeak }: FlashcardCardProps) {
     }
 
     if (!hasMoved) {
-      setIsFlipped((prev) => !prev);
+      setIsFlipped((prev) => {
+        const newFlipped = !prev;
+        // Khi lật từ false sang true (lần đầu tiên), gọi onFlip
+        if (!prev && newFlipped && !hasFlippedRef.current && onFlip) {
+          hasFlippedRef.current = true;
+          onFlip(data);
+        }
+        return newFlipped;
+      });
       if (cardRef.current) {
         cardRef.current.style.transform = "";
       }

@@ -57,6 +57,7 @@ export default function FlashcardPage() {
     handleAnswer,
     speak,
     reset,
+    addToReviewWords,
   } = useFlashcard();
 
   const isGuest = !role || role === "guest";
@@ -113,6 +114,11 @@ export default function FlashcardPage() {
   const handleAnswerWithSound = (isCorrect: boolean, word?: Word) => {
     // Sounds are now only handled inside the QuizCard component.
     handleAnswer(isCorrect, word);
+  };
+
+  // Handle flashcard flip - add word to review words
+  const handleFlip = (word: Word) => {
+    addToReviewWords(word);
   };
 
   const handleCloseLearningModal = () => {
@@ -238,6 +244,7 @@ export default function FlashcardPage() {
                   onAnswer={handleAnswerWithSound}
                   onSpeak={speak}
                   hiddenWordIndices={hiddenWordIndices}
+                  onFlip={handleFlip}
                 />
               </StaggerItem>
             )}
