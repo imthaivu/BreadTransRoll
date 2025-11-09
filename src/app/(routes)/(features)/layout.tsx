@@ -79,9 +79,11 @@ export default function FeatureLayout({ children }: FeatureLayoutProps) {
                 </span>
               </BackButton>
 
-              <div className="h-6 w-px bg-gray-300"></div>
+              <div className="h-6 w-px bg-gray-300 hidden md:block"></div>
 
-              <Breadcrumb items={getBreadcrumbItems()} />
+              <div className="hidden md:block">
+                <Breadcrumb items={getBreadcrumbItems()} />
+              </div>
             </div>
           </div>
         </div>
