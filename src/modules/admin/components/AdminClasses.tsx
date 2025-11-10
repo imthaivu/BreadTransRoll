@@ -158,6 +158,21 @@ export default function AdminClasses() {
       ),
     },
     {
+      key: "noteProcess",
+      title: "Ghi chú quá trình",
+      render: (_, classItem) => (
+        <div className="max-w-xs">
+          {classItem.noteProcess ? (
+            <div className="text-sm text-gray-700 line-clamp-2" title={classItem.noteProcess}>
+              {classItem.noteProcess}
+            </div>
+          ) : (
+            <span className="text-sm text-gray-400 italic">Chưa có ghi chú</span>
+          )}
+        </div>
+      ),
+    },
+    {
       key: "status",
       title: "Trạng thái",
       render: (_, classItem) => (

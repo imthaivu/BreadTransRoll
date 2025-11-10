@@ -41,6 +41,7 @@ export interface UpdateClassData {
   meetLink?: string;
   status?: ClassStatus;
   teacher?: IClassTeacher;
+  noteProcess?: string;
 }
 
 // Get all classes
@@ -251,6 +252,11 @@ export const updateClass = async (
       zalo: classData.zaloLink !== undefined ? classData.zaloLink : currentLinks.zalo,
       meet: classData.meetLink !== undefined ? classData.meetLink : currentLinks.meet,
     };
+  }
+
+  // Handle noteProcess update
+  if (classData.noteProcess !== undefined) {
+    dataToUpdate.noteProcess = classData.noteProcess;
   }
 
   // Update class document

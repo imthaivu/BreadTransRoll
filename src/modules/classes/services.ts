@@ -263,15 +263,21 @@ export const getStudentClasses = async (
 export const updateClassLinks = async ({
   classId,
   links,
+  noteProcess,
 }: {
   classId: string;
   links: { zalo?: string; meet?: string };
+  noteProcess?: string;
 }) => {
   const classRef = doc(db, CLASSES_COLLECTION, classId);
-  await updateDoc(classRef, {
+  const updateData: { links: { zalo?: string; meet?: string }; updatedAt: any; noteProcess?: string } = {
     links: links,
     updatedAt: serverTimestamp(),
-  });
+  };
+  if (noteProcess !== undefined) {
+    updateData.noteProcess = noteProcess;
+  }
+  await updateDoc(classRef, updateData);
 };
 
 export type CreateCurrencyRequestData = {

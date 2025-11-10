@@ -40,6 +40,7 @@ export interface IClass {
   };
   teacher: IClassTeacher;
   summary: IClassSummary;
+  noteProcess?: string; // Ghi chú quá trình học tập - giáo viên có thể chỉnh sửa
   createdAt: Date;
   updatedAt: Date;
 }

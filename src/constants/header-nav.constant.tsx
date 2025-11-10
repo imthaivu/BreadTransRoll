@@ -32,7 +32,7 @@ export const NavigationList = {
   student: [
     {
       href: "/classes",
-      label: "Lớp học",
+      label: "Tên lớp",
       icon: <FiLayers />,
       role: ["student"],
     },
@@ -46,7 +46,7 @@ export const NavigationList = {
   teacher: [
     {
       href: "/classes",
-      label: "Lớp học",
+      label: "Tên lớp",
       icon: <FiLayers />,
       role: ["teacher"],
     },

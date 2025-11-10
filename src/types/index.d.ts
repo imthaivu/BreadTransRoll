@@ -74,6 +74,7 @@ export interface IClass {
     meet?: string;
   };
   teacher: IClassTeacher;
+  noteProcess?: string; // Ghi chú quá trình học tập - giáo viên có thể chỉnh sửa
   createdAt: Date;
   updatedAt: Date;
 }
