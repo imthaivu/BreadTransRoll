@@ -114,7 +114,7 @@ function FlashcardCardComp({ data, onAnswer, onSpeak, onFlip }: FlashcardCardPro
         cardRef.current.style.transform = isFlipped ? "rotateY(180deg)" : "";
       }
     }
-  }, [isDragging, hasMoved, dragOffset, onAnswer, isFlipped]);
+  }, [isDragging, hasMoved, dragOffset, onAnswer, isFlipped, data, onFlip]);
 
   useEffect(() => {
     const onPointerMove = (e: PointerEvent) =>

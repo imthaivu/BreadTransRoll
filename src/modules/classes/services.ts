@@ -270,7 +270,11 @@ export const updateClassLinks = async ({
   noteProcess?: string;
 }) => {
   const classRef = doc(db, CLASSES_COLLECTION, classId);
-  const updateData: { links: { zalo?: string; meet?: string }; updatedAt: any; noteProcess?: string } = {
+  const updateData: { 
+    links: { zalo?: string; meet?: string }; 
+    updatedAt: ReturnType<typeof serverTimestamp>; 
+    noteProcess?: string;
+  } = {
     links: links,
     updatedAt: serverTimestamp(),
   };
