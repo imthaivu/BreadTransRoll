@@ -5,6 +5,7 @@ import {
   getBook,
   getBooks,
   getCompletedLessons,
+  getLessonStatuses,
   getLessonWords,
   getReviewWords,
   saveQuizResult,
@@ -71,6 +72,14 @@ export function useCompletedLessons(userId: string, bookId: string | null) {
   });
 }
 
+export function useLessonStatuses(userId: string, bookId: string | null) {
+  return useQuery({
+    queryKey: ["lessonStatuses", userId, bookId],
+    queryFn: () => getLessonStatuses(userId, bookId!),
+    enabled: !!userId && !!bookId,
+  });
+}
+
 export function useFlashcard() {
   const { session } = useAuth();
   const userId = session?.user?.id || "";
@@ -112,6 +121,11 @@ export function useFlashcard() {
   const { data: reviewWords = [] } = useReviewWords(userId);
 
   const { data: completedLessons = [] } = useCompletedLessons(
+    userId,
+    selectedBook
+  );
+
+  const { data: lessonStatuses = new Map() } = useLessonStatuses(
     userId,
     selectedBook
   );
@@ -427,6 +441,7 @@ export function useFlashcard() {
     lessonsForBook,
     reviewWords,
     completedLessons,
+    lessonStatuses,
     selectedBook,
     selectedLessons,
     selectedMode,

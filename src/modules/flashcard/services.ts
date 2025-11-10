@@ -249,6 +249,32 @@ export async function getCompletedLessons(
   return snapshot.docs.map((doc) => doc.data().lessonId as number);
 }
 
+/**
+ * Lấy trạng thái của tất cả lessons trong một sách với độ chính xác
+ */
+export async function getLessonStatuses(
+  userId: string,
+  bookId: string
+): Promise<Map<number, LessonStatus>> {
+  if (!userId || !bookId) return new Map();
+
+  const q = query(
+    lessonStatusCol,
+    where("userId", "==", userId),
+    where("bookId", "==", bookId)
+  );
+
+  const snapshot = await getDocs(q);
+  const statusMap = new Map<number, LessonStatus>();
+  
+  snapshot.docs.forEach((doc) => {
+    const data = doc.data() as LessonStatus;
+    statusMap.set(data.lessonId, data);
+  });
+
+  return statusMap;
+}
+
 // =================================================================
 // Quiz Result Services
 // =================================================================

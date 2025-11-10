@@ -8,6 +8,7 @@ import {
   useBooks,
   useCompletedLessons,
   useLessons,
+  useLessonStatuses,
 } from "@/modules/flashcard/hooks";
 import { Book } from "@/modules/flashcard/types";
 import { Modal } from "@/components/ui/Modal";
@@ -20,8 +21,10 @@ function LessonGrid({ studentId, book }: { studentId: string; book: Book }) {
   );
   const { data: completedLessons = [], isLoading: isLoadingCompleted } =
     useCompletedLessons(studentId, book.id.toString());
+  const { data: lessonStatuses = new Map(), isLoading: isLoadingStatuses } =
+    useLessonStatuses(studentId, book.id.toString());
 
-  if (isLoadingLessons || isLoadingCompleted) {
+  if (isLoadingLessons || isLoadingCompleted || isLoadingStatuses) {
     return <p>Đang tải danh sách bài học...</p>;
   }
 
@@ -29,9 +32,19 @@ function LessonGrid({ studentId, book }: { studentId: string; book: Book }) {
     <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3">
       {lessons.map((lessonId) => {
         const isCompleted = completedLessons.includes(lessonId);
-        const statusClass = isCompleted
-          ? "bg-green-100 dark:bg-green-800/50 text-green-800 dark:text-green-200 border border-green-200"
-          : "bg-gray-100 dark:bg-gray-700 hover:bg-gray-200";
+        const lessonStatus = lessonStatuses.get(lessonId);
+        const accuracy = lessonStatus?.lastAccuracy ?? 0;
+        
+        // Determine status class based on completion and accuracy
+        let statusClass: string;
+        if (isCompleted) {
+          statusClass = "bg-green-100 dark:bg-green-800/50 text-green-800 dark:text-green-200 border border-green-200";
+        } else if (lessonStatus && accuracy > 0 && accuracy < 90) {
+          // Orange for lessons with accuracy < 90%
+          statusClass = "bg-orange-100 dark:bg-orange-800/50 text-orange-800 dark:text-orange-200 border border-orange-200";
+        } else {
+          statusClass = "bg-gray-100 dark:bg-gray-700 hover:bg-gray-200";
+        }
 
         return (
           <div

@@ -38,6 +38,7 @@ export default function FlashcardPage() {
     lessonsForBook, // Lấy lessons từ hook
     reviewWords,
     completedLessons,
+    lessonStatuses,
     selectedBook,
     selectedLessons,
     selectedMode,
@@ -299,6 +300,7 @@ export default function FlashcardPage() {
             lessons={lessonsList}
             selectedLessons={selectedLessons}
             completedLessons={completedLessons}
+            lessonStatuses={lessonStatuses}
             onSelectLesson={handleSelectLesson}
             onClose={() => setShowLessonModal(false)}
           />
