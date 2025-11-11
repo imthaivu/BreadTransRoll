@@ -8,7 +8,7 @@ import { doc, updateDoc } from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytes, deleteObject, listAll } from "firebase/storage";
 import { User, Edit3 } from "lucide-react";
 import Image from "next/image";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import { Flame } from "lucide-react";
 import { compressAndResizeImage } from "@/utils/image";
@@ -293,6 +293,15 @@ export function PersonalInfoCard() {
   const [phone, setPhone] = useState(profile?.phone ?? "");
   const [address, setAddress] = useState(profile?.address ?? "");
   const [saving, setSaving] = useState(false);
+
+  // Update form fields when profile data is loaded
+  useEffect(() => {
+    if (profile) {
+      setDisplayName(profile.displayName ?? "");
+      setPhone(profile.phone ?? "");
+      setAddress(profile.address ?? "");
+    }
+  }, [profile]);
 
   async function handleSave() {
     if (!session?.user) return;
