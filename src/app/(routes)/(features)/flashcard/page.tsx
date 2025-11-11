@@ -76,6 +76,15 @@ export default function FlashcardPage() {
     []
   );
 
+  // Check browser support for speechSynthesis
+  useEffect(() => {
+    if (typeof window !== "undefined" && !("speechSynthesis" in window)) {
+      alert(
+        "Trình duyệt này không hỗ trợ phát âm. Vui lòng đổi trình duyệt sang Chrome, Firefox, Edge hoặc Safari để nghe phát âm mẫu."
+      );
+    }
+  }, []);
+
   // Handle completion
   useEffect(() => {
     if (!isPlaying && deck.length > 0 && currentIndex >= deck.length) {
