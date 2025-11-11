@@ -4,6 +4,7 @@ import { playSound } from "@/lib/audio/soundManager";
 import { Word } from "..";
 import FlashcardCard from "./FlashcardCard";
 import QuizCard from "./QuizCard";
+import { useImagePreloader } from "../utils/useImagePreloader";
 
 interface LearningViewProps {
   mode: "flashcard" | "quiz";
@@ -34,8 +35,11 @@ export const LearningView = ({
     currentIndex > 0 ? Math.round((score / currentIndex) * 100) : 0;
   const progressPercent = ((currentIndex + 1) / deck.length) * 100;
 
+  // Preload images for the next 10 words (only in flashcard mode)
+  useImagePreloader(mode === "flashcard" ? deck : [], currentIndex, 10);
+
   return (
-    <Card className="md:p-4 md:mb-4 shadow-none border-none relative h-full">
+    <Card className="md:p-2 mb-2 shadow-none border-none relative h-full">
       {/* Card Display */}
       <div className="mb-6 flex justify-center items-center">
         {mode === "flashcard" ? (
@@ -64,9 +68,8 @@ export const LearningView = ({
         <div className="flex justify-center gap-6 mb-4">
           <div className="text-center">
             <div className="text-2xl font-bold text-red-600">
-              {wrongWordsCount}
+              {wrongWordsCount} Từ 
             </div>
-            <div className="text-sm text-gray-600 md:text-base">Từ sai</div>
           </div>
         </div>
       )}

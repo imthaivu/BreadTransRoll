@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/Button";
 import { memo, useCallback, useEffect, useRef, useState } from "react";
 import { Word } from "../types";
+import { imagePreloader } from "../utils/imagePreloader";
 
 interface FlashcardCardProps {
   data: Word;
@@ -16,6 +17,8 @@ function FlashcardCardComp({ data, onAnswer, onSpeak, onFlip }: FlashcardCardPro
   const [isDragging, setIsDragging] = useState(false);
   const [hasMoved, setHasMoved] = useState(false);
   const [dragOffset, setDragOffset] = useState(0);
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const [imageLoading, setImageLoading] = useState(true);
   const hasFlippedRef = useRef(false);
 
   const cardRef = useRef<HTMLDivElement>(null);
@@ -28,6 +31,20 @@ function FlashcardCardComp({ data, onAnswer, onSpeak, onFlip }: FlashcardCardPro
 
   useEffect(() => {
     onSpeakRef.current(data.word);
+  }, [data.word]);
+
+  // Load image when word changes
+  useEffect(() => {
+    setImageLoading(true);
+    setImageUrl(null);
+    
+    imagePreloader.getImageUrl(data.word).then((url) => {
+      setImageUrl(url);
+      setImageLoading(false);
+    }).catch(() => {
+      setImageUrl(null);
+      setImageLoading(false);
+    });
   }, [data.word]);
 
   useEffect(() => {
@@ -136,10 +153,10 @@ function FlashcardCardComp({ data, onAnswer, onSpeak, onFlip }: FlashcardCardPro
   }, [isDragging, handleDragMove, handleDragEnd]);
 
   return (
-    <div className="flex justify-center items-center w-full max-w-md">
+    <div className="flex justify-center items-center w-full px-2 sm:px-4">
       <div
         ref={cardRef}
-        className="relative w-full h-40 md:w-96 md:h-72 cursor-pointer perspective-1000 no-select touch-none"
+        className="relative w-[85vw] sm:w-[400px] aspect-square cursor-pointer perspective-[1000px] select-none touch-none"
         onPointerDown={(e) => {
           try {
             (e.currentTarget as HTMLElement).setPointerCapture?.(e.pointerId);
@@ -152,25 +169,55 @@ function FlashcardCardComp({ data, onAnswer, onSpeak, onFlip }: FlashcardCardPro
         }}
       >
         <div
-          className="absolute inset-0 w-full h-full rounded-lg"
-          style={{
-            transformStyle: "preserve-3d",
-            transition: "transform 0.6s ease",
-          }}
+          className="absolute inset-0 w-full h-full rounded-xl transition-transform duration-500 ease-in-out"
+          style={{ transformStyle: "preserve-3d" }}
         >
+          {/* ===== FRONT SIDE ===== */}
           <div
-            className="absolute inset-0 w-full h-full bg-gradient-to-br bg-white rounded-lg flex flex-col justify-center items-center text-black p-6 shadow-[0px_0px_10px_rgba(1,1,1,0.4)]"
+            className="absolute inset-0 w-full h-full bg-white rounded-xl flex flex-col text-black p-2 sm:p-4 shadow-lg"
             style={{ backfaceVisibility: "hidden" }}
           >
-            <div className="text-center">
-              <h2 className="text-3xl font-bold mb-2">{data.word}</h2>
-              <p className="text-lg opacity-90">{data.ipa}</p>
+            {/* Image Section (1:1) */}
+            <div className="w-full aspect-square rounded-lg overflow-hidden mb-3 sm:mb-4 bg-gray-200 flex items-center justify-center">
+              {imageLoading ? (
+                <div className="flex items-center justify-center w-full h-full">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-700"></div>
+                </div>
+              ) : imageUrl ? (
+                <img
+                  src={imageUrl}
+                  alt={data.word}
+                  className="w-full h-full object-cover"
+                  loading="eager"
+                />
+              ) : (
+                <div className="flex items-center justify-center w-full h-full bg-gray-300">
+                  <span className="text-gray-500 text-xs sm:text-sm">No image</span>
+                </div>
+              )}
             </div>
-
+  
+            {/* Word + IPA */}
+            <div className="text-center flex-1 flex flex-col justify-center px-2">
+              <h2
+                className="
+                  font-bold mb-1 sm:mb-2 leading-tight break-words
+                  text-[clamp(1.2rem,4vw,2rem)]   /* auto co chữ */
+                  max-h-[3.6em] overflow-hidden line-clamp-2
+                "
+                title={data.word}
+              >
+                {data.word}
+              </h2>
+              <p className="text-[clamp(0.9rem,3.5vw,1.2rem)] text-gray-700 opacity-90 truncate">
+                {data.ipa}
+              </p>
+            </div>
+  
             <Button
               variant="ghost"
               size="sm"
-              className="absolute top-4 right-4 p-2 bg-white bg-opacity-20 rounded-full hover:bg-opacity-30 transition-all"
+              className="absolute top-3 right-3 sm:top-4 sm:right-4 p-1.5 sm:p-2 bg-white/80 rounded-full hover:bg-white transition-all shadow-md"
               onClick={(e) => {
                 e.stopPropagation();
                 onSpeak(data.word);
@@ -180,25 +227,25 @@ function FlashcardCardComp({ data, onAnswer, onSpeak, onFlip }: FlashcardCardPro
               🔊
             </Button>
           </div>
-
+  
+          {/* ===== BACK SIDE ===== */}
           <div
-            className="absolute inset-0 w-full h-full bg-gradient-to-br from-green-500 to-green-600 rounded-lg flex flex-col justify-center items-center text-white p-6"
+            className="absolute inset-0 w-full h-full bg-blue-200 rounded-xl flex flex-col justify-center items-center p-4 sm:p-6"
             style={{
               transform: "rotateY(180deg)",
               backfaceVisibility: "hidden",
             }}
           >
-            <div className="text-center">
-              <h3 className="text-2xl font-semibold mb-2">Nghĩa:</h3>
-              <p className="text-xl">{data.mean}</p>
+            <div className="text-center px-2">
+              <h3 className="text-[clamp(2rem,3.5vw,1.6rem)] font-semibold mb-2">{data.mean}</h3>
+                
             </div>
           </div>
         </div>
       </div>
-
-      {/* <div className="w-80 md:w-96 mt-4 text-center text-sm md:text-base text-gray-600"></div> */}
     </div>
   );
+  
 }
 
 const areEqual = (prev: FlashcardCardProps, next: FlashcardCardProps) => {

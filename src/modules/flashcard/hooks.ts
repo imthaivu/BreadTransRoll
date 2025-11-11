@@ -361,21 +361,26 @@ export function useFlashcard() {
   }, []);
 
   // Phát âm luôn dùng giọng tiếng Anh nếu có
-  const speak = useCallback((text: string, lang: string = "en-US") => {
-    // nếu là trình duyệt không hỗ trợ speechSynthesis thì return luôn
+  const speak = useCallback((text: string) => {
     if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
 
-    speechSynthesis.cancel(); // hủy các từ đang đọc
-
     const utter = new SpeechSynthesisUtterance(text);
-    utter.lang = lang;
-
     const chosen = englishVoiceRef.current;
     if (chosen) {
       utter.voice = chosen;
       utter.lang = chosen.lang;
+    } else {
+      utter.lang = "en-US";
     }
+    utter.rate = 1.0;
+    utter.pitch = 1.0;
 
+    // Tránh chồng tiếng: hủy nếu đang nói/pending
+    if (speechSynthesis.speaking || speechSynthesis.pending) {
+      try {
+        speechSynthesis.cancel();
+      } catch {}
+    }
     speechSynthesis.speak(utter);
   }, []);
 

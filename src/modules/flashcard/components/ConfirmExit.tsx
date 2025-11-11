@@ -17,7 +17,7 @@ export const ConfirmExit = ({ open, onClose, onConfirm }: ConfirmExitProps) => {
     >
       <div className="space-y-4">
         <p className="text-gray-700">
-          Bạn có chắc chắn muốn kết thúc phiên học này không? Mọi tiến trình sẽ
+          Bạn có chắc chắn muốn Kết thúc? Tiến trình sẽ
           không được lưu lại.
         </p>
         <div className="flex justify-end gap-2">

@@ -9,6 +9,7 @@ import {
   CompletionScreen,
   Confetti,
   ConfirmExit,
+  ConfirmStartLearning,
   FlashcardCard,
   FlashcardControls,
   Guide,
@@ -31,6 +32,7 @@ export default function FlashcardPage() {
   const [showLearningModal, setShowLearningModal] = useState(false);
   const [showConfirmExit, setShowConfirmExit] = useState(false);
   const [showReviewModal, setShowReviewModal] = useState(false);
+  const [showConfirmStart, setShowConfirmStart] = useState(false);
   const { role, signInWithGoogle, session } = useAuth();
 
   const {
@@ -111,9 +113,14 @@ export default function FlashcardPage() {
     };
   }, [isPlaying]);
 
-  // Handle start learning
+  // Handle start learning - show confirmation modal first
   const handleStart = () => {
     playSound("click");
+    setShowConfirmStart(true);
+  };
+
+  // Handle confirmed start learning
+  const handleConfirmStart = () => {
     if (startLearning()) {
       setShowCompletion(false);
       setShowLearningModal(true);
@@ -261,14 +268,14 @@ export default function FlashcardPage() {
 
             {/* Stop Button */}
             {isPlaying && !showCompletion && (
-              <div className="mt-6 text-center">
+              <div className=" text-center">
                 <Button
                   onClick={() => setShowConfirmExit(true)}
                   variant="outline"
                   size="sm"
                   className="text-red-600 border-red-300 hover:bg-red-50 hover:text-red-700"
                 >
-                  Kết thúc phiên học
+                  Kết thúc
                 </Button>
               </div>
             )}
@@ -289,6 +296,14 @@ export default function FlashcardPage() {
             )}
           </div>
         </Modal>
+
+        {/* Confirm Start Learning Modal */}
+        <ConfirmStartLearning
+          open={showConfirmStart}
+          onClose={() => setShowConfirmStart(false)}
+          onConfirm={handleConfirmStart}
+          mode={selectedMode}
+        />
 
         {/* Confirm Exit Modal */}
         <ConfirmExit

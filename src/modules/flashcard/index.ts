@@ -16,4 +16,5 @@ export * from "./components/LearningView";
 export * from "./components/CompletionScreen";
 export * from "./components/Guide";
 export * from "./components/ConfirmExit";
+export * from "./components/ConfirmStartLearning";
 export * from "./components/ReviewWordsModal";
