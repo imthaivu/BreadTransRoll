@@ -97,7 +97,7 @@ export const FlashcardControls = ({
         <div className="col-span-2 flex justify-center md:col-span-1">
           <Button
             onClick={onStart}
-            className="md:w-auto px-4 py-1.5 h-10 text-sm  bg-primary text-white hover:bg-blue-700 disabled:bg-gray-400"
+            className="md:w-auto px-4 py-1.5 h-10 text-sm  bg-primary text-white disabled:bg-gray-400"
             disabled={
               isPlaying || !selectedBook || selectedLessons.length === 0
             }

@@ -294,7 +294,7 @@ export function QuizResultManager({ classId }: QuizResultManagerProps) {
                     onClick={() => handleToggleStudent(student.id)}
                     className={`px-3 py-1.5 rounded-md text-sm border transition-all ${
                       selectedStudents.has(student.id)
-                        ? "bg-blue-500 text-white border-blue-500"
+                        ? "bg-primary text-white border-blue-400"
                         : "bg-white dark:bg-gray-800 border-gray-300 hover:border-blue-400"
                     }`}
                   >

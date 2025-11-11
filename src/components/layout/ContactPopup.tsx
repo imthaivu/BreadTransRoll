@@ -41,7 +41,7 @@ export default function ContactPopup() {
           <button
             ref={zaloRef}
             onClick={openZaloChat}
-            className="bg-blue-500 hover: bg-primary text-white p-2 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 flex items-center justify-center group relative"
+            className=" bg-primary text-white p-2 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 flex items-center justify-center group relative"
           >
             <Image
               src="/assets/images/zalo.png"
