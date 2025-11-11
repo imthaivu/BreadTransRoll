@@ -41,7 +41,7 @@ export default function AdminCurrency() {
     useState<ICurrency | null>(null);
   const [selectedStudentId, setSelectedStudentId] = useState<string>("");
   const [activeTab, setActiveTab] = useState("transactions");
-  const [requestsRefetchFn, setRequestsRefetchFn] = useState<(() => Promise<any>) | null>(null);
+  const [requestsRefetchFn, setRequestsRefetchFn] = useState<(() => Promise<unknown>) | null>(null);
 
   const [showConfirmCreate, setShowConfirmCreate] = useState<boolean>(false);
 
@@ -473,7 +473,7 @@ export default function AdminCurrency() {
                 console.log("🔄 Đang làm mới dữ liệu...");
                 // Refetch all data
                 try {
-                  const promises: (Promise<any> | void)[] = [];
+                  const promises: Promise<unknown>[] = [];
                   if (refetch) {
                     const result = refetch();
                     if (result) promises.push(result);
@@ -490,7 +490,7 @@ export default function AdminCurrency() {
                     const result = requestsRefetchFn();
                     if (result) promises.push(result);
                   }
-                  await Promise.all(promises.filter((p): p is Promise<any> => !!p));
+                  await Promise.all(promises);
                   console.log("✅ Đã làm mới dữ liệu thành công");
                 } catch (error) {
                   console.error("❌ Lỗi khi làm mới dữ liệu:", error);

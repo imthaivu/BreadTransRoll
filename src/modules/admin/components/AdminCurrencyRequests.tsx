@@ -18,7 +18,7 @@ interface AdminCurrencyRequestsProps {
   selectedClassId: string;
   students: Array<{ id: string; classIds?: string[] }>;
   onRefetch?: () => void;
-  onRefetchReady?: (refetchFn: () => Promise<any>) => void;
+  onRefetchReady?: (refetchFn: () => Promise<unknown>) => void;
 }
 
 const StatusBadge = ({ status }: { status: CurrencyRequestStatus }) => {
