@@ -18,6 +18,7 @@ import {
   useCurrencyManagement,
   useCurrencyStats,
   useCurrencyTransactions,
+  useCurrencyRequests,
 } from "../hooks/useCurrencyManagement";
 import { useStudents } from "../hooks/useStudentManagement";
 import { useClasses } from "../hooks/useClassManagement";
@@ -40,6 +41,7 @@ export default function AdminCurrency() {
     useState<ICurrency | null>(null);
   const [selectedStudentId, setSelectedStudentId] = useState<string>("");
   const [activeTab, setActiveTab] = useState("transactions");
+  const [requestsRefetchFn, setRequestsRefetchFn] = useState<(() => Promise<any>) | null>(null);
 
   const [showConfirmCreate, setShowConfirmCreate] = useState<boolean>(false);
 
@@ -52,7 +54,12 @@ export default function AdminCurrency() {
   >("all");
   const [selectedClassId, setSelectedClassId] = useState<string>("");
 
-  const { data: stats, isLoading: isLoadingStats } = useCurrencyStats();
+  const statsQuery = useCurrencyStats();
+  const { data: stats, isLoading: isLoadingStats, refetch: refetchStats } = statsQuery || {
+    data: undefined,
+    isLoading: false,
+    refetch: () => Promise.resolve(),
+  };
 
   useEffect(() => {
     const today = new Date();
@@ -67,8 +74,14 @@ export default function AdminCurrency() {
   );
 
   // Use the currency management mutations
+  const currencyManagement = useCurrencyManagement();
   const { createTransaction, deleteTransaction, isCreating, isDeleting } =
-    useCurrencyManagement();
+    currencyManagement || {
+      createTransaction: async () => {},
+      deleteTransaction: async () => {},
+      isCreating: false,
+      isDeleting: false,
+    };
 
   // Use students and classes hooks for dropdown
   const { data: studentsData } = useStudents();
@@ -76,12 +89,28 @@ export default function AdminCurrency() {
   const { data: classes = [] } = useClasses();
 
   // Server-side filtered transactions for a given day
+  const transactionsQuery = useCurrencyTransactions(forDate);
   const {
     data: transactions = [],
     isLoading,
     error,
     refetch,
-  } = useCurrencyTransactions(forDate);
+  } = transactionsQuery || {
+    data: [],
+    isLoading: false,
+    error: null,
+    refetch: () => Promise.resolve(),
+  };
+
+  // Get pending requests count for badge
+  const pendingRequestsQuery = useCurrencyRequests("pending", undefined);
+  const {
+    data: pendingRequests = [],
+    refetch: refetchPendingRequests,
+  } = pendingRequestsQuery || {
+    data: [],
+    refetch: () => Promise.resolve(),
+  };
 
   // Apply client-side filters
   const filteredTransactions = useMemo(() => {
@@ -110,6 +139,22 @@ export default function AdminCurrency() {
       return true;
     });
   }, [transactions, studentQuery, dorayakiFilter, selectedClassId, students]);
+
+  // Log dates with transactions
+  useEffect(() => {
+    if (transactions && transactions.length > 0) {
+      const datesWithTransactions = new Set<string>();
+      transactions.forEach((t) => {
+        const dateStr = t.createdAt.toLocaleDateString("vi-VN");
+        datesWithTransactions.add(dateStr);
+      });
+      console.log("📅 Các ngày có giao dịch bánh mì:", Array.from(datesWithTransactions).sort().reverse());
+      console.log("📊 Tổng số giao dịch:", transactions.length);
+      console.log("📆 Ngày đang lọc:", dateStr ? new Date(`${dateStr}T00:00:00`).toLocaleDateString("vi-VN") : "Tất cả");
+    } else if (transactions && transactions.length === 0) {
+      console.log("📅 Không có giao dịch nào cho ngày:", dateStr ? new Date(`${dateStr}T00:00:00`).toLocaleDateString("vi-VN") : "Tất cả");
+    }
+  }, [transactions, dateStr]);
 
   // Get selected student info
   const selectedStudent = students.find(
@@ -424,12 +469,38 @@ export default function AdminCurrency() {
             <Button
               variant="ghost"
               size="icon"
-              onClick={() => refetch()}
+              onClick={async () => {
+                console.log("🔄 Đang làm mới dữ liệu...");
+                // Refetch all data
+                try {
+                  const promises: (Promise<any> | void)[] = [];
+                  if (refetch) {
+                    const result = refetch();
+                    if (result) promises.push(result);
+                  }
+                  if (refetchStats) {
+                    const result = refetchStats();
+                    if (result) promises.push(result);
+                  }
+                  if (refetchPendingRequests) {
+                    const result = refetchPendingRequests();
+                    if (result) promises.push(result);
+                  }
+                  if (requestsRefetchFn) {
+                    const result = requestsRefetchFn();
+                    if (result) promises.push(result);
+                  }
+                  await Promise.all(promises.filter((p): p is Promise<any> => !!p));
+                  console.log("✅ Đã làm mới dữ liệu thành công");
+                } catch (error) {
+                  console.error("❌ Lỗi khi làm mới dữ liệu:", error);
+                }
+              }}
               aria-label="Làm mới"
               className="flex-shrink-0"
             >
               <FiRefreshCw
-                className={`h-4 w-4 sm:h-5 sm:w-5 ${isLoading ? "animate-spin" : ""}`}
+                className={`h-4 w-4 sm:h-5 sm:w-5 ${isLoading || isLoadingStats ? "animate-spin" : ""}`}
               />
             </Button>
             <Button
@@ -494,13 +565,18 @@ export default function AdminCurrency() {
         </button>
         <button
           onClick={() => setActiveTab("requests")}
-          className={`px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium transition-colors whitespace-nowrap flex-shrink-0 ${
+          className={`px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium transition-colors whitespace-nowrap flex-shrink-0 relative ${
             activeTab === "requests"
               ? "border-b-2 border-primary text-primary"
               : "text-muted hover:text-foreground"
           }`}
         >
           Yêu cầu cần duyệt
+          {pendingRequests.length > 0 && (
+            <span className="ml-2 inline-flex items-center justify-center min-w-[20px] h-5 px-1.5 text-xs font-semibold text-white bg-red-600 rounded-full">
+              {pendingRequests.length}
+            </span>
+          )}
         </button>
       </div>
 
@@ -706,7 +782,12 @@ export default function AdminCurrency() {
           studentQuery={studentQuery}
           selectedClassId={selectedClassId}
           students={students}
-          onRefetch={refetch}
+          onRefetch={() => {
+            refetch();
+            refetchStats();
+            refetchPendingRequests();
+          }}
+          onRefetchReady={(refetchFn) => setRequestsRefetchFn(() => refetchFn)}
         />
       )}
     </div>

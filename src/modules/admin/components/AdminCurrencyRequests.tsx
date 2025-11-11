@@ -2,7 +2,7 @@
 
 import { useAuth } from "@/lib/auth/context";
 import { ICurrencyRequest, CurrencyRequestStatus } from "@/types";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import {
   useCurrencyRequests,
   useUpdateCurrencyRequestStatus,
@@ -18,6 +18,7 @@ interface AdminCurrencyRequestsProps {
   selectedClassId: string;
   students: Array<{ id: string; classIds?: string[] }>;
   onRefetch?: () => void;
+  onRefetchReady?: (refetchFn: () => Promise<any>) => void;
 }
 
 const StatusBadge = ({ status }: { status: CurrencyRequestStatus }) => {
@@ -44,6 +45,7 @@ export function AdminCurrencyRequests({
   selectedClassId,
   students,
   onRefetch,
+  onRefetchReady,
 }: AdminCurrencyRequestsProps) {
   const [activeTab, setActiveTab] = useState<CurrencyRequestStatus>("pending");
 
@@ -61,6 +63,13 @@ export function AdminCurrencyRequests({
   } = useCurrencyRequests(activeTab, forDate);
   const { mutate: updateStatus, isPending: isUpdating } =
     useUpdateCurrencyRequestStatus();
+
+  // Expose refetch function to parent
+  useEffect(() => {
+    if (onRefetchReady && refetch && typeof refetch === 'function') {
+      onRefetchReady(refetch);
+    }
+  }, [refetch, onRefetchReady]);
 
   // Apply client-side filters
   const filteredRequests = useMemo(() => {
