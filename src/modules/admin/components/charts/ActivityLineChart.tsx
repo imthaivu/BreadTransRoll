@@ -33,7 +33,7 @@ export default function ActivityLineChart({
     date: speakPoint.date,
     "Bài nộp Speaking": speakPoint.count,
     "Người dùng mới": userData[index]?.count ?? 0,
-    "Lượt nghe": listeningData[index]?.count ?? 0,
+    "Bài nghe": listeningData[index]?.count ?? 0,
     "Kết quả Quiz": quizData[index]?.count ?? 0,
   }));
 
@@ -74,7 +74,7 @@ export default function ActivityLineChart({
             activeDot={{ r: 8 }}
           />
           <Line type="monotone" dataKey="Người dùng mới" stroke="#82ca9d" strokeWidth={2} />
-          <Line type="monotone" dataKey="Lượt nghe" stroke="#ffc658" strokeWidth={2} />
+          <Line type="monotone" dataKey="Bài nghe" stroke="#ffc658" strokeWidth={2} />
           <Line type="monotone" dataKey="Kết quả Quiz" stroke="#ff8042" strokeWidth={2} />
         </LineChart>
       </ResponsiveContainer>
