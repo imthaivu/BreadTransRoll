@@ -33,6 +33,7 @@ export default function FlashcardPage() {
   const [showConfirmExit, setShowConfirmExit] = useState(false);
   const [showReviewModal, setShowReviewModal] = useState(false);
   const [showConfirmStart, setShowConfirmStart] = useState(false);
+  const [showImage, setShowImage] = useState<boolean>(true); // Default to true for flashcard with images
   const { role, signInWithGoogle, session } = useAuth();
 
   const {
@@ -120,7 +121,11 @@ export default function FlashcardPage() {
   };
 
   // Handle confirmed start learning
-  const handleConfirmStart = () => {
+  const handleConfirmStart = (showImageOption?: boolean) => {
+    // If showImageOption is provided (flashcard mode), use it; otherwise default to true
+    if (selectedMode === "flashcard" && showImageOption !== undefined) {
+      setShowImage(showImageOption);
+    }
     if (startLearning()) {
       setShowCompletion(false);
       setShowLearningModal(true);
@@ -145,6 +150,7 @@ export default function FlashcardPage() {
       reset();
       setShowLearningModal(false);
       setShowCompletion(false);
+      setShowImage(true); // Reset to default
     }
   };
 
@@ -153,6 +159,7 @@ export default function FlashcardPage() {
     setShowLearningModal(false);
     setShowCompletion(false);
     setShowConfirmExit(false);
+    setShowImage(true); // Reset to default
   };
 
   // Tạo danh sách books và lessons từ data
@@ -262,6 +269,7 @@ export default function FlashcardPage() {
                   onSpeak={speak}
                   hiddenWordIndices={hiddenWordIndices}
                   onFlip={handleFlip}
+                  showImage={showImage}
                 />
               </StaggerItem>
             )}

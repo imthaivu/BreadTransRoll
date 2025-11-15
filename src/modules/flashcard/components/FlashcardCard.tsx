@@ -10,9 +10,10 @@ interface FlashcardCardProps {
   onAnswer: (isCorrect: boolean) => void;
   onSpeak: (text: string) => void;
   onFlip?: (word: Word) => void;
+  showImage?: boolean; // Whether to show images
 }
 
-function FlashcardCardComp({ data, onAnswer, onSpeak, onFlip }: FlashcardCardProps) {
+function FlashcardCardComp({ data, onAnswer, onSpeak, onFlip, showImage = true }: FlashcardCardProps) {
   const [isFlipped, setIsFlipped] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [hasMoved, setHasMoved] = useState(false);
@@ -33,8 +34,14 @@ function FlashcardCardComp({ data, onAnswer, onSpeak, onFlip }: FlashcardCardPro
     onSpeakRef.current(data.word);
   }, [data.word]);
 
-  // Load image when word changes
+  // Load image when word changes (only if showImage is true)
   useEffect(() => {
+    if (!showImage) {
+      setImageUrl(null);
+      setImageLoading(false);
+      return;
+    }
+    
     setImageLoading(true);
     setImageUrl(null);
     
@@ -45,7 +52,7 @@ function FlashcardCardComp({ data, onAnswer, onSpeak, onFlip }: FlashcardCardPro
       setImageUrl(null);
       setImageLoading(false);
     });
-  }, [data.word]);
+  }, [data.word, showImage]);
 
   useEffect(() => {
     setIsFlipped(false);
@@ -177,28 +184,30 @@ function FlashcardCardComp({ data, onAnswer, onSpeak, onFlip }: FlashcardCardPro
             className="absolute inset-0 w-full h-full bg-white rounded-xl flex flex-col text-black p-2 sm:p-4 shadow-lg"
             style={{ backfaceVisibility: "hidden" }}
           >
-            {/* Image Section (1:1) */}
-            <div className="w-full aspect-square rounded-lg overflow-hidden mb-3 sm:mb-4 bg-gray-200 flex items-center justify-center">
-              {imageLoading ? (
-                <div className="flex items-center justify-center w-full h-full">
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-700"></div>
-                </div>
-              ) : imageUrl ? (
-                <img
-                  src={imageUrl}
-                  alt={data.word}
-                  className="w-full h-full object-cover"
-                  loading="eager"
-                />
-              ) : (
-                <div className="flex items-center justify-center w-full h-full bg-gray-300">
-                  <span className="text-gray-500 text-xs sm:text-sm">No image</span>
-                </div>
-              )}
-            </div>
+            {/* Image Section (1:1) - Only show if showImage is true */}
+            {showImage && (
+              <div className="w-full aspect-square rounded-lg overflow-hidden mb-3 sm:mb-4 bg-gray-200 flex items-center justify-center">
+                {imageLoading ? (
+                  <div className="flex items-center justify-center w-full h-full">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-700"></div>
+                  </div>
+                ) : imageUrl ? (
+                  <img
+                    src={imageUrl}
+                    alt={data.word}
+                    className="w-full h-full object-cover"
+                    loading="eager"
+                  />
+                ) : (
+                  <div className="flex items-center justify-center w-full h-full bg-gray-300">
+                    <span className="text-gray-500 text-xs sm:text-sm">No image</span>
+                  </div>
+                )}
+              </div>
+            )}
   
             {/* Word + IPA */}
-            <div className="text-center flex-1 flex flex-col justify-center px-2">
+            <div className={`text-center flex-1 flex flex-col justify-center px-2 ${!showImage ? 'mt-4' : ''}`}>
               <h2
                 className="
                   font-bold mb-1 sm:mb-2 leading-tight break-words
@@ -249,11 +258,12 @@ function FlashcardCardComp({ data, onAnswer, onSpeak, onFlip }: FlashcardCardPro
 }
 
 const areEqual = (prev: FlashcardCardProps, next: FlashcardCardProps) => {
-  // Only re-render when displayed word content changes
+  // Only re-render when displayed word content or showImage changes
   return (
     prev.data.word === next.data.word &&
     prev.data.ipa === next.data.ipa &&
-    prev.data.mean === next.data.mean
+    prev.data.mean === next.data.mean &&
+    prev.showImage === next.showImage
   );
 };
 

@@ -16,6 +16,7 @@ interface LearningViewProps {
   onSpeak: (text: string) => void;
   hiddenWordIndices?: Set<number>; // Indices of words that should hide text in quiz mode
   onFlip?: (word: Word) => void; // Callback when flashcard is flipped
+  showImage?: boolean; // Whether to show images in flashcard mode
 }
 
 export const LearningView = ({
@@ -28,6 +29,7 @@ export const LearningView = ({
   onSpeak,
   hiddenWordIndices = new Set(),
   onFlip,
+  showImage = true,
 }: LearningViewProps) => {
   const currentWord = deck[currentIndex];
   const hideWord = mode === "quiz" && hiddenWordIndices.has(currentIndex);
@@ -35,8 +37,8 @@ export const LearningView = ({
     currentIndex > 0 ? Math.round((score / currentIndex) * 100) : 0;
   const progressPercent = ((currentIndex + 1) / deck.length) * 100;
 
-  // Preload images for the next 10 words (only in flashcard mode)
-  useImagePreloader(mode === "flashcard" ? deck : [], currentIndex, 10);
+  // Preload images for the next 10 words (only in flashcard mode with images enabled)
+  useImagePreloader(mode === "flashcard" && showImage ? deck : [], currentIndex, 10);
 
   return (
     <Card className="md:p-2 mb-2 shadow-none border-none relative h-full">
@@ -49,6 +51,7 @@ export const LearningView = ({
             onAnswer={onAnswer}
             onSpeak={onSpeak}
             onFlip={onFlip}
+            showImage={showImage}
           />
         ) : (
           <QuizCard
