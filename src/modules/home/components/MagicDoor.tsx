@@ -261,11 +261,9 @@ export default function MagicDoor({
                         transition={{ duration: 2, repeat: Infinity }}
                       >
                         <div className="mb-5 text-[#1E40AF] text-xl md:text-xl">
-                          Mở “Cánh cửa thần kỳ”
+                          Click vào cửa để mở “Cánh cửa thần kỳ”
                         </div>
-                        <div className=" text-[#1E3A8A] text-xl md:text-xl">
-                          Mở “Tương lai của bạn”
-                        </div>
+                        
                       </motion.div>
                     </div>
                   )}
