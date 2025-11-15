@@ -1,11 +1,14 @@
 "use client";
 
+import AudioPlayer from "@/components/streamline/AudioPlayer";
 import { Button } from "@/components/ui/Button";
 import { Modal } from "@/components/ui/Modal";
+import { LESSONS_1000_BOOKS, Lessons1000Book } from "@/constants/lessons1000";
+import { STREAMLINE_BOOKS, StreamlineBook } from "@/constants/streamline";
 import { useBooks, useLessons } from "@/modules/flashcard";
 import { cn } from "@/utils";
 import Image from "next/image";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { FiAward, FiCheckCircle, FiDelete, FiPlay, FiUser } from "react-icons/fi";
 import { useClassMembers, useClassProgress } from "../hooks";
 import { AudioPlayerWithDuration } from "./AudioPlayerWithDuration";
@@ -14,6 +17,7 @@ export function OverallProgressTable({ classId }: { classId: string }) {
   const [selectedBook, setSelectedBook] = useState<string>("");
   const [selectedLesson, setSelectedLesson] = useState<string>("");
   const [showLessonModal, setShowLessonModal] = useState(false);
+  const [currentLesson, setCurrentLesson] = useState(0);
   const [listeningAudio, setListeningAudio] = useState<{
     url: string;
     studentName: string;
@@ -31,6 +35,66 @@ export function OverallProgressTable({ classId }: { classId: string }) {
     () => members?.filter((m) => m.role === "student"),
     [members]
   );
+
+  // Map book ID to StreamlineBook or Lessons1000Book
+  const audioBookData = useMemo<{
+    type: "streamline" | "lessons1000";
+    book: StreamlineBook | Lessons1000Book;
+    audioFiles: string[];
+    missingLessons: number[];
+  } | null>(() => {
+    if (!selectedBook) return null;
+    
+    const bookId = parseInt(selectedBook);
+    
+    // Streamline books: ID 1-4
+    if (bookId >= 1 && bookId <= 4) {
+      const streamlineBook = STREAMLINE_BOOKS.find((b) => b.id === bookId);
+      if (streamlineBook) {
+        return {
+          type: "streamline" as const,
+          book: streamlineBook,
+          audioFiles: streamlineBook.audioFiles,
+          missingLessons: streamlineBook.missingLessons,
+        };
+      }
+    }
+    
+    // Lessons1000 books: ID 5-16
+    if (bookId >= 5 && bookId <= 16) {
+      const lessons1000Book = LESSONS_1000_BOOKS.find((b) => b.id === bookId);
+      if (lessons1000Book) {
+        return {
+          type: "lessons1000" as const,
+          book: lessons1000Book,
+          audioFiles: lessons1000Book.audioFiles,
+          missingLessons: [], // Lessons1000 doesn't have missingLessons
+        };
+      }
+    }
+    
+    return null;
+  }, [selectedBook]);
+
+  // Check if selected lesson is missing or invalid
+  const isLessonMissing = useMemo(() => {
+    if (!selectedLesson || !audioBookData) return false;
+    const lessonNum = parseInt(selectedLesson);
+    return audioBookData.missingLessons.includes(lessonNum);
+  }, [selectedLesson, audioBookData]);
+
+  // Set currentLesson when selectedLesson changes
+  useEffect(() => {
+    if (selectedLesson && audioBookData) {
+      const lessonNum = parseInt(selectedLesson);
+      // Lesson numbers are 1-based, but array indices are 0-based
+      const lessonIndex = lessonNum - 1;
+      
+      if (lessonIndex >= 0 && lessonIndex < audioBookData.audioFiles.length) {
+        setCurrentLesson(lessonIndex);
+      }
+    }
+  }, [selectedLesson, audioBookData]);
 
   const studentProgressData = useMemo(() => {
     if (!students || !selectedBook || !selectedLesson) {
@@ -134,6 +198,37 @@ export function OverallProgressTable({ classId }: { classId: string }) {
             )}
           </div>
         </div>
+
+        {/* Audio Player for Reference - Only show when book and lesson are selected */}
+        {hasSelection && audioBookData && audioBookData.audioFiles.length > 0 && (
+          <div className="mb-6 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600">
+            <div className="mb-2">
+              <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                🎧 Bài nghe mẫu
+              </h3>
+            </div>
+            {isLessonMissing ? (
+              <div className="p-4 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg">
+                <p className="text-sm text-yellow-800 dark:text-yellow-200">
+                  ⚠️ Bài học {selectedLesson} không có file audio.
+                </p>
+              </div>
+            ) : (
+              <AudioPlayer
+                key={`${selectedBook}-${selectedLesson}`}
+                audioFiles={audioBookData.audioFiles}
+                onLessonSelect={setCurrentLesson}
+                currentLesson={currentLesson}
+                missingLessons={audioBookData.missingLessons}
+                hideLessonList={true}
+                trackingContext={{
+                  module: audioBookData.type,
+                  itemKey: selectedBook,
+                }}
+              />
+            )}
+          </div>
+        )}
 
         <div>
           {!hasSelection ? (

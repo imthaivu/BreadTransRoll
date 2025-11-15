@@ -14,6 +14,7 @@ interface AudioPlayerProps {
   currentLesson?: number;
   className?: string;
   missingLessons?: number[];
+  hideLessonList?: boolean; // Hide the lesson selection grid
   trackingContext?: {
     module: string; // "streamline" | "lessons1000"
     itemKey: string; // e.g., book id or composite key
@@ -26,6 +27,7 @@ export default function AudioPlayer({
   currentLesson = 0,
   className = "",
   missingLessons = [],
+  hideLessonList = false,
   trackingContext,
 }: AudioPlayerProps) {
   const { session } = useAuth();
@@ -39,6 +41,7 @@ export default function AudioPlayer({
   const [maxPercent, setMaxPercent] = useState(0);
   const [submittedThisSession, setSubmittedThisSession] = useState(false);
   const submittedRef = useRef(false);
+  const [audioError, setAudioError] = useState<string | null>(null);
 
   const handleResetProgressTracking = useCallback(() => {
     setSubmittedThisSession(false);
@@ -80,6 +83,11 @@ export default function AudioPlayer({
     setIsPlaying(false);
   }, []);
 
+  const handleError = useCallback(() => {
+    setIsPlaying(false);
+    setAudioError("Không thể tải file audio. Vui lòng thử lại sau.");
+  }, []);
+
   useEffect(() => {
     const audio = audioRef.current;
     if (audio) {
@@ -88,12 +96,14 @@ export default function AudioPlayer({
       audio.addEventListener("playing", handlePlaying);
       audio.addEventListener("pause", handlePause);
       audio.addEventListener("ended", handleEnded);
+      audio.addEventListener("error", handleError);
       return () => {
         audio.removeEventListener("loadedmetadata", handleLoadedMetadata);
         audio.removeEventListener("timeupdate", handleTimeUpdate);
         audio.removeEventListener("playing", handlePlaying);
         audio.removeEventListener("pause", handlePause);
         audio.removeEventListener("ended", handleEnded);
+        audio.removeEventListener("error", handleError);
       };
     }
   }, [
@@ -102,6 +112,7 @@ export default function AudioPlayer({
     handlePlaying,
     handlePause,
     handleEnded,
+    handleError,
   ]);
 
   useEffect(() => {
@@ -113,6 +124,7 @@ export default function AudioPlayer({
     if (audio && audioFiles[selectedLesson]) {
       const newSrc = audioFiles[selectedLesson];
       if (audio.getAttribute("src") !== newSrc) {
+        setAudioError(null); // Reset error when changing audio
         audio.src = newSrc;
         audio.load();
         setMaxPercent(0);
@@ -234,6 +246,13 @@ export default function AudioPlayer({
 
       {audioFiles.length > 0 ? (
         <>
+          {audioError && (
+            <div className="mb-4 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
+              <p className="text-sm text-red-800 dark:text-red-200">
+                ⚠️ {audioError}
+              </p>
+            </div>
+          )}
           <div>
             <input
               type="range"
@@ -278,7 +297,7 @@ export default function AudioPlayer({
             </Button>
           </div>
 
-          <div className="flex justify-center items-center gap-6 mb-8 px-2">
+          <div className="flex justify-center items-center gap-6 mb-2 px-2">
             <div className="flex items-center gap-2">
               {AUDIO_PLAYER_CONFIG.speeds.map((speed) => (
                 <Button
@@ -308,29 +327,31 @@ export default function AudioPlayer({
             </div>
           </div>
 
-          <div className="grid grid-cols-8 sm:grid-cols-10 lg:grid-cols-16 gap-1">
-            {audioFiles.map((_, index) => {
-              if (missingLessons.includes(index + 1)) {
-                return null;
-              }
+          {!hideLessonList && (
+            <div className="grid grid-cols-8 sm:grid-cols-10 lg:grid-cols-16 gap-1">
+              {audioFiles.map((_, index) => {
+                if (missingLessons.includes(index + 1)) {
+                  return null;
+                }
 
-              return (
-                <Button
-                  key={index}
-                  onClick={() => handleLessonSelect(index)}
-                  variant={selectedLesson === index ? "primary" : "secondary"}
-                  size="sm"
-                  className={`aspect-square w-full h-auto rounded-xl text-lg font-bold transition-all duration-200 ${
-                    selectedLesson === index
-                      ? " bg-primary text-white shadow-md scale-105"
-                      : "bg-white text-gray-700 hover:bg-blue-100 hover:text-blue-700 border border-gray-200"
-                  }`}
-                >
-                  {index + 1}
-                </Button>
-              );
-            })}
-          </div>
+                return (
+                  <Button
+                    key={index}
+                    onClick={() => handleLessonSelect(index)}
+                    variant={selectedLesson === index ? "primary" : "secondary"}
+                    size="sm"
+                    className={`aspect-square w-full h-auto rounded-xl text-lg font-bold transition-all duration-200 ${
+                      selectedLesson === index
+                        ? " bg-primary text-white shadow-md scale-105"
+                        : "bg-white text-gray-700 hover:bg-blue-100 hover:text-blue-700 border border-gray-200"
+                    }`}
+                  >
+                    {index + 1}
+                  </Button>
+                );
+              })}
+            </div>
+          )}
         </>
       ) : (
         <div className="text-center py-12">
