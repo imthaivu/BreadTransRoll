@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
 import "./Timeline.css";
 import Image from "next/image";
@@ -88,6 +89,12 @@ const cardVariants = {
 };
 
 export default function Timeline() {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const halfPoint = Math.ceil(timelineData.length / 2);
+  const displayedData = isExpanded
+    ? timelineData
+    : timelineData.slice(0, halfPoint);
+
   return (
     <section className="mb-8">
       <div>
@@ -104,8 +111,8 @@ export default function Timeline() {
           </p>
         </motion.div>
 
-        <div className="timeline">
-          {timelineData.map((item, index) => (
+        <div className="timeline relative">
+          {displayedData.map((item, index) => (
             <motion.div
               key={item.id}
               className={`card-about ${item.id} my-4 p-2 md:p-4`}
@@ -131,7 +138,50 @@ export default function Timeline() {
               </ul>
             </motion.div>
           ))}
+
+          {!isExpanded && timelineData.length > halfPoint && (
+            <div className="absolute bottom-0 left-0 right-0 h-1/2 pointer-events-none">
+              <div
+                className="h-full w-full"
+                style={{
+                  background: `linear-gradient(to bottom, transparent 0%, rgba(255, 255, 255, 0.8) 50%, rgba(255, 255, 255, 0.95) 100%)`,
+                }}
+              />
+            </div>
+          )}
         </div>
+
+        {timelineData.length > halfPoint && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+            className="text-center mt-6"
+          >
+            <motion.div
+              onClick={() => setIsExpanded(!isExpanded)}
+              className="inline-flex items-center gap-2 cursor-pointer text-blue-600 hover:text-blue-700 font-semibold transition-colors duration-200"
+              whileHover={{ opacity: 0.8 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <span>{isExpanded ? "Thu gọn" : "Xem thêm"}</span>
+              <motion.svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                animate={{ rotate: isExpanded ? 180 : 0 }}
+                transition={{ duration: 0.3 }}
+              >
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </motion.svg>
+            </motion.div>
+          </motion.div>
+        )}
 
         <motion.div
           initial={{ opacity: 0, y: 30 }}
