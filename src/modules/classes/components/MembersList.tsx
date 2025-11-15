@@ -224,10 +224,7 @@ export function MembersList({
     member: IClassMember;
     type: "add" | "subtract";
   } | null>(null);
-  const [contactModal, setContactModal] = useState<{
-    member: IClassMember;
-    type: "zalo" | "phone";
-  } | null>(null);
+  const [contactModal, setContactModal] = useState<IClassMember | null>(null);
   const [ticketModal, setTicketModal] = useState<{
     member: IClassMember;
   } | null>(null);
@@ -255,9 +252,24 @@ export function MembersList({
           >
             {/* Info */}
             <div className="flex items-center gap-3">
-              {/* Avatar placeholder - no image loading for performance */}
-              <div className="w-10 h-10 rounded-full bg-gray-300 dark:bg-gray-600 flex items-center justify-center flex-shrink-0">
-                <FiUser className="w-5 h-5 text-gray-500" />
+              {/* Avatar with edit button */}
+              <div className="relative flex-shrink-0">
+                <div className="w-10 h-10 rounded-full bg-gray-300 dark:bg-gray-600 flex items-center justify-center">
+                  <FiUser className="w-5 h-5 text-gray-500" />
+                </div>
+                {member.role === "student" && (
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      setEditStudentModal(member);
+                    }}
+                    className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-primary text-white flex items-center justify-center hover:bg-primary/90 transition-colors shadow-sm"
+                    title="Sửa thông tin học sinh"
+                  >
+                    <FiEdit className="w-3 h-3" />
+                  </button>
+                )}
               </div>
               <div className="flex items-center gap-2">
                 <p className="font-semibold text-foreground">{member.name}</p>
@@ -266,48 +278,21 @@ export function MembersList({
 
             {/* Actions */}
             <div className="flex items-center gap-2">
-              {/* Contact buttons - show if has phone or parentPhone */}
+              {/* Contact button - single phone icon */}
               {(member.phone || member.parentPhone) && (
-                <>
-                  {/* Zalo button */}
-                  {(member.phone || member.parentPhone) && (
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        setContactModal({ member, type: "zalo" });
-                      }}
-                      title="Liên lạc Zalo"
-                      className="p-2"
-                    >
-                      <Image
-                        src="/assets/images/zalo.png"
-                        alt="Zalo"
-                        width={20}
-                        height={20}
-                        className="object-contain"
-                      />
-                    </Button>
-                  )}
-                  {/* Phone button */}
-                  {(member.phone || member.parentPhone) && (
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        setContactModal({ member, type: "phone" });
-                      }}
-                      title="Gọi điện"
-                      className="p-2"
-                    >
-                      <FiPhone className="h-5 w-5 text-primary" />
-                    </Button>
-                  )}
-                </>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    setContactModal(member);
+                  }}
+                  title="Liên lạc"
+                  className="p-2"
+                >
+                  <FiPhone className="h-5 w-5 text-primary" />
+                </Button>
               )}
               {member.role === "student" && (
                 <>
@@ -359,19 +344,6 @@ export function MembersList({
                     <FiTrendingUp className="h-4 w-4 md:mr-2" />
                     <span className="hidden md:inline">Xem tiến trình</span>
                   </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      setEditStudentModal(member);
-                    }}
-                    title="Sửa thông tin học sinh"
-                  >
-                    <FiEdit className="h-4 w-4 md:mr-2" />
-                    <span className="hidden md:inline">Sửa</span>
-                  </Button>
                 </>
               )}
             </div>
@@ -401,8 +373,7 @@ export function MembersList({
         <ContactModal
           isOpen={!!contactModal}
           onClose={() => setContactModal(null)}
-          member={contactModal.member}
-          type={contactModal.type}
+          member={contactModal}
         />
       )}
 
@@ -511,31 +482,14 @@ interface ContactModalProps {
   isOpen: boolean;
   onClose: () => void;
   member: IClassMember;
-  type: "zalo" | "phone";
 }
 
-function ContactModal({ isOpen, onClose, member, type }: ContactModalProps) {
+function ContactModal({ isOpen, onClose, member }: ContactModalProps) {
   const hasPhone = !!member.phone;
   const hasParentPhone = !!member.parentPhone;
-  const [selectedContact, setSelectedContact] = useState<"student" | "parent" | null>(null);
 
-  // Auto-select if only one option available
-  useEffect(() => {
-    if (isOpen) {
-      if (hasPhone && !hasParentPhone) {
-        setSelectedContact("student");
-      } else if (!hasPhone && hasParentPhone) {
-        setSelectedContact("parent");
-      } else {
-        setSelectedContact(null);
-      }
-    }
-  }, [isOpen, hasPhone, hasParentPhone]);
-
-  const handleConfirm = () => {
-    if (!selectedContact) return;
-
-    const phoneNumber = selectedContact === "student" ? member.phone : member.parentPhone;
+  const handleContact = (type: "zalo" | "phone", contact: "student" | "parent") => {
+    const phoneNumber = contact === "student" ? member.phone : member.parentPhone;
     if (!phoneNumber) return;
 
     if (type === "zalo") {
@@ -548,85 +502,56 @@ function ContactModal({ isOpen, onClose, member, type }: ContactModalProps) {
     onClose();
   };
 
-  const handleSelectContact = (contact: "student" | "parent") => {
-    setSelectedContact(contact);
-  };
+  // Build list of contact options
+  const contactOptions: Array<{ type: "zalo" | "phone"; contact: "student" | "parent"; label: string; phone: string }> = [];
+  
+  if (hasPhone) {
+    contactOptions.push(
+      { type: "zalo", contact: "student", label: "Zalo học sinh", phone: member.phone! },
+      { type: "phone", contact: "student", label: "Gọi học sinh", phone: member.phone! }
+    );
+  }
+  
+  if (hasParentPhone) {
+    contactOptions.push(
+      { type: "zalo", contact: "parent", label: "Zalo phụ huynh", phone: member.parentPhone! },
+      { type: "phone", contact: "parent", label: "Gọi phụ huynh", phone: member.parentPhone! }
+    );
+  }
 
   return (
     <Modal
       open={isOpen}
       onClose={onClose}
       maxWidth="sm"
-      title={type === "zalo" ? "Liên lạc Zalo" : "Gọi điện"}
+      title="Liên lạc"
     >
-      <div className="space-y-4">
-        <p className="text-sm text-gray-600">
-          Bạn muốn liên lạc với ai?
-        </p>
-
-        <div className="space-y-2">
-          {hasPhone && (
-            <button
-              onClick={() => handleSelectContact("student")}
-              className={`w-full p-3 rounded-lg border-2 transition-all ${
-                selectedContact === "student"
-                  ? "border-primary  bg-primary/10"
-                  : "border-gray-200 hover:border-gray-300"
-              }`}
-            >
-              <div className="flex items-center justify-between">
-                <div className="text-left">
-                  <p className="font-medium text-gray-800">Học sinh</p>
-                  <p className="text-sm text-gray-600">{member.phone}</p>
-                </div>
-                {selectedContact === "student" && (
-                  <div className="w-5 h-5 rounded-full  bg-primary flex items-center justify-center">
-                    <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                    </svg>
-                  </div>
-                )}
-              </div>
-            </button>
-          )}
-
-          {hasParentPhone && (
-            <button
-              onClick={() => handleSelectContact("parent")}
-              className={`w-full p-3 rounded-lg border-2 transition-all ${
-                selectedContact === "parent"
-                  ? "border-primary  bg-primary/10"
-                  : "border-gray-200 hover:border-gray-300"
-              }`}
-            >
-              <div className="flex items-center justify-between">
-                <div className="text-left">
-                  <p className="font-medium text-gray-800">Phụ huynh</p>
-                  <p className="text-sm text-gray-600">{member.parentPhone}</p>
-                </div>
-                {selectedContact === "parent" && (
-                  <div className="w-5 h-5 rounded-full  bg-primary flex items-center justify-center">
-                    <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                    </svg>
-                  </div>
-                )}
-              </div>
-            </button>
-          )}
-        </div>
-
-        <div className="flex justify-end gap-2 pt-2">
-          <Button type="button" variant="outline" onClick={onClose}>
-            Hủy
-          </Button>
-          <Button
-            onClick={handleConfirm}
-            disabled={!selectedContact}
+      <div className="space-y-2">
+        {contactOptions.map((option, index) => (
+          <button
+            key={index}
+            onClick={() => handleContact(option.type, option.contact)}
+            className="w-full p-3 rounded-lg border-2 border-gray-200 hover:border-primary hover:bg-primary/5 transition-all text-left"
           >
-            {type === "zalo" ? "Mở Zalo" : "Gọi điện"}
-          </Button>
-        </div>
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="font-medium text-gray-800">{option.label}</p>
+                <p className="text-sm text-gray-600">{option.phone}</p>
+              </div>
+              {option.type === "zalo" ? (
+                <Image
+                  src="/assets/images/zalo.png"
+                  alt="Zalo"
+                  width={24}
+                  height={24}
+                  className="object-contain"
+                />
+              ) : (
+                <FiPhone className="w-5 h-5 text-primary" />
+              )}
+            </div>
+          </button>
+        ))}
       </div>
     </Modal>
   );
