@@ -10,11 +10,9 @@ import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState, useRef } from "react";
-import { FaFire, FaTicketAlt } from "react-icons/fa";
+import { useEffect, useState } from "react";
+import { FaFire } from "react-icons/fa";
 import { FiChevronDown, FiLayers } from "react-icons/fi";
-import { useNewTicketNotification } from "@/hooks/useNewTicketNotification";
-import { TicketNotification } from "@/components/ui/TicketNotification";
 
 // Animation variants for dropdown
 const MAX_VISIBLE_NAV_ITEMS = 0;
@@ -51,24 +49,8 @@ export default function Header() {
   const [isMoreMenuOpen, setIsMoreMenuOpen] = useState(false);
   const [showMagicDoor, setShowMagicDoor] = useState(false);
   const pathname = usePathname();
-  const avatarRef = useRef<HTMLDivElement>(null);
-  const [avatarPosition, setAvatarPosition] = useState<{ x: number; y: number } | undefined>();
 
   const isStudent = role == "student";
-  
-  // Track new tickets for students
-  const { hasNewTickets, ticketCount, showNotification, dismissNotification } = useNewTicketNotification();
-
-  // Calculate avatar position for notification
-  useEffect(() => {
-    if (avatarRef.current) {
-      const rect = avatarRef.current.getBoundingClientRect();
-      setAvatarPosition({
-        x: rect.left + rect.width / 2,
-        y: rect.top + rect.height / 2,
-      });
-    }
-  }, [profile?.avatarUrl, showNotification]);
 
   // Close mobile menu when pressing Escape key
   useEffect(() => {
@@ -146,7 +128,7 @@ export default function Header() {
           )}
         </div>
         <div className="flex items-center gap-2">
-          <div className="relative md:hidden w-8 h-8" ref={avatarRef}>
+          <div className="relative md:hidden w-8 h-8">
             {profile?.streakCount && profile.streakCount > 0 && (
               <div
                 className="absolute -top-3 -right-4 flex items-center gap-1 text-orange-500 font-semibold"
@@ -159,33 +141,19 @@ export default function Header() {
 
             {profile?.avatarUrl && (
               <Link href={"/profile"}>
-                <div className="relative">
-                  <Image
-                    src={profile.avatarUrl ?? ""}
-                    alt={profile.displayName ?? ""}
-                    width={32}
-                    height={32}
-                    className="rounded-full"
-                  />
-                  {/* Ticket icon badge */}
-                  {isStudent && hasNewTickets && (
-                    <motion.div
-                      initial={{ scale: 0, rotate: -180 }}
-                      animate={{ scale: 1, rotate: 0 }}
-                      className="absolute -top-1 -left-1 bg-orange-500 rounded-full p-1 shadow-lg border-2 border-white"
-                      title={`Có ${ticketCount} vé quay bánh mì`}
-                    >
-                      <FaTicketAlt className="w-3 h-3 text-white" />
-                    </motion.div>
-                  )}
-                </div>
+                <Image
+                  src={profile.avatarUrl ?? ""}
+                  alt={profile.displayName ?? ""}
+                  width={32}
+                  height={32}
+                  className="rounded-full"
+                />
               </Link>
             )}
           </div>
 
           {isStudent && (
             <div className="flex md:hidden items-center bg-blue-100 text-white text-sm md:text-base font-bold px-3 py-0.5 rounded-full h-10 ml-2">
-              <span className="mr-1 text-gray-600">Có</span>
               <span className="text-black">{profile?.totalBanhRan || 0}</span>
               <Image
                 src={
@@ -239,15 +207,6 @@ export default function Header() {
           setShowMagicDoor(false);
         }}
       />
-
-      {/* Ticket Notification */}
-      {isStudent && (
-        <TicketNotification
-          show={showNotification}
-          onDismiss={dismissNotification}
-          avatarPosition={avatarPosition}
-        />
-      )}
     </header>
   );
 }
@@ -408,22 +367,6 @@ function UserActions({
 }: UserActionsProps) {
   const { session, profile, loading, role } = useAuth();
   const isStudent = role == "student";
-  const avatarRef = useRef<HTMLDivElement>(null);
-  const [avatarPosition, setAvatarPosition] = useState<{ x: number; y: number } | undefined>();
-
-  // Track new tickets for students
-  const { hasNewTickets, ticketCount, showNotification, dismissNotification } = useNewTicketNotification();
-
-  // Calculate avatar position for notification
-  useEffect(() => {
-    if (avatarRef.current) {
-      const rect = avatarRef.current.getBoundingClientRect();
-      setAvatarPosition({
-        x: rect.left + rect.width / 2,
-        y: rect.top + rect.height / 2,
-      });
-    }
-  }, [profile?.avatarUrl, showNotification]);
 
   if (loading) {
     return (
@@ -446,26 +389,13 @@ function UserActions({
           className="flex items-center gap-2 text-sm md:text-base text-slate-700 hover:text-indigo-700"
         >
           {profile?.avatarUrl && (
-            <div className="relative" ref={avatarRef}>
-              <Image
-                src={profile.avatarUrl ?? ""}
-                alt={profile.displayName ?? ""}
-                width={32}
-                height={32}
-                className="rounded-full"
-              />
-              {/* Ticket icon badge */}
-              {isStudent && hasNewTickets && (
-                <motion.div
-                  initial={{ scale: 0, rotate: -180 }}
-                  animate={{ scale: 1, rotate: 0 }}
-                  className="absolute -top-1 -left-1 bg-orange-500 rounded-full p-1 shadow-lg border-2 border-white"
-                  title={`Có ${ticketCount} vé quay bánh mì`}
-                >
-                  <FaTicketAlt className="w-3 h-3 text-white" />
-                </motion.div>
-              )}
-            </div>
+            <Image
+              src={profile.avatarUrl ?? ""}
+              alt={profile.displayName ?? ""}
+              width={32}
+              height={32}
+              className="rounded-full"
+            />
           )}
 
         <div className="flex flex-col leading-tight mr-2">
@@ -520,15 +450,6 @@ function UserActions({
         <span className="ml-1">Đăng xuất</span>
       </Button> */}
       </div>
-
-      {/* Ticket Notification */}
-      {isStudent && (
-        <TicketNotification
-          show={showNotification}
-          onDismiss={dismissNotification}
-          avatarPosition={avatarPosition}
-        />
-      )}
     </>
   );
 }
