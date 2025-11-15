@@ -6,7 +6,7 @@ import { useAuth } from "@/lib/auth/context";
 import { IClass, IClassMember } from "@/types";
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { FiMinusCircle, FiPlusCircle, FiUser, FiPhone } from "react-icons/fi";
+import { FiMinusCircle, FiPlusCircle, FiUser, FiPhone, FiTrendingUp } from "react-icons/fi";
 import Image from "next/image";
 import toast from "react-hot-toast";
 import {
@@ -313,7 +313,7 @@ export function MembersList({
                     title="Cộng bánh mì"
                   >
                     <FiPlusCircle className="h-5 w-5 text-green-500" />
-                    <span className="ml-1">Cộng</span>
+                    <span className="ml-1 hidden md:inline">Cộng</span>
                   </Button>
                   <Button
                     variant="ghost"
@@ -327,15 +327,15 @@ export function MembersList({
                     disabled={balance === 0}
                   >
                     <FiMinusCircle className="h-5 w-5 text-red-500" />
-                    <span className="ml-1">Trừ</span>
+                    <span className="ml-1 hidden md:inline">Trừ</span>
                   </Button>
                   <Button
                     variant="outline"
                     size="sm"
                     onClick={() => onMemberClick(member)}
                   >
-                    <FiUser className="mr-2 h-4 w-4" />
-                    Xem tiến trình
+                    <FiTrendingUp className="h-4 w-4 md:mr-2" />
+                    <span className="hidden md:inline">Xem tiến trình</span>
                   </Button>
                 </>
               )}
