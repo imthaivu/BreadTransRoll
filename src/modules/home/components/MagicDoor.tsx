@@ -172,23 +172,22 @@ export default function MagicDoor({
     if (!doorOpen) {
       setDoorOpen(true);
 
-      // Play door opening sound
-      const doorSound = new Audio(
-        "https://magical-tulumba-581427.netlify.app/mp3-ui/mo-cua.mp3"
-      );
-      doorSound.play().catch(console.error);
-
       // Trigger shine border effect
       setShowShineBorder(true);
 
-      // Teacher scolds Milu
-      const teacherAudio = new Audio(
-        "https://magical-tulumba-581427.netlify.app/mp3-ui/thay-giao-chui-nobita.mp3"
+      // Play door opening sound and wait for it to finish
+      const doorSound = new Audio(
+        "https://magical-tulumba-581427.netlify.app/mp3-ui/mo-cua.mp3"
       );
-      teacherAudio.play().catch(console.error);
+      
+      await new Promise<void>((resolve) => {
+        doorSound.addEventListener("ended", () => {
+          resolve();
+        });
+        doorSound.play().catch(console.error);
+      });
 
-      await new Promise((resolve) => setTimeout(resolve, 3000));
-
+      // After door sound finishes (5s), proceed to login
       handleGoogleLogin();
     }
   };
