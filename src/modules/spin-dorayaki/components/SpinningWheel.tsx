@@ -84,14 +84,15 @@ function checkTimeSlotCreateSpinTicket(): {
 }
 
 // Configuration for prizes based on DISPLAY probabilities (visual representation)
+// Thứ tự giải thưởng trên vòng quay: 30, 80, 10, 100, 20, 60, 50
 const prizeDisplayConfig = [
-  { text: "10", count: 4, color: "#2196F3", textColor: "#FFFFFF" }, // 20%
-  { text: "20", count: 4, color: "#B3E5FC", textColor: "#333333" }, // 10%
-  { text: "50", count: 3, color: "#FF9800", textColor: "#FFFFFF" }, // 20%
-  { text: "80", count: 2, color: "#F8BBD0", textColor: "#333333" }, // 15%
-  { text: "60", count: 2, color: "#4CAF50", textColor: "#FFFFFF" }, // 15%
   { text: "30", count: 4, color: "#FFEB3B", textColor: "#333333" }, // 10%
+  { text: "80", count: 2, color: "#F8BBD0", textColor: "#333333" }, // 15%
+  { text: "10", count: 4, color: "#2196F3", textColor: "#FFFFFF" }, // 20%
   { text: "100", count: 1, color: "#F44336", textColor: "#FFFFFF" }, // 10%
+  { text: "20", count: 4, color: "#B3E5FC", textColor: "#333333" }, // 10%
+  { text: "60", count: 2, color: "#4CAF50", textColor: "#FFFFFF" }, // 15%
+  { text: "50", count: 3, color: "#FF9800", textColor: "#FFFFFF" }, // 20%
 ];
 
 // Generate the 20-segment array for visual display
