@@ -156,7 +156,7 @@ export default function Timeline() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
-            className="text-center mt-6"
+            className="text-center text-2xl"
           >
             <motion.div
               onClick={() => setIsExpanded(!isExpanded)}
