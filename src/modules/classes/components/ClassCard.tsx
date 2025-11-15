@@ -4,7 +4,10 @@ import { Button } from "@/components/ui/Button";
 import { IClass } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
-import { FiArrowRight, FiEdit } from "react-icons/fi";
+import { FiArrowRight, FiEdit, FiSave } from "react-icons/fi";
+import { useState, useEffect } from "react";
+import { useUpdateClassLinks } from "../hooks";
+import toast from "react-hot-toast";
 
 export function ClassCard({
   classItem,
@@ -15,6 +18,34 @@ export function ClassCard({
 }) {
   const zaloLink = classItem?.links?.zalo;
   const meetLink = classItem?.links?.meet;
+  const [noteProcess, setNoteProcess] = useState(classItem.noteProcess || "");
+  const [isEditing, setIsEditing] = useState(false);
+  const { mutateAsync: updateLinks, isPending } = useUpdateClassLinks();
+
+  // Sync state when classItem changes
+  useEffect(() => {
+    setNoteProcess(classItem.noteProcess || "");
+    setIsEditing(false);
+  }, [classItem.noteProcess]);
+
+  const hasChanges = noteProcess !== (classItem.noteProcess || "");
+
+  const handleUpdateProgress = async () => {
+    try {
+      await updateLinks({
+        classId: classItem.id,
+        links: {
+          zalo: zaloLink,
+          meet: meetLink,
+        },
+        noteProcess: noteProcess,
+      });
+      toast.success("Cập nhật quá trình học tập thành công!");
+      setIsEditing(false);
+    } catch (error) {
+      toast.error("Đã có lỗi xảy ra. Vui lòng thử lại.");
+    }
+  };
 
   return (
     <div className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-md hover:shadow-md transition-shadow duration-200 flex flex-col h-full">
@@ -35,7 +66,37 @@ export function ClassCard({
         </p>
       </div>
       <div className="border-t border-gray-200 p-4 bg-gray-50">
-        <div className="grid grid-cols-1 gap-2">
+        <div className="grid grid-cols-1 gap-4">
+          {/* Quá trình học tập */}
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
+              Quá trình học tập:
+            </label>
+            <div className="flex items-start gap-2">
+              <textarea
+                value={noteProcess}
+                onChange={(e) => {
+                  setNoteProcess(e.target.value);
+                  setIsEditing(true);
+                }}
+                onFocus={() => setIsEditing(true)}
+                placeholder="Nhập ghi chú về quá trình học tập..."
+                rows={3}
+                className="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary resize-y"
+              />
+              <Button
+                variant="primary"
+                size="sm"
+                onClick={handleUpdateProgress}
+                disabled={isPending || !hasChanges}
+                className="flex items-center gap-1 flex-shrink-0"
+              >
+                <FiSave className="w-4 h-4" />
+                {isPending ? "Đang lưu..." : "Update"}
+              </Button>
+            </div>
+          </div>
+
           <div className="flex items-center gap-2">
             <span className="text-sm font-semibold">Liên kết:</span>
 
@@ -76,7 +137,7 @@ export function ClassCard({
               </a>
             )}
           </div>
-          <div className="flex items-center gap-2 mt-4 justify-end">
+          <div className="flex items-center gap-2 justify-end">
             {onUpdateClick && (
               <Button
                 variant="outline"

@@ -91,6 +91,18 @@ export function StudentClassCard({
         )}
       </div>
 
+      {/* Quá trình học tập */}
+      {classItem.noteProcess && (
+        <div className="mb-4 p-3 bg-gray-50 rounded-lg border border-gray-200">
+          <h4 className="text-sm font-semibold text-gray-700 mb-2">
+            Quá trình học tập:
+          </h4>
+          <p className="text-sm text-gray-600 whitespace-pre-wrap">
+            {classItem.noteProcess}
+          </p>
+        </div>
+      )}
+
       {/* Nút xem thành viên */}
       <Button
         variant="outline"
