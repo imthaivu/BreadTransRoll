@@ -181,26 +181,13 @@ export default function MagicDoor({
       // Trigger shine border effect
       setShowShineBorder(true);
 
-      const now = new Date();
-      const hour = now.getHours();
-      const isLate = hour >= 11 && hour < 18;
-
-      let teacherAudio;
-
-      if (isLate) {
-        // Teacher scolds Milu (after 11 AM)
-        teacherAudio = new Audio(
-          "https://magical-tulumba-581427.netlify.app/mp3-ui/thay-giao-chui-nobita.mp3"
-        );
-      } else {
-        // Teacher praises Milu (before 11 AM)
-        teacherAudio = new Audio(
-          "https://magical-tulumba-581427.netlify.app/mp3-ui/thay-giao-khen-nobita.mp3"
-        );
-      }
+      // Teacher scolds Milu
+      const teacherAudio = new Audio(
+        "https://magical-tulumba-581427.netlify.app/mp3-ui/thay-giao-chui-nobita.mp3"
+      );
       teacherAudio.play().catch(console.error);
 
-      await new Promise((resolve) => setTimeout(resolve, isLate ? 3000 : 3000));
+      await new Promise((resolve) => setTimeout(resolve, 3000));
 
       handleGoogleLogin();
     }
