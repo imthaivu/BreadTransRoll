@@ -404,11 +404,33 @@ export function SpinningWheel() {
   // Touch event handlers
   const handleTouchStart = useCallback((e: React.TouchEvent<HTMLCanvasElement>) => {
     e.preventDefault();
+    e.stopPropagation();
     const touch = e.touches[0];
     if (touch) {
       handleDragStart(touch.clientX, touch.clientY);
     }
   }, [handleDragStart]);
+
+  const handleTouchMoveCanvas = useCallback((e: React.TouchEvent<HTMLCanvasElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const touch = e.touches[0];
+    if (touch) {
+      handleDragMove(touch.clientX, touch.clientY);
+    }
+  }, [handleDragMove]);
+
+  const handleTouchEndCanvas = useCallback((e: React.TouchEvent<HTMLCanvasElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    handleDragEnd();
+  }, [handleDragEnd]);
+
+  const handleTouchCancel = useCallback((e: React.TouchEvent<HTMLCanvasElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    handleDragEnd();
+  }, [handleDragEnd]);
 
   const handleTouchMove = useCallback((e: TouchEvent) => {
     e.preventDefault();
@@ -449,16 +471,25 @@ export function SpinningWheel() {
       }
     };
 
+    const handleGlobalTouchCancel = (e: TouchEvent) => {
+      if (isDraggingRef.current) {
+        e.preventDefault();
+        handleDragEnd();
+      }
+    };
+
     window.addEventListener("mousemove", handleGlobalMouseMove);
     window.addEventListener("mouseup", handleGlobalMouseUp);
     window.addEventListener("touchmove", handleGlobalTouchMove, { passive: false });
     window.addEventListener("touchend", handleGlobalTouchEnd);
+    window.addEventListener("touchcancel", handleGlobalTouchCancel, { passive: false });
 
     return () => {
       window.removeEventListener("mousemove", handleGlobalMouseMove);
       window.removeEventListener("mouseup", handleGlobalMouseUp);
       window.removeEventListener("touchmove", handleGlobalTouchMove);
       window.removeEventListener("touchend", handleGlobalTouchEnd);
+      window.removeEventListener("touchcancel", handleGlobalTouchCancel);
     };
   }, [handleMouseMove, handleMouseUp, handleTouchMove, handleTouchEnd]);
 
@@ -854,12 +885,20 @@ export function SpinningWheel() {
             id="wheel"
             onMouseDown={handleMouseDown}
             onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMoveCanvas}
+            onTouchEnd={handleTouchEndCanvas}
+            onTouchCancel={handleTouchCancel}
             className={`rounded-full bg-[radial-gradient(circle_at_center,_#ffffff,_theme(colors.spin-wheel-blue))] shadow-spin-wheel ${
               !isSpinning && !isSpinLoading
                 ? "cursor-grab active:cursor-grabbing"
                 : "cursor-not-allowed"
             }`}
-            style={{ touchAction: "none" }}
+            style={{ 
+              touchAction: "none",
+              WebkitTouchCallout: "none",
+              WebkitUserSelect: "none",
+              userSelect: "none"
+            }}
           ></canvas>
           <div className="flex text-center justify-center mt-3">
             <button
