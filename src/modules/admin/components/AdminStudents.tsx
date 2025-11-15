@@ -5,7 +5,7 @@ import Pagination from "@/components/ui/Pagination";
 import { IProfile } from "@/types";
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { FiEdit, FiEye, FiTrash2, FiUsers, FiDollarSign } from "react-icons/fi";
+import { FiEdit, FiEye, FiTrash2, FiUsers } from "react-icons/fi";
 import {
   AdminForm,
   AdminFormField,
@@ -22,7 +22,6 @@ import { useMemo, useEffect } from "react";
 import Image from "next/image";
 import { getStorageBucket } from "@/lib/firebase/client";
 import { ref, uploadBytes, getDownloadURL, deleteObject, listAll } from "firebase/storage";
-import { createSpinTicketByAdmin } from "@/modules/spin-dorayaki/services";
 import { UpdateStudentData } from "../services/student.service";
 import { compressAndResizeImage } from "@/utils/image";
 
@@ -62,8 +61,6 @@ export default function AdminStudents() {
     null
   );
   const [avatarUploading, setAvatarUploading] = useState<string | null>(null);
-  const [isCreateTicketModalOpen, setIsCreateTicketModalOpen] = useState(false);
-  const [selectedStudentForTicket, setSelectedStudentForTicket] = useState<StudentWithExtras | null>(null);
 
   // Filters and pagination
   const [searchQuery, setSearchQuery] = useState("");
@@ -74,11 +71,6 @@ export default function AdminStudents() {
 
   // Auth and roles
   const { session, profile } = useAuth();
-
-  // Spin ticket quantity
-  const [ticketQuantity, setTicketQuantity] = useState<number>(1);
-  const [isCreatingTicket, setIsCreatingTicket] = useState(false);
-  const [isPremiumTicket, setIsPremiumTicket] = useState(false);
 
   // Get classes for filter
   const { data: classes = [], isLoading: classesLoading } = useClasses();
@@ -485,20 +477,8 @@ export default function AdminStudents() {
     {
       key: "actions",
       title: "Thao tác",
-      render: (_, student) => (
-        <Button
-          variant="outline"
-          size="sm"
-          className="flex items-center gap-1 text-primary hover:text-primary/80"
-          onClick={(e) => {
-            e.stopPropagation();
-            setSelectedStudentForTicket(student);
-            setIsCreateTicketModalOpen(true);
-          }}
-        >
-          <FiDollarSign className="w-3 h-3" />
-          Phát vé
-        </Button>
+      render: () => (
+        <span className="text-sm text-gray-400">-</span>
       ),
     },
   ];
@@ -1090,98 +1070,6 @@ export default function AdminStudents() {
         </div>
       </AdminModal>
       
-      )}
-
-      {/* Create Spin Ticket Modal */}
-      {selectedStudentForTicket && (
-        <AdminModal
-          isOpen={isCreateTicketModalOpen}
-          onClose={() => {
-            setIsCreateTicketModalOpen(false);
-            setSelectedStudentForTicket(null);
-            setTicketQuantity(1);
-            setIsPremiumTicket(false);
-          }}
-          title="Phát vé quay bánh mì"
-          subtitle={`Phát vé cho học sinh: ${selectedStudentForTicket.displayName || selectedStudentForTicket.email}`}
-          size="sm"
-        >
-          <div className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Số lượng vé <span className="text-red-500">*</span>
-              </label>
-              <select
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                value={ticketQuantity}
-                onChange={(e) => setTicketQuantity(Number(e.target.value))}
-              >
-                <option value={1}>1 vé</option>
-                <option value={2}>2 vé</option>
-                <option value={3}>3 vé</option>
-              </select>
-            </div>
-
-            <div className="flex items-center gap-2">
-              <input
-                type="checkbox"
-                id="premium-ticket"
-                checked={isPremiumTicket}
-                onChange={(e) => setIsPremiumTicket(e.target.checked)}
-                className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
-              />
-              <label htmlFor="premium-ticket" className="text-sm font-medium text-gray-700 cursor-pointer">
-                Vé xịn (tỉ lệ trúng giải cao hơn)
-              </label>
-            </div>
-
-            <div className="flex justify-end space-x-2 pt-4">
-              <Button
-                variant="outline"
-                onClick={() => {
-                  setIsCreateTicketModalOpen(false);
-                  setSelectedStudentForTicket(null);
-                  setTicketQuantity(1);
-                  setIsPremiumTicket(false);
-                }}
-              >
-                Hủy
-              </Button>
-              <Button
-                onClick={async () => {
-                  if (!selectedStudentForTicket) {
-                    toast.error("Vui lòng chọn học sinh");
-                    return;
-                  }
-
-                  setIsCreatingTicket(true);
-                  try {
-                    await createSpinTicketByAdmin(
-                      selectedStudentForTicket.id,
-                      ticketQuantity,
-                      isPremiumTicket
-                    );
-                    toast.success(
-                      `Phát ${ticketQuantity} ${isPremiumTicket ? "vé xịn" : "vé"} thành công!`
-                    );
-                    setIsCreateTicketModalOpen(false);
-                    setSelectedStudentForTicket(null);
-                    setTicketQuantity(1);
-                    setIsPremiumTicket(false);
-                  } catch (error) {
-                    console.error("Error creating ticket:", error);
-                    toast.error("Có lỗi xảy ra khi phát vé");
-                  } finally {
-                    setIsCreatingTicket(false);
-                  }
-                }}
-                disabled={isCreatingTicket}
-              >
-                {isCreatingTicket ? "Đang phát vé..." : "Xác nhận"}
-              </Button>
-            </div>
-          </div>
-        </AdminModal>
       )}
     </div>
   );

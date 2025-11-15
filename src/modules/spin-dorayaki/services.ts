@@ -108,8 +108,8 @@ export async function createSpinTicket(
 ): Promise<SpinTicket | null> {
   const { studentId, bookId, lessonId, source } = data;
 
-  // Kiểm tra khung giờ cho phép tạo vé (trừ khi là admin)
-  if (source !== SpinTicketSource.ADMIN) {
+  // Kiểm tra khung giờ cho phép tạo vé (trừ khi là admin hoặc teacher)
+  if (source !== SpinTicketSource.ADMIN && source !== SpinTicketSource.TEACHER) {
     const timeCheck = checkTimeSlotCreateSpinTicket();
     if (!timeCheck.allowed) {
       return null;
@@ -183,6 +183,67 @@ export async function createSpinTicketByAdmin(
       createdAt: serverTimestamp(),
       status: SpinTicketStatus.PENDING,
       source: SpinTicketSource.ADMIN,
+    };
+
+    // Chỉ thêm isPremium nếu là true (để tiết kiệm storage)
+    if (isPremium) {
+      ticketData.isPremium = true;
+    }
+
+    await setDoc(docRef, ticketData);
+
+    tickets.push({
+      id: docId,
+      ...ticketData,
+      createdAt: Timestamp.now(), // Fallback for client-side
+    });
+  }
+
+  return tickets;
+}
+
+// Tạo vé quay mới bởi giáo viên (không kiểm tra khung giờ)
+// Lý do sẽ là "gv_tenlop" với tenlop là tên lớp
+export async function createSpinTicketByTeacher(
+  studentId: string,
+  className: string,
+  quantity: number = 1,
+  isPremium: boolean = false
+): Promise<SpinTicket[]> {
+  const tickets: SpinTicket[] = [];
+
+  // Tạo dateKey theo format YYYY-MM-DD (Vietnam timezone)
+  const vietnamTime = getVietnamTime();
+  const dateKey = vietnamTime; // YYYY-MM-DD
+
+  // Dùng tên lớp làm bookId với format "gv_tenlop"
+  const bookId = `gv_${className}`;
+  const lessonId = 0;
+
+  // Tạo nhiều vé
+  for (let i = 0; i < quantity; i++) {
+    // Tạo unique ID với timestamp để tránh trùng
+    const timestamp = Date.now() + i; // Thêm i để đảm bảo unique
+    const docId = `${studentId}_${bookId}_${lessonId}_${dateKey}_${timestamp}`;
+    const docRef = doc(spinTicketsCol, docId);
+
+    const ticketData: {
+      studentId: string;
+      bookId: string;
+      lessonId: number;
+      dateKey: string;
+      createdAt: ReturnType<typeof serverTimestamp>;
+      status: SpinTicketStatus;
+      source: SpinTicketSource;
+      isPremium?: boolean;
+    } = {
+      studentId,
+      bookId,
+      lessonId,
+      dateKey,
+      createdAt: serverTimestamp(),
+      status: SpinTicketStatus.PENDING,
+      source: SpinTicketSource.TEACHER,
     };
 
     // Chỉ thêm isPremium nếu là true (để tiết kiệm storage)

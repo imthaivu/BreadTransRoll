@@ -9,6 +9,7 @@ export enum SpinTicketSource {
   SPEAKING = "speaking",
   FLASHCARD = "flashcard",
   ADMIN = "admin",
+  TEACHER = "teacher",
 } 
 
 export interface SpinTicket {

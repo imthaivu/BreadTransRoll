@@ -6,15 +6,17 @@ import { useAuth } from "@/lib/auth/context";
 import { IClass, IClassMember } from "@/types";
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { FiMinusCircle, FiPlusCircle, FiUser, FiPhone, FiTrendingUp } from "react-icons/fi";
+import { FiMinusCircle, FiPlusCircle, FiUser, FiPhone, FiTrendingUp, FiDollarSign, FiEdit } from "react-icons/fi";
 import Image from "next/image";
 import toast from "react-hot-toast";
 import {
   useClassDetails,
   useClassMembers,
-  useCreateCurrencyRequest,
 } from "../hooks";
 import { useStudents } from "@/modules/admin/hooks/useStudentManagement";
+import { useCreateCurrencyTransaction } from "@/modules/admin/hooks/useCurrencyManagement";
+import { createSpinTicketByTeacher } from "@/modules/spin-dorayaki/services";
+import { TeacherEditStudentModal } from "./TeacherEditStudentModal";
 
 interface CurrencyRequestModalProps {
   member: IClassMember;
@@ -31,7 +33,7 @@ function CurrencyRequestModal({
   isOpen,
   onClose,
 }: CurrencyRequestModalProps) {
-  const { session } = useAuth();
+  const { session, profile } = useAuth();
   const { data: studentsData } = useStudents();
   const allStudents = studentsData?.data || [];
   const student = allStudents.find((s) => s.id === member.id);
@@ -45,7 +47,7 @@ function CurrencyRequestModal({
     watch,
     formState: { errors },
   } = useForm<{ amount: number; reason: string }>();
-  const { mutate: createRequest, isPending } = useCreateCurrencyRequest();
+  const { mutate: createTransaction, isPending } = useCreateCurrencyTransaction();
 
   const amount = watch("amount");
   const quickAmounts = [5, 10, 20, 30, 50];
@@ -57,7 +59,7 @@ function CurrencyRequestModal({
   }, [isOpen, reset]);
 
   const onSubmit = (data: { amount: number; reason: string }) => {
-    if (!session?.user) return;
+    if (!session?.user || !profile) return;
 
     // Validation for subtract
     if (type === "subtract" && data.amount > currentBalance) {
@@ -67,16 +69,16 @@ function CurrencyRequestModal({
       return;
     }
 
-    createRequest(
+    createTransaction(
       {
         studentId: member.id,
         studentName: member.name,
-        teacherId: session.user.id,
-        teacherName: session.user.name || session.user.email!,
-        classId: classDetails.id,
-        className: classDetails.name,
-        amount: type === "add" ? data.amount : -data.amount,
+        userId: session.user.id,
+        userName: session.user.name || session.user.email || "Unknown",
+        userRole: profile.role,
+        amount: data.amount,
         reason: data.reason,
+        type: type,
       },
       {
         onSuccess: () => {
@@ -92,7 +94,7 @@ function CurrencyRequestModal({
       open={isOpen}
       onClose={onClose}
       maxWidth="md"
-      title={`Yêu cầu ${type === "add" ? "cộng" : "trừ"} bánh mì cho ${
+      title={`${type === "add" ? "Cộng" : "Trừ"} bánh mì cho ${
         member.name
       }`}
     >
@@ -195,7 +197,7 @@ function CurrencyRequestModal({
             Hủy
           </Button>
           <Button type="submit" disabled={isPending}>
-            {isPending ? "Đang gửi..." : "Gửi yêu cầu"}
+            {isPending ? "Đang xử lý..." : "Xác nhận"}
           </Button>
         </div>
       </form>
@@ -226,6 +228,13 @@ export function MembersList({
     member: IClassMember;
     type: "zalo" | "phone";
   } | null>(null);
+  const [ticketModal, setTicketModal] = useState<{
+    member: IClassMember;
+  } | null>(null);
+  const [ticketQuantity, setTicketQuantity] = useState<number>(1);
+  const [isPremiumTicket, setIsPremiumTicket] = useState(false);
+  const [isCreatingTicket, setIsCreatingTicket] = useState(false);
+  const [editStudentModal, setEditStudentModal] = useState<IClassMember | null>(null);
 
   if (isLoading) return <p>Đang tải danh sách thành viên...</p>;
   if (error) return <p className="text-red-500">Lỗi tải danh sách.</p>;
@@ -332,10 +341,36 @@ export function MembersList({
                   <Button
                     variant="outline"
                     size="sm"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      setTicketModal({ member });
+                    }}
+                    title="Phát vé quay bánh mì"
+                  >
+                    <FiDollarSign className="h-4 w-4 md:mr-2" />
+                    <span className="hidden md:inline">Phát vé</span>
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
                     onClick={() => onMemberClick(member)}
                   >
                     <FiTrendingUp className="h-4 w-4 md:mr-2" />
                     <span className="hidden md:inline">Xem tiến trình</span>
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      setEditStudentModal(member);
+                    }}
+                    title="Sửa thông tin học sinh"
+                  >
+                    <FiEdit className="h-4 w-4 md:mr-2" />
+                    <span className="hidden md:inline">Sửa</span>
                   </Button>
                 </>
               )}
@@ -369,6 +404,104 @@ export function MembersList({
           member={contactModal.member}
           type={contactModal.type}
         />
+      )}
+
+      {/* Edit Student Modal */}
+      {editStudentModal && (
+        <TeacherEditStudentModal
+          member={editStudentModal}
+          isOpen={!!editStudentModal}
+          onClose={() => setEditStudentModal(null)}
+        />
+      )}
+
+      {/* Ticket Modal */}
+      {ticketModal && classDetails && (
+        <Modal
+          open={!!ticketModal}
+          onClose={() => {
+            setTicketModal(null);
+            setTicketQuantity(1);
+            setIsPremiumTicket(false);
+          }}
+          maxWidth="sm"
+          title="Phát vé quay bánh mì"
+        >
+          <div className="space-y-4">
+            <p className="text-sm text-gray-600">
+              Phát vé cho học sinh: <strong>{ticketModal.member.name}</strong>
+            </p>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Số lượng vé <span className="text-red-500">*</span>
+              </label>
+              <select
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                value={ticketQuantity}
+                onChange={(e) => setTicketQuantity(Number(e.target.value))}
+              >
+                <option value={1}>1 vé</option>
+                <option value={2}>2 vé</option>
+                <option value={3}>3 vé</option>
+              </select>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                id="premium-ticket"
+                checked={isPremiumTicket}
+                onChange={(e) => setIsPremiumTicket(e.target.checked)}
+                className="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary"
+              />
+              <label htmlFor="premium-ticket" className="text-sm font-medium text-gray-700 cursor-pointer">
+                Vé xịn (tỉ lệ trúng giải cao hơn)
+              </label>
+            </div>
+
+            <div className="flex justify-end gap-2 pt-4">
+              <Button
+                variant="outline"
+                onClick={() => {
+                  setTicketModal(null);
+                  setTicketQuantity(1);
+                  setIsPremiumTicket(false);
+                }}
+              >
+                Hủy
+              </Button>
+              <Button
+                onClick={async () => {
+                  if (!ticketModal) return;
+
+                  setIsCreatingTicket(true);
+                  try {
+                    await createSpinTicketByTeacher(
+                      ticketModal.member.id,
+                      classDetails.name,
+                      ticketQuantity,
+                      isPremiumTicket
+                    );
+                    toast.success(
+                      `Phát ${ticketQuantity} ${isPremiumTicket ? "vé xịn" : "vé"} thành công!`
+                    );
+                    setTicketModal(null);
+                    setTicketQuantity(1);
+                    setIsPremiumTicket(false);
+                  } catch (error) {
+                    console.error("Error creating ticket:", error);
+                    toast.error("Có lỗi xảy ra khi phát vé");
+                  } finally {
+                    setIsCreatingTicket(false);
+                  }
+                }}
+                disabled={isCreatingTicket}
+              >
+                {isCreatingTicket ? "Đang phát vé..." : "Xác nhận"}
+              </Button>
+            </div>
+          </div>
+        </Modal>
       )}
     </div>
   );

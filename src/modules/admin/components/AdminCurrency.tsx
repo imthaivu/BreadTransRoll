@@ -18,7 +18,6 @@ import {
   useCurrencyManagement,
   useCurrencyStats,
   useCurrencyTransactions,
-  useCurrencyRequests,
 } from "../hooks/useCurrencyManagement";
 import { useStudents } from "../hooks/useStudentManagement";
 import { useClasses } from "../hooks/useClassManagement";
@@ -30,7 +29,6 @@ import {
   AdminTable,
   AdminTableColumn,
 } from "./common";
-import { AdminCurrencyRequests } from "./AdminCurrencyRequests";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 
 export default function AdminCurrency() {
@@ -40,8 +38,6 @@ export default function AdminCurrency() {
   const [selectedTransaction, setSelectedTransaction] =
     useState<ICurrency | null>(null);
   const [selectedStudentId, setSelectedStudentId] = useState<string>("");
-  const [activeTab, setActiveTab] = useState("transactions");
-  const [requestsRefetchFn, setRequestsRefetchFn] = useState<(() => Promise<unknown>) | null>(null);
 
   const [showConfirmCreate, setShowConfirmCreate] = useState<boolean>(false);
 
@@ -102,15 +98,6 @@ export default function AdminCurrency() {
     refetch: () => Promise.resolve(),
   };
 
-  // Get pending requests count for badge
-  const pendingRequestsQuery = useCurrencyRequests("pending", undefined);
-  const {
-    data: pendingRequests = [],
-    refetch: refetchPendingRequests,
-  } = pendingRequestsQuery || {
-    data: [],
-    refetch: () => Promise.resolve(),
-  };
 
   // Apply client-side filters
   const filteredTransactions = useMemo(() => {
@@ -482,14 +469,6 @@ export default function AdminCurrency() {
                     const result = refetchStats();
                     if (result) promises.push(result);
                   }
-                  if (refetchPendingRequests) {
-                    const result = refetchPendingRequests();
-                    if (result) promises.push(result);
-                  }
-                  if (requestsRefetchFn) {
-                    const result = requestsRefetchFn();
-                    if (result) promises.push(result);
-                  }
                   await Promise.all(promises);
                   console.log("✅ Đã làm mới dữ liệu thành công");
                 } catch (error) {
@@ -552,37 +531,10 @@ export default function AdminCurrency() {
         </div>
       </div>
 
-      <div className="flex border-b border-border mb-3 sm:mb-4 overflow-x-auto">
-        <button
-          onClick={() => setActiveTab("transactions")}
-          className={`px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium transition-colors whitespace-nowrap flex-shrink-0 ${
-            activeTab === "transactions"
-              ? "border-b-2 border-primary text-primary"
-              : "text-muted hover:text-foreground"
-          }`}
-        >
-          Giao dịch bánh mì
-        </button>
-        <button
-          onClick={() => setActiveTab("requests")}
-          className={`px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium transition-colors whitespace-nowrap flex-shrink-0 relative ${
-            activeTab === "requests"
-              ? "border-b-2 border-primary text-primary"
-              : "text-muted hover:text-foreground"
-          }`}
-        >
-          Yêu cầu cần duyệt
-          {pendingRequests.length > 0 && (
-            <span className="ml-2 inline-flex items-center justify-center min-w-[20px] h-5 px-1.5 text-xs font-semibold text-white bg-red-600 rounded-full">
-              {pendingRequests.length}
-            </span>
-          )}
-        </button>
-      </div>
+      {/* Tabs removed - teachers now create transactions directly, no approval needed */}
 
-      {activeTab === "transactions" && (
-        <div className="gap-4 sm:gap-8">
-          {/* Dorayaki Filter - Only in transactions tab */}
+      <div className="gap-4 sm:gap-8">
+          {/* Dorayaki Filter */}
           <div className="mb-3 sm:mb-4">
             <label className="block text-xs text-gray-600 mb-1">
               Quay Dorayaki
@@ -774,22 +726,6 @@ export default function AdminCurrency() {
             </AdminModal>
           )}
         </div>
-      )}
-
-      {activeTab === "requests" && (
-        <AdminCurrencyRequests
-          dateStr={dateStr}
-          studentQuery={studentQuery}
-          selectedClassId={selectedClassId}
-          students={students}
-          onRefetch={() => {
-            refetch();
-            refetchStats();
-            refetchPendingRequests();
-          }}
-          onRefetchReady={(refetchFn) => setRequestsRefetchFn(() => refetchFn)}
-        />
-      )}
     </div>
   );
 }
