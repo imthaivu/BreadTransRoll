@@ -218,7 +218,7 @@ export function MembersList({
     classId,
     session?.user.id || ""
   );
-  const { data: studentsData } = useStudents();
+  const { data: studentsData, isLoading: isLoadingStudents } = useStudents();
   const allStudents = studentsData?.data || [];
   const [requestModal, setRequestModal] = useState<{
     member: IClassMember;
@@ -304,7 +304,10 @@ export function MembersList({
       {students.map((member) => {
         // Get balance for disable logic (but don't display it)
         const student = allStudents.find((s) => s.id === member.id);
-        const balance = student?.totalBanhRan || 0;
+        // Only calculate balance if students data is loaded, otherwise assume balance exists to avoid false disable
+        const balance = isLoadingStudents ? undefined : (student?.totalBanhRan ?? 0);
+        // Only disable if data is loaded AND balance is 0 or less
+        const shouldDisableSubtract = !isLoadingStudents && (balance === undefined || balance <= 0);
         return (
           <div
             key={member.id}
@@ -378,7 +381,7 @@ export function MembersList({
                       setRequestModal({ member, type: "subtract" });
                     }}
                     title="Trừ bánh mì"
-                    disabled={balance === 0}
+                    disabled={shouldDisableSubtract}
                   >
                     <FiMinusCircle className="h-5 w-5 text-red-500" />
                     <span className="ml-1 hidden md:inline">Trừ</span>
