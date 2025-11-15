@@ -22,7 +22,7 @@ export default function AdminUsers() {
 
   // Filters
   const [searchFilter, setSearchFilter] = useState("");
-  const [roleFilter, setRoleFilter] = useState<UserRole | "all">("guest");
+  const [roleFilter, setRoleFilter] = useState<UserRole | "all">(UserRole.GUEST);
 
   // Use the user management hook
   const {
