@@ -218,6 +218,11 @@ export function SpinningWheel() {
   const animStartTimeRef = useRef<number | null>(null);
   const animDurationMsRef = useRef(10000);
 
+  // Drag/rotate refs
+  const isDraggingRef = useRef(false);
+  const dragStartAngleRef = useRef(0);
+  const dragStartMouseAngleRef = useRef(0);
+
   const drawWheel = useCallback(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -321,6 +326,141 @@ export function SpinningWheel() {
     ctx.fill();
     ctx.stroke();
   }, []);
+
+  // Helper function to get angle from mouse/touch position
+  const getAngleFromPoint = useCallback((clientX: number, clientY: number): number => {
+    const canvas = canvasRef.current;
+    if (!canvas) return 0;
+
+    const rect = canvas.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+
+    const dx = clientX - centerX;
+    const dy = clientY - centerY;
+
+    // Calculate angle in radians, then convert to degrees
+    // atan2 returns angle from positive x-axis, we want from top (negative y-axis)
+    // So we add 90 degrees and negate
+    let angle = Math.atan2(dy, dx) * (180 / Math.PI);
+    angle = -angle + 90; // Rotate so 0° is at top
+    if (angle < 0) angle += 360;
+
+    return angle;
+  }, []);
+
+  // Handle drag start
+  const handleDragStart = useCallback((clientX: number, clientY: number) => {
+    if (isSpinning || isSpinLoading) return;
+
+    isDraggingRef.current = true;
+    dragStartAngleRef.current = currentAngleDegRef.current;
+    dragStartMouseAngleRef.current = getAngleFromPoint(clientX, clientY);
+  }, [isSpinning, isSpinLoading, getAngleFromPoint]);
+
+  // Handle drag move
+  const handleDragMove = useCallback((clientX: number, clientY: number) => {
+    if (!isDraggingRef.current || isSpinning || isSpinLoading) return;
+
+    const currentMouseAngle = getAngleFromPoint(clientX, clientY);
+    const deltaAngle = currentMouseAngle - dragStartMouseAngleRef.current;
+
+    // Handle wrap-around (when crossing 0°/360° boundary)
+    let adjustedDelta = deltaAngle;
+    if (deltaAngle > 180) {
+      adjustedDelta = deltaAngle - 360;
+    } else if (deltaAngle < -180) {
+      adjustedDelta = deltaAngle + 360;
+    }
+
+    // Đảo ngược hướng để vòng quay quay cùng chiều với thao tác ngón tay
+    currentAngleDegRef.current = dragStartAngleRef.current - adjustedDelta;
+    drawWheel();
+  }, [isSpinning, isSpinLoading, getAngleFromPoint, drawWheel]);
+
+  // Handle drag end
+  const handleDragEnd = useCallback(() => {
+    if (isDraggingRef.current) {
+      isDraggingRef.current = false;
+      // Reset animation state to ensure next spin starts from current position
+      animStartTimeRef.current = null;
+    }
+  }, []);
+
+  // Mouse event handlers
+  const handleMouseDown = useCallback((e: React.MouseEvent<HTMLCanvasElement>) => {
+    e.preventDefault();
+    handleDragStart(e.clientX, e.clientY);
+  }, [handleDragStart]);
+
+  const handleMouseMove = useCallback((e: MouseEvent) => {
+    handleDragMove(e.clientX, e.clientY);
+  }, [handleDragMove]);
+
+  const handleMouseUp = useCallback(() => {
+    handleDragEnd();
+  }, [handleDragEnd]);
+
+  // Touch event handlers
+  const handleTouchStart = useCallback((e: React.TouchEvent<HTMLCanvasElement>) => {
+    e.preventDefault();
+    const touch = e.touches[0];
+    if (touch) {
+      handleDragStart(touch.clientX, touch.clientY);
+    }
+  }, [handleDragStart]);
+
+  const handleTouchMove = useCallback((e: TouchEvent) => {
+    e.preventDefault();
+    const touch = e.touches[0];
+    if (touch) {
+      handleDragMove(touch.clientX, touch.clientY);
+    }
+  }, [handleDragMove]);
+
+  const handleTouchEnd = useCallback((e: TouchEvent) => {
+    e.preventDefault();
+    handleDragEnd();
+  }, [handleDragEnd]);
+
+  // Attach global mouse/touch event listeners for dragging
+  useEffect(() => {
+    const handleGlobalMouseMove = (e: MouseEvent) => {
+      if (isDraggingRef.current) {
+        handleMouseMove(e);
+      }
+    };
+
+    const handleGlobalMouseUp = () => {
+      if (isDraggingRef.current) {
+        handleMouseUp();
+      }
+    };
+
+    const handleGlobalTouchMove = (e: TouchEvent) => {
+      if (isDraggingRef.current) {
+        handleTouchMove(e);
+      }
+    };
+
+    const handleGlobalTouchEnd = (e: TouchEvent) => {
+      if (isDraggingRef.current) {
+        handleTouchEnd(e);
+      }
+    };
+
+    window.addEventListener("mousemove", handleGlobalMouseMove);
+    window.addEventListener("mouseup", handleGlobalMouseUp);
+    window.addEventListener("touchmove", handleGlobalTouchMove, { passive: false });
+    window.addEventListener("touchend", handleGlobalTouchEnd);
+
+    return () => {
+      window.removeEventListener("mousemove", handleGlobalMouseMove);
+      window.removeEventListener("mouseup", handleGlobalMouseUp);
+      window.removeEventListener("touchmove", handleGlobalTouchMove);
+      window.removeEventListener("touchend", handleGlobalTouchEnd);
+    };
+  }, [handleMouseMove, handleMouseUp, handleTouchMove, handleTouchEnd]);
 
   // Animate to target angle
   const animate = useCallback(
@@ -712,7 +852,14 @@ export function SpinningWheel() {
           <canvas
             ref={canvasRef}
             id="wheel"
-            className="rounded-full bg-[radial-gradient(circle_at_center,_#ffffff,_theme(colors.spin-wheel-blue))] shadow-spin-wheel"
+            onMouseDown={handleMouseDown}
+            onTouchStart={handleTouchStart}
+            className={`rounded-full bg-[radial-gradient(circle_at_center,_#ffffff,_theme(colors.spin-wheel-blue))] shadow-spin-wheel ${
+              !isSpinning && !isSpinLoading
+                ? "cursor-grab active:cursor-grabbing"
+                : "cursor-not-allowed"
+            }`}
+            style={{ touchAction: "none" }}
           ></canvas>
           <div className="flex text-center justify-center mt-3">
             <button
