@@ -21,6 +21,7 @@ import { UpdateStudentData } from "@/modules/admin/services/student.service";
 import { compressAndResizeImage } from "@/utils/image";
 
 type StudentWithExtras = IClassMember & {
+  displayName?: string;
   phone?: string;
   address?: string;
   streakCount?: number;
