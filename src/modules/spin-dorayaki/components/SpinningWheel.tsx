@@ -491,7 +491,7 @@ export function SpinningWheel() {
       window.removeEventListener("touchend", handleGlobalTouchEnd);
       window.removeEventListener("touchcancel", handleGlobalTouchCancel);
     };
-  }, [handleMouseMove, handleMouseUp, handleTouchMove, handleTouchEnd]);
+  }, [handleMouseMove, handleMouseUp, handleTouchMove, handleTouchEnd, handleDragEnd]);
 
   // Animate to target angle
   const animate = useCallback(

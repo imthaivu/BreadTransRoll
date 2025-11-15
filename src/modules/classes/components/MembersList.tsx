@@ -239,12 +239,6 @@ export function MembersList({
   const isMobileRef = useRef<boolean>(false);
   const hasReached3SecondsRef = useRef<boolean>(false);
 
-  if (isLoading) return <p>Đang tải danh sách thành viên...</p>;
-  if (error) return <p className="text-red-500">Lỗi tải danh sách.</p>;
-
-  // Filter to only show students (not teachers)
-  const students = members?.filter((member) => member.role === "student") || [];
-
   // Detect mobile device
   useEffect(() => {
     const checkMobile = () => {
@@ -264,6 +258,12 @@ export function MembersList({
       }
     };
   }, []);
+
+  if (isLoading) return <p>Đang tải danh sách thành viên...</p>;
+  if (error) return <p className="text-red-500">Lỗi tải danh sách.</p>;
+
+  // Filter to only show students (not teachers)
+  const students = members?.filter((member) => member.role === "student") || [];
 
   // Handle create ticket
   const handleCreateTicket = async () => {
