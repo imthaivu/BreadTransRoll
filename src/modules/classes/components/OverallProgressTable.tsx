@@ -135,158 +135,287 @@ export function OverallProgressTable({ classId }: { classId: string }) {
           </div>
         </div>
 
-        <div className="overflow-x-auto">
+        <div>
           {!hasSelection ? (
-            <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-              <thead className="bg-gray-50 dark:bg-gray-700">
-                <tr>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                    Học sinh
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+            <>
+              {/* Mobile Card View */}
+              <div className="block md:hidden space-y-3">
                 {students?.map((student) => (
-                  <tr key={student.id}>
-                    <td className="px-4 py-3 font-medium flex items-center gap-2">
-                      {/* Avatar placeholder - no image loading for performance */}
+                  <div
+                    key={student.id}
+                    className="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600"
+                  >
+                    <div className="flex items-center gap-2 font-medium">
                       <div className="w-6 h-6 rounded-full bg-gray-300 dark:bg-gray-600 flex items-center justify-center flex-shrink-0">
                         <FiUser className="w-3 h-3 text-gray-500" />
                       </div>
                       {student.name}
-                    </td>
-                  </tr>
+                    </div>
+                  </div>
                 ))}
-              </tbody>
-            </table>
+              </div>
+              {/* Desktop Table View */}
+              <div className="hidden md:block overflow-x-auto">
+                <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                  <thead className="bg-gray-50 dark:bg-gray-700">
+                    <tr>
+                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                        Học sinh
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                    {students?.map((student) => (
+                      <tr key={student.id}>
+                        <td className="px-4 py-3 font-medium flex items-center gap-2">
+                          <div className="w-6 h-6 rounded-full bg-gray-300 dark:bg-gray-600 flex items-center justify-center flex-shrink-0">
+                            <FiUser className="w-3 h-3 text-gray-500" />
+                          </div>
+                          {student.name}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </>
           ) : studentProgressData.length === 0 ? (
             <p className="text-muted p-4 text-center">
               Không có dữ liệu tiến độ cho lựa chọn này.
             </p>
           ) : (
-            <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-              <thead className="bg-gray-50 dark:bg-gray-700">
-                <tr>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase min-w-[150px]">
-                    Học sinh
-                  </th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase min-w-[150px]">
-                    Bài học
-                  </th>
-                  <th className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase min-w-[80px]">
-                    Số lần nghe
-                  </th>
-                  <th className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase min-w-[80px]">
-                    Nộp bài nói
-                  </th>
-                  <th className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase min-w-[100px]">
-                    Quiz Accuracy
-                  </th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase min-w-[150px]">
-                    Ngày nộp Quiz
-                  </th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase min-w-[150px]">
-                    Ngày nộp Audio
-                  </th>
-                  {/* Audio */}
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase min-w-[80px]">
-                    Audio
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+            <>
+              {/* Mobile Card View */}
+              <div className="block md:hidden space-y-4">
                 {studentProgressData.map((progress) => (
-                  <tr key={progress.student.id}>
-                    <td className="px-4 py-3 font-medium flex items-center gap-2">
-                      {/* Avatar placeholder - no image loading for performance */}
-                      <div className="w-6 h-6 rounded-full bg-gray-300 dark:bg-gray-600 flex items-center justify-center flex-shrink-0">
-                        <FiUser className="w-3 h-3 text-gray-500" />
+                  <div
+                    key={progress.student.id}
+                    className="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600 space-y-3"
+                  >
+                    <div className="flex items-center gap-2 font-medium pb-2 border-b border-gray-200 dark:border-gray-600">
+                      <div className="w-8 h-8 rounded-full bg-gray-300 dark:bg-gray-600 flex items-center justify-center flex-shrink-0">
+                        <FiUser className="w-4 h-4 text-gray-500" />
                       </div>
-                      {progress.student.name}
-                    </td>
-                    <td className="px-4 py-3 text-sm">
-                      <span className="font-bold">
-                        {
-                          books?.find(
-                            (b) =>
-                              b.id.toString() === progress.lessonDetails.book
-                          )?.name
-                        }
-                      </span>
-                      <span className="text-gray-500">
-                        {" "}
-                        - {progress.lessonDetails.lesson}
-                      </span>
-                    </td>
-                    <td className="px-4 py-3 text-center">
-                      {progress.listenCount > 0 ? progress.listenCount : "—"}
-                    </td>
-                    <td className="px-4 py-3 text-center">
-                      {progress.hasSpeakingSubmission ? (
-                        <FiCheckCircle className="mx-auto text-green-500" />
-                      ) : (
-                        "—"
-                      )}
-                    </td>
-                    <td className="px-4 py-3 text-center">
-                      {progress.quizScore !== undefined
-                        ? `${progress.quizScore}%`
-                        : "—"}
-                      {progress.isQuizCompleted && (
-                        <FiAward className="inline ml-1 text-green-500" />
-                      )}
-                    </td>
-                    <td className="px-4 py-3 text-sm">
-                      {progress.quizTimestamp
-                        ? progress.quizTimestamp.toLocaleString("vi-VN", {
-                            year: "numeric",
-                            month: "2-digit",
-                            day: "2-digit",
-                            hour: "2-digit",
-                            minute: "2-digit",
-                          })
-                        : "Chưa nộp"}
-                    </td>
-                    <td className="px-4 py-3 text-sm">
-                      {progress.speakingTimestamp
-                        ? progress.speakingTimestamp.toLocaleString("vi-VN", {
-                            year: "numeric",
-                            month: "2-digit",
-                            day: "2-digit",
-                            hour: "2-digit",
-                            minute: "2-digit",
-                          })
-                        : "Chưa nộp"}
-                    </td>
-                    <td className="px-4 py-3 text-center">
-                      {progress?.speakingSubmissionUrl ? (
-                        progress.speakingFileDeleted ? (
-                          <span className="text-xs text-gray-500 italic">
-                            File đã xóa
-                          </span>
-                        ) : (
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() =>
-                              setListeningAudio({
-                                url: progress.speakingSubmissionUrl!,
-                                studentName: progress.student.name,
+                      <span>{progress.student.name}</span>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-3 text-sm">
+                      <div>
+                        <span className="text-gray-500 dark:text-gray-400">
+                          Số lần nghe:
+                        </span>
+                        <span className="ml-2 font-medium">
+                          {progress.listenCount > 0 ? progress.listenCount : "—"}
+                        </span>
+                      </div>
+
+                      <div>
+                        <span className="text-gray-500 dark:text-gray-400">
+                          Nộp bài nói:
+                        </span>
+                        <span className="ml-2">
+                          {progress.hasSpeakingSubmission ? (
+                            <FiCheckCircle className="inline text-green-500" />
+                          ) : (
+                            "—"
+                          )}
+                        </span>
+                      </div>
+
+                      <div>
+                        <span className="text-gray-500 dark:text-gray-400">
+                          Quiz Accuracy:
+                        </span>
+                        <span className="ml-2 font-medium">
+                          {progress.quizScore !== undefined
+                            ? `${progress.quizScore}%`
+                            : "—"}
+                          {progress.isQuizCompleted && (
+                            <FiAward className="inline ml-1 text-green-500" />
+                          )}
+                        </span>
+                      </div>
+
+                      <div>
+                        <span className="text-gray-500 dark:text-gray-400">
+                          Audio:
+                        </span>
+                        <span className="ml-2">
+                          {progress?.speakingSubmissionUrl ? (
+                            progress.speakingFileDeleted ? (
+                              <span className="text-xs text-gray-500 italic">
+                                File đã xóa
+                              </span>
+                            ) : (
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() =>
+                                  setListeningAudio({
+                                    url: progress.speakingSubmissionUrl!,
+                                    studentName: progress.student.name,
+                                  })
+                                }
+                                aria-label={`Nghe bài nói của ${progress.student.name}`}
+                                className="p-1"
+                              >
+                                <FiPlay className="h-4 w-4" />
+                              </Button>
+                            )
+                          ) : (
+                            "—"
+                          )}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="space-y-2 text-sm pt-2 border-t border-gray-200 dark:border-gray-600">
+                      <div>
+                        <span className="text-gray-500 dark:text-gray-400">
+                          Ngày nộp Quiz:
+                        </span>
+                        <span className="ml-2">
+                          {progress.quizTimestamp
+                            ? progress.quizTimestamp.toLocaleString("vi-VN", {
+                                year: "numeric",
+                                month: "2-digit",
+                                day: "2-digit",
+                                hour: "2-digit",
+                                minute: "2-digit",
                               })
-                            }
-                            aria-label={`Nghe bài nói của ${progress.student.name}`}
-                          >
-                            <FiPlay className="h-5 w-5" />
-                          </Button>
-                        )
-                      ) : (
-                        "—"
-                      )}
-                    </td>
-                  </tr>
+                            : "Chưa nộp"}
+                        </span>
+                      </div>
+
+                      <div>
+                        <span className="text-gray-500 dark:text-gray-400">
+                          Ngày nộp Audio:
+                        </span>
+                        <span className="ml-2">
+                          {progress.speakingTimestamp
+                            ? progress.speakingTimestamp.toLocaleString("vi-VN", {
+                                year: "numeric",
+                                month: "2-digit",
+                                day: "2-digit",
+                                hour: "2-digit",
+                                minute: "2-digit",
+                              })
+                            : "Chưa nộp"}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
                 ))}
-              </tbody>
-            </table>
+              </div>
+
+              {/* Desktop Table View */}
+              <div className="hidden md:block overflow-x-auto">
+                <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                  <thead className="bg-gray-50 dark:bg-gray-700">
+                    <tr>
+                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase min-w-[150px]">
+                        Học sinh
+                      </th>
+                      <th className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase min-w-[80px]">
+                        Số lần nghe
+                      </th>
+                      <th className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase min-w-[80px]">
+                        Nộp bài nói
+                      </th>
+                      <th className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase min-w-[100px]">
+                        Quiz Accuracy
+                      </th>
+                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase min-w-[150px]">
+                        Ngày nộp Quiz
+                      </th>
+                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase min-w-[150px]">
+                        Ngày nộp Audio
+                      </th>
+                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase min-w-[80px]">
+                        Audio
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                    {studentProgressData.map((progress) => (
+                      <tr key={progress.student.id}>
+                        <td className="px-4 py-3 font-medium flex items-center gap-2">
+                          <div className="w-6 h-6 rounded-full bg-gray-300 dark:bg-gray-600 flex items-center justify-center flex-shrink-0">
+                            <FiUser className="w-3 h-3 text-gray-500" />
+                          </div>
+                          {progress.student.name}
+                        </td>
+                        <td className="px-4 py-3 text-center">
+                          {progress.listenCount > 0 ? progress.listenCount : "—"}
+                        </td>
+                        <td className="px-4 py-3 text-center">
+                          {progress.hasSpeakingSubmission ? (
+                            <FiCheckCircle className="mx-auto text-green-500" />
+                          ) : (
+                            "—"
+                          )}
+                        </td>
+                        <td className="px-4 py-3 text-center">
+                          {progress.quizScore !== undefined
+                            ? `${progress.quizScore}%`
+                            : "—"}
+                          {progress.isQuizCompleted && (
+                            <FiAward className="inline ml-1 text-green-500" />
+                          )}
+                        </td>
+                        <td className="px-4 py-3 text-sm">
+                          {progress.quizTimestamp
+                            ? progress.quizTimestamp.toLocaleString("vi-VN", {
+                                year: "numeric",
+                                month: "2-digit",
+                                day: "2-digit",
+                                hour: "2-digit",
+                                minute: "2-digit",
+                              })
+                            : "Chưa nộp"}
+                        </td>
+                        <td className="px-4 py-3 text-sm">
+                          {progress.speakingTimestamp
+                            ? progress.speakingTimestamp.toLocaleString("vi-VN", {
+                                year: "numeric",
+                                month: "2-digit",
+                                day: "2-digit",
+                                hour: "2-digit",
+                                minute: "2-digit",
+                              })
+                            : "Chưa nộp"}
+                        </td>
+                        <td className="px-4 py-3 text-center">
+                          {progress?.speakingSubmissionUrl ? (
+                            progress.speakingFileDeleted ? (
+                              <span className="text-xs text-gray-500 italic">
+                                File đã xóa
+                              </span>
+                            ) : (
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() =>
+                                  setListeningAudio({
+                                    url: progress.speakingSubmissionUrl!,
+                                    studentName: progress.student.name,
+                                  })
+                                }
+                                aria-label={`Nghe bài nói của ${progress.student.name}`}
+                              >
+                                <FiPlay className="h-5 w-5" />
+                              </Button>
+                            )
+                          ) : (
+                            "—"
+                          )}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </>
           )}
         </div>
       </div>
