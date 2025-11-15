@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/Button";
 import { Modal } from "@/components/ui/Modal";
 import { useAuth } from "@/lib/auth/context";
 import { IClass, IClassMember } from "@/types";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { FiMinusCircle, FiPlusCircle, FiUser, FiPhone, FiTrendingUp, FiDollarSign, FiEdit } from "react-icons/fi";
 import Image from "next/image";
@@ -232,12 +232,72 @@ export function MembersList({
   const [isPremiumTicket, setIsPremiumTicket] = useState(false);
   const [isCreatingTicket, setIsCreatingTicket] = useState(false);
   const [editStudentModal, setEditStudentModal] = useState<IClassMember | null>(null);
+  const [isHolding, setIsHolding] = useState(false);
+  const [holdProgress, setHoldProgress] = useState(0);
+  const longPressTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const holdStartTimeRef = useRef<number | null>(null);
+  const isMobileRef = useRef<boolean>(false);
+  const hasReached3SecondsRef = useRef<boolean>(false);
 
   if (isLoading) return <p>Đang tải danh sách thành viên...</p>;
   if (error) return <p className="text-red-500">Lỗi tải danh sách.</p>;
 
   // Filter to only show students (not teachers)
   const students = members?.filter((member) => member.role === "student") || [];
+
+  // Detect mobile device
+  useEffect(() => {
+    const checkMobile = () => {
+      isMobileRef.current = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) || 
+        (typeof window !== 'undefined' && window.innerWidth <= 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Cleanup timer on unmount
+  useEffect(() => {
+    return () => {
+      if (longPressTimerRef.current) {
+        clearInterval(longPressTimerRef.current);
+      }
+    };
+  }, []);
+
+  // Handle create ticket
+  const handleCreateTicket = async () => {
+    if (!ticketModal) return;
+
+    setIsCreatingTicket(true);
+    try {
+      await createSpinTicketByTeacher(
+        ticketModal.member.id,
+        classDetails?.name || "",
+        ticketQuantity,
+        isPremiumTicket
+      );
+      toast.success(
+        `Phát ${ticketQuantity} ${isPremiumTicket ? "vé xịn" : "vé"} thành công!`
+      );
+      setTicketModal(null);
+      setTicketQuantity(1);
+      setIsPremiumTicket(false);
+      setIsHolding(false);
+      setHoldProgress(0);
+      hasReached3SecondsRef.current = false;
+      holdStartTimeRef.current = null;
+      if (longPressTimerRef.current) {
+        clearInterval(longPressTimerRef.current);
+        longPressTimerRef.current = null;
+      }
+    } catch (error) {
+      console.error("Error creating ticket:", error);
+      toast.error("Có lỗi xảy ra khi phát vé");
+    } finally {
+      setIsCreatingTicket(false);
+    }
+  };
 
   return (
     <div className="space-y-3">
@@ -394,6 +454,14 @@ export function MembersList({
             setTicketModal(null);
             setTicketQuantity(1);
             setIsPremiumTicket(false);
+            setIsHolding(false);
+            setHoldProgress(0);
+            hasReached3SecondsRef.current = false;
+            holdStartTimeRef.current = null;
+            if (longPressTimerRef.current) {
+              clearInterval(longPressTimerRef.current);
+              longPressTimerRef.current = null;
+            }
           }}
           maxWidth="sm"
           title="Phát vé quay bánh mì"
@@ -417,18 +485,17 @@ export function MembersList({
               </select>
             </div>
 
-            <div className="flex items-center gap-2">
-              <input
-                type="checkbox"
-                id="premium-ticket"
-                checked={isPremiumTicket}
-                onChange={(e) => setIsPremiumTicket(e.target.checked)}
-                className="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary"
-              />
-              <label htmlFor="premium-ticket" className="text-sm font-medium text-gray-700 cursor-pointer">
-                Vé xịn (tỉ lệ trúng giải cao hơn)
-              </label>
-            </div>
+            
+
+            {/* Long press progress bar (mobile only) */}
+            {isMobileRef.current && isHolding && (
+              <div className="w-full bg-gray-200 rounded-full h-2">
+                <div
+                  className="bg-primary h-2 rounded-full transition-all duration-100"
+                  style={{ width: `${holdProgress}%` }}
+                />
+              </div>
+            )}
 
             <div className="flex justify-end gap-2 pt-4">
               <Button
@@ -437,36 +504,80 @@ export function MembersList({
                   setTicketModal(null);
                   setTicketQuantity(1);
                   setIsPremiumTicket(false);
+                  setIsHolding(false);
+                  setHoldProgress(0);
+                  hasReached3SecondsRef.current = false;
+                  holdStartTimeRef.current = null;
+                  if (longPressTimerRef.current) {
+                    clearInterval(longPressTimerRef.current);
+                    longPressTimerRef.current = null;
+                  }
                 }}
               >
                 Hủy
               </Button>
               <Button
-                onClick={async () => {
-                  if (!ticketModal) return;
-
-                  setIsCreatingTicket(true);
-                  try {
-                    await createSpinTicketByTeacher(
-                      ticketModal.member.id,
-                      classDetails.name,
-                      ticketQuantity,
-                      isPremiumTicket
-                    );
-                    toast.success(
-                      `Phát ${ticketQuantity} ${isPremiumTicket ? "vé xịn" : "vé"} thành công!`
-                    );
-                    setTicketModal(null);
-                    setTicketQuantity(1);
-                    setIsPremiumTicket(false);
-                  } catch (error) {
-                    console.error("Error creating ticket:", error);
-                    toast.error("Có lỗi xảy ra khi phát vé");
-                  } finally {
-                    setIsCreatingTicket(false);
+                onTouchStart={(e) => {
+                  if (!isMobileRef.current) return;
+                  e.preventDefault();
+                  setIsHolding(true);
+                  setHoldProgress(0);
+                  hasReached3SecondsRef.current = false;
+                  holdStartTimeRef.current = Date.now();
+                  
+                  // Start progress timer
+                  longPressTimerRef.current = setInterval(() => {
+                    if (holdStartTimeRef.current) {
+                      const elapsed = Date.now() - holdStartTimeRef.current;
+                      const progress = Math.min((elapsed / 3000) * 100, 100);
+                      setHoldProgress(progress);
+                      
+                      if (elapsed >= 3000) {
+                        setIsPremiumTicket(true);
+                        hasReached3SecondsRef.current = true;
+                        if (longPressTimerRef.current) {
+                          clearInterval(longPressTimerRef.current);
+                          longPressTimerRef.current = null;
+                        }
+                      }
+                    }
+                  }, 50);
+                }}
+                onTouchEnd={(e) => {
+                  if (!isMobileRef.current) return;
+                  e.preventDefault();
+                  setIsHolding(false);
+                  setHoldProgress(0);
+                  
+                  if (longPressTimerRef.current) {
+                    clearInterval(longPressTimerRef.current);
+                    longPressTimerRef.current = null;
                   }
+                  
+                  // If held for less than 3 seconds, treat as normal click
+                  if (!hasReached3SecondsRef.current) {
+                    setIsPremiumTicket(false);
+                  }
+                  
+                  holdStartTimeRef.current = null;
+                  hasReached3SecondsRef.current = false;
+                  
+                  // Trigger the create ticket action
+                  handleCreateTicket();
+                }}
+                onClick={async (e) => {
+                  if (isMobileRef.current) {
+                    // Mobile uses touch events, prevent default click
+                    e.preventDefault();
+                    return;
+                  }
+                  // Desktop: check if Ctrl is pressed when clicking
+                  e.preventDefault();
+                  setIsPremiumTicket(e.ctrlKey || e.metaKey);
+                  await handleCreateTicket();
                 }}
                 disabled={isCreatingTicket}
+                className="relative"
               >
                 {isCreatingTicket ? "Đang phát vé..." : "Xác nhận"}
               </Button>
